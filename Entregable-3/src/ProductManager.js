@@ -1,11 +1,11 @@
 import fs from 'fs'
 
-class ProductManager {
+export class ProductManager {
   constructor(path) {
     this.path = path;
     try {
       let products = fs.readFileSync(path, "utf-8");
-      this.products = JSON.parse(products);
+      this.products =  JSON.parse(products);
     } catch {
       this.products = [];
     }
