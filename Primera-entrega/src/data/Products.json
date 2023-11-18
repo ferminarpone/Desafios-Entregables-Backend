@@ -1,0 +1,35 @@
+[
+	{
+		"title": "Felipe actualizados",
+		"description": "juegute actualizados",
+		"code": "Abc12345678120932d",
+		"price": 100,
+		"status": true,
+		"stock": 3,
+		"category": "juegute",
+		"thumbnail": "img.com",
+		"id": 1
+	},
+	{
+		"title": "Juan",
+		"description": "juegute",
+		"code": "Abc1",
+		"price": 100,
+		"status": true,
+		"stock": 3,
+		"category": "juegute",
+		"thumbnail": "img.com",
+		"id": 2
+	},
+	{
+		"title": "Joaquin actualizados",
+		"description": "juegute actualizados",
+		"code": "Abc12345678120932d",
+		"price": 100,
+		"status": true,
+		"stock": 3,
+		"category": "juegute",
+		"thumbnail": "img.com",
+		"id": 3
+	}
+]
