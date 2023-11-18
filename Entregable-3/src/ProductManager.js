@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { Product } from './Product.js';
 
 export class ProductManager {
   constructor(path) {
@@ -48,7 +49,7 @@ export class ProductManager {
   getProductById(idProducto) {
     const fetch = this.products.find((el) => el.id === idProducto);
     if (!fetch) {
-      return "Not found.\n";
+      return "Not found.";
     } else {
       return fetch;
     }
@@ -117,14 +118,3 @@ export class ProductManager {
   }
 }
 
-//Clase generadora de instancias de productos.
-class Product {
-  constructor(title, description, price, thumbnail, code, stock) {
-    this.title = title;
-    this.description = description;
-    this.price = price;
-    this.thumbnail = thumbnail;
-    this.code = code;
-    this.stock = stock;
-  }
-}

@@ -6,8 +6,9 @@ const PORT = 8080;
 app.use(express.urlencoded({ extended: true }));
 
 const manager = new ProductManager("./src/data/Products.json");
-const products = manager.getProducts();
+
 app.get("/products", (req, res) => {
+  const products = manager.getProducts();
   const { limit } = req.query;
   if (limit) {
     if (limit > products.length) {
@@ -15,25 +16,25 @@ app.get("/products", (req, res) => {
         mensaje: `Solo existen ${products.length} productos`,
       });
     } else {
-      const limitProducts = [];
-      products.map((el, index) => index < limit && limitProducts.push(el));
-      res.json(limitProducts);
+      const limited = products.slice(0, limit);
+      res.json({
+        limited,
+      });
     }
   } else {
     res.json(products);
   }
 });
-
+console.log(manager.getProductById(Number(20)));
 app.get("/products/:pid", (req, res) => {
   const { pid } = req.params;
-  const fetch = products.find((el) => el.id === Number(pid));
-  if (fetch) {
-    const productId = manager.getProductById(Number(pid));
-    return res.json(productId);
+  const productId = manager.getProductById(Number(pid));
+  if (productId === "Not found.") {
+    return res.status(404).json({
+      error: `El producto con id: ${pid} no existe `,
+    });
   }
-  res.json({
-    error: `El producto con id: ${pid} no existe `,
-  });
+  res.json(productId);
 });
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
