@@ -25,7 +25,6 @@ app.get("/products", (req, res) => {
     res.json(products);
   }
 });
-console.log(manager.getProductById(Number(20)));
 app.get("/products/:pid", (req, res) => {
   const { pid } = req.params;
   const productId = manager.getProductById(Number(pid));
