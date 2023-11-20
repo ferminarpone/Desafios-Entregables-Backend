@@ -17,12 +17,6 @@ export class CartManager {
   }
   //Función que agrega carritos al arreglo de carritos inicial.
   async addCart(cart) {
-    const cartValidation = this.validateCart(cart);
-    if (!cartValidation) {
-      throw Error(
-        `Para ingresar un nuevo carrito, es necesario completar todos los campos.`
-      );
-    }
     cart.id =
       this.carts.length > 0 ? this.carts[this.carts.length - 1].id + 1 : 1;
     this.carts.push(cart);
@@ -44,44 +38,58 @@ export class CartManager {
     }
   }
 
-    //Función que busca el carrito por "Id" en la lista de carritos.
-    getCartById(idCart) {
-      const fetch = this.carts.find((el) => el.id === idCart);
-      if (!fetch) {
-        throw Error(`No existe ningun carrito con id: ${idCart}`)
-      } else {
-        return fetch;
-      }
+  //Función que busca el carrito por "Id" en la lista de carritos.
+  getCartById(idCart) {
+    const fetch = this.carts.find((el) => el.id === idCart);
+    if (!fetch) {
+      throw Error(`No existe ningun carrito con id: ${idCart}`);
+    } else {
+      return fetch;
     }
-
-    //Función que agrega un producto a un carrito especificado por Id.
- addProduct(cartId, productId) {
-    const cart = this.carts.find((el)=> el.id === cartId);
-  
-   if(!cart){
-      throw Error(`No existe ningun carrito con id: ${cartId}`)
-    } 
-    const products = new ProductManager("./src/data/Products.json");
-    const product = products.getProducts();
-    const fetchProduct = product.find((el)=> el.id === productId); 
-    const { id } = fetchProduct;
-    
-  console.log(fetchProduct.quantity = {...fetchProduct.quantity + 1})
-   // sobreescribir el producto con la cantidad.
-   console.log( cart.products = [...cart.products, {newProduct: productId, /* quantity */ }]) 
-
-
-
   }
 
+  //Función que agrega un producto a un carrito especificado por Id.
+  async addProductCart(cartId, productId) {
+    const cart = this.carts.find((el) => el.id === cartId);
+    if (!cart) {
+      throw Error(`No existe ningun carrito con id: ${cartId}`);
+    }
+    //Instancio ProductManager? o leo directamente el archivo?
+    const dataProducts = new ProductManager("./src/data/Products.json");
+    const products = dataProducts.getProducts();
+    /*   const dataProducts= JSON.parse(fs.readFileSync("./src/data/Products.json", "utf-8")); */
+    const fetchProduct = products.find((el) => el.id === productId);
+    if (!fetchProduct) {
+      throw Error(`No existe ningun producto con id: ${productId}`);
+    }
 
-  // Función que valida que se hayan ingresado todos los campos.
-  validateCart(cart) {
-    if (cart[0] != undefined || cart.products != undefined) {
+    const searchProductCart = cart.products.find(
+      (prod) => prod.id === productId
+    );
+
+    if (!searchProductCart) {
+      cart.products = [...cart.products, { id: productId, quantity: 1 }];
+    } else {
+      cart.products.map((prod) => {
+        if (prod.id === productId) {
+          prod.quantity = prod.quantity + 1;
+        }
+      });
+    }
+
+    const indexCart = this.carts.findIndex((cart) => cart.id === cartId);
+
+    this.carts[indexCart] = cart;
+
+    const save = await this.saveFile(this.carts);
+    if (save) {
+      console.log(
+        `El producto con id ${productId} fue agregado exitosamente al carrito con id ${cartId}`
+      );
       return true;
     }
+    throw Error("Se genero un error al agregar el producto al carrito.");
   }
-
 
   /* 
 

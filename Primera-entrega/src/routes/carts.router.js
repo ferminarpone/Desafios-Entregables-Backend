@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
   try {
     await manager.addCart(cart);
     res.json({
-      cart1: products,
+      mensaje: "El carrito fue agregado exitosamente."
     });
   } catch (e) {
     res.json({
@@ -39,7 +39,7 @@ router.get("/:cid", (req, res) => {
 router.post("/:cid/product/:pid",  (req, res) => {
   const { cid, pid } = req.params;
   try{
-      const add = manager.addProduct(Number(cid) , Number(pid));
+      const add = manager.addProductCart(Number(cid) , Number(pid));
       res.json({
           mensaje: add
         })
