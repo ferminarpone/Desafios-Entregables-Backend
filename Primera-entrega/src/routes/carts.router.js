@@ -36,12 +36,12 @@ router.get("/:cid", (req, res) => {
   }
 });
 
-router.post("/:cid/product/:pid",  (req, res) => {
+router.post("/:cid/product/:pid", async (req, res) => {
   const { cid, pid } = req.params;
   try{
-      const add = manager.addProductCart(Number(cid) , Number(pid));
+      await manager.addProductCart(Number(cid) , Number(pid));
       res.json({
-          mensaje: add
+          mensaje:  `El producto con id ${pid} fue agregado exitosamente al carrito con id ${cid}`
         })
     }catch(e){
         res.json({

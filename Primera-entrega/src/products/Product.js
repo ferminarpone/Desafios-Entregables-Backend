@@ -1,6 +1,6 @@
 //Clase generadora de instancias de productos.
 export class Product {
-    constructor(title, description, code, price, status = true, stock, category, thumbnail) {
+    constructor(title, description, code, price, status = true, stock, category, thumbnail=[]) {
       this.title = title;
       this.description = description;
       this.code = code;
