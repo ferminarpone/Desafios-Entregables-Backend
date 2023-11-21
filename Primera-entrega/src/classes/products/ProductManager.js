@@ -10,10 +10,12 @@ export class ProductManager {
       this.products = [];
     }
   }
+
   //Función que devuelve todos los productos que se encuentran en el manejador.
   getProducts() {
     return this.products;
   }
+
   //Función que agrega productos al arreglo de productos inicial.
   async addProduct(product) {
     const fieldsValidation = this.validateFields(product);
@@ -46,6 +48,7 @@ export class ProductManager {
     }
     console.log("Se genero un error al agregar el producto.");
   }
+
   //Función que busca los productos por "Id" en la lista de productos.
   getProductById(idProducto) {
     const fetch = this.products.find((el) => el.id === idProducto);
@@ -55,6 +58,7 @@ export class ProductManager {
       return fetch;
     }
   }
+
   //Función que guarda el nuevo array de productos en un archivo json.
   async saveFile(data) {
     try {
@@ -64,6 +68,7 @@ export class ProductManager {
       return false;
     }
   }
+
   //Función que actualiza los datos de un producto existente.
   async updateProduct(idProducto, newProduct) {
     const indice = this.products.findIndex(
@@ -84,6 +89,7 @@ export class ProductManager {
     }
     throw Error("Se produjo un error al actualizar el producto.");
   }
+
   //Función que elimina un producto existente en el archivo.
   async deleteProduct(idProducto) {
     const indice = this.products.findIndex(
@@ -117,6 +123,7 @@ export class ProductManager {
     const required = arrayProduct.includes(undefined);
     return required;
   }
+  
   // Función que valida que no se repita el campo "code".
   validateCode(product) {
     const validation = this.products.some((el) => el.code === product.code);

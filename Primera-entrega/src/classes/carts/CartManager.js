@@ -1,5 +1,4 @@
 import fs from "fs";
-import { ProductManager } from "../products/ProductManager.js";
 
 export class CartManager {
   constructor(path) {
@@ -28,16 +27,6 @@ export class CartManager {
     throw Error("Se genero un error al agregar el carrito.");
   }
 
-  //Función que guarda el nuevo array de productos en un archivo json.
-  async saveFile(data) {
-    try {
-      await fs.promises.writeFile(this.path, JSON.stringify(data, null, "\t"));
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
   //Función que busca el carrito por "Id" en la lista de carritos.
   getCartById(idCart) {
     const fetch = this.carts.find((el) => el.id === idCart);
@@ -50,11 +39,7 @@ export class CartManager {
 
   //Función que agrega un producto a un carrito especificado por Id.
   async addProductCart(cartId, productId) {
-    //Valido que exista el carrito de id cartId
-    const cart = this.validateCart(cartId);
-    //Valido que exista el producto con id productId
-    this.validateProduct(productId);
-
+    const cart = this.carts.find((el) => el.id === cartId);
     const searchProductCart = cart.products.find(
       (prod) => prod.id === productId
     );
@@ -67,6 +52,7 @@ export class CartManager {
         }
       });
     }
+
     //Remplazo el objeto del carrito, por el nuevo objeto y luego lo guardo en el archivo json.
     const indexCart = this.carts.findIndex((cart) => cart.id === cartId);
     this.carts[indexCart] = cart;
@@ -76,35 +62,13 @@ export class CartManager {
     }
   }
   
-  validateCart = (id) => {
-    const cart = this.carts.find((el) => el.id === id);
-    if (!cart) {
-      throw Error(`No existe ningun carrito con id: ${id}`);
-    }
-    return cart;
-  };
-
-  validateProduct = (id) => {
-    /* const dataProducts = new ProductManager("./src/data/Products.json");
-    const products = dataProducts.getProducts();
-    const fetchProduct = products.find((el) => el.id === id);
-    if (!fetchProduct) {
-      throw Error(`No existe ningun producto con id: ${id}`);
-
-    } */
+  //Función que guarda el nuevo array de carritos en un archivo json.
+  async saveFile(data) {
     try {
-      const dataProducts = JSON.parse(
-        fs.readFileSync("./src/data/Products.json", "utf-8")
-      );
-      const fetchProduct = dataProducts.find((el) => el.id === id);
-      if (!fetchProduct) {
-        throw Error(`No existe ningun producto con id: ${id}`);
-      }
-    } catch (e) {
-      const dataProducts = null;
-      if (!dataProducts) {
-        throw Error("No existen productos en el manager de productos");
-      }
+      await fs.promises.writeFile(this.path, JSON.stringify(data, null, "\t"));
+      return true;
+    } catch (error) {
+      return false;
     }
-  };
+  }
 }
