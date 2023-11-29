@@ -7,7 +7,7 @@
 			},
 			{
 				"id": 3,
-				"quantity": 11
+				"quantity": 29
 			}
 		],
 		"id": 1
@@ -43,7 +43,20 @@
 		"id": 5
 	},
 	{
-		"products": [],
+		"products": [
+			{
+				"id": 3,
+				"quantity": 4
+			},
+			{
+				"id": 6,
+				"quantity": 18
+			},
+			{
+				"id": 5,
+				"quantity": 22
+			}
+		],
 		"id": 6
 	}
 ]

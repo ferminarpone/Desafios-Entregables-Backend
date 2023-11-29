@@ -19,7 +19,7 @@
 		"code": "Abc123",
 		"price": 100,
 		"status": true,
-		"stock": 3,
+		"stock": 1,
 		"category": "productos",
 		"thumbnails": "img.com",
 		"id": 3
@@ -39,17 +39,14 @@
 		"id": 4
 	},
 	{
-		"title": "Producto 5",
-		"description": "Descripción del producto 5",
-		"code": "Abc12345",
+		"title": "Producto Prueba",
+		"description": "Descripcion producto prueba",
+		"code": "AbcPrueba",
 		"price": 100,
 		"status": true,
-		"stock": 3,
+		"stock": 0,
 		"category": "productos",
-		"thumbnail": [
-			"img.com",
-			"img1.com"
-		],
+		"thumbnails": [],
 		"id": 5
 	}
 ]

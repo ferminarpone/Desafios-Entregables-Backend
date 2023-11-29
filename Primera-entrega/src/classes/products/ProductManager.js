@@ -41,7 +41,7 @@ export class ProductManager {
         ? this.products[this.products.length - 1].id + 1
         : 1;
     this.products.push(product);
-    const save = await this.saveFile(this.product);
+    const save = await this.saveFile(this.products);
     if (save) {
       console.log(
         `El producto con id ${product.id} fue agregado exitosamente.`
@@ -82,8 +82,9 @@ export class ProductManager {
         `El producto de id: ${idProducto}, no existe en el manejador de productos.`
       );
     }
+    const stock = newProduct.stock;
     const product = Object.fromEntries(Object.entries(newProduct).filter(value => value[1]));
-    this.products[indice] = { ...this.products[indice],...product, id: idProducto };
+    this.products[indice] = { ...this.products[indice],...product, stock: stock, id: idProducto };
     const saveUpdate = await this.saveFile(this.products);
     if (saveUpdate) {
       console.log(
