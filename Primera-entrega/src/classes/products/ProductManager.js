@@ -82,7 +82,8 @@ export class ProductManager {
         `El producto de id: ${idProducto}, no existe en el manejador de productos.`
       );
     }
-    this.products[indice] = { ...newProduct, id: idProducto };
+    const product = Object.fromEntries(Object.entries(newProduct).filter(value => value[1]));
+    this.products[indice] = { ...this.products[indice],...product, id: idProducto };
     const saveUpdate = await this.saveFile(this.products);
     if (saveUpdate) {
       console.log(

@@ -21,7 +21,7 @@
 		"status": true,
 		"stock": 3,
 		"category": "productos",
-		"thumbnail": "img.com",
+		"thumbnails": "img.com",
 		"id": 3
 	},
 	{
