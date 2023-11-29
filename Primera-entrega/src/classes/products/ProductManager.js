@@ -23,7 +23,9 @@ export class ProductManager {
       console.error(
         `Para ingresar un nuevo producto, es necesario completar todos los campos. \n`
       );
-      return null;
+      throw Error(
+        "Para ingresar un nuevo producto, es necesario completar todos los campos."
+      );
     }
     const codeValidation = this.validateCode(product);
     if (codeValidation) {
@@ -39,7 +41,7 @@ export class ProductManager {
         ? this.products[this.products.length - 1].id + 1
         : 1;
     this.products.push(product);
-    const save = await this.saveFile(this.products);
+    const save = await this.saveFile(this.product);
     if (save) {
       console.log(
         `El producto con id ${product.id} fue agregado exitosamente.`
@@ -47,13 +49,14 @@ export class ProductManager {
       return true;
     }
     console.log("Se genero un error al agregar el producto.");
+    throw Error("Se genero un error al agregar el producto.");
   }
 
   //Función que busca los productos por "Id" en la lista de productos.
   getProductById(idProducto) {
     const fetch = this.products.find((el) => el.id === idProducto);
     if (!fetch) {
-      return;
+      throw Error(`No existe ningun producto con id: ${idProducto}`);
     } else {
       return fetch;
     }
@@ -115,15 +118,17 @@ export class ProductManager {
     const arrayProduct = [
       product.title,
       product.description,
-      product.price,
-      product.thumbnail,
       product.code,
+      product.price,
+      product.status,
       product.stock,
+      product.category,
+      product.thumbnails,
     ];
     const required = arrayProduct.includes(undefined);
     return required;
   }
-  
+
   // Función que valida que no se repita el campo "code".
   validateCode(product) {
     const validation = this.products.some((el) => el.code === product.code);

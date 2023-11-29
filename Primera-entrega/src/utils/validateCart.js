@@ -8,11 +8,11 @@ export const validateCart = (req, res, next) => {
     });
   }
   const managerCart = new CartManager("./src/data/Carts.json");
-  const carts = managerCart.getCarts();
-  const cart = carts.find((el) => el.id === Number(cid));
-  if (!cart) {
+  try{
+    managerCart.getCartById(Number(cid));
+  }catch(e){
     return res.json({
-      error: `No existe ningun carrito con id: ${cid}`,
+      error: e.message
     });
   }
   next();

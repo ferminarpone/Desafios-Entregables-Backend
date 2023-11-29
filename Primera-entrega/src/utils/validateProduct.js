@@ -8,11 +8,11 @@ export const validateProduct = (req, res, next) => {
     });
   }
   const dataProducts = new ProductManager("./src/data/Products.json");
-  const products = dataProducts.getProducts();
-  const fetchProduct = products.find((el) => el.id === Number(pid));
-  if (!fetchProduct) {
+  try {
+    dataProducts.getProductById(Number(pid));
+  } catch (e) {
     return res.json({
-      error: `No existe ningun producto con id: ${pid}`,
+      error: e.message
     });
   }
   next();

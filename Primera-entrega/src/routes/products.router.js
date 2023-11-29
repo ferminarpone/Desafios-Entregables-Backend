@@ -16,9 +16,7 @@ router.get("/", (req, res) => {
       });
     } else {
       const limited = products.slice(0, limit);
-      res.json({
-        limited,
-      });
+      res.json(limited);
     }
   } else {
     res.json(products);
@@ -45,7 +43,7 @@ router.post("/", async (req, res) => {
     status,
     stock,
     category,
-    thumbnail,
+    thumbnails,
   } = req.body;
 
   const newProduct = new Product(
@@ -56,7 +54,7 @@ router.post("/", async (req, res) => {
     status,
     stock,
     category,
-    thumbnail
+    thumbnails
   );
   try {
     await manager.addProduct(newProduct);
@@ -64,7 +62,7 @@ router.post("/", async (req, res) => {
       mensaje: "El producto fue agregado con exito",
     });
   } catch (e) {
-    res.json({
+    res.status(404).json({
       error: e.message,
     });
   }
@@ -99,7 +97,7 @@ router.put("/:pid", async (req, res) => {
       mensaje: "El producto se actualizo exitosamente.",
     });
   } catch (e) {
-    res.json({
+    res.status(400).json({
       error: e.message,
     });
   }
@@ -113,7 +111,7 @@ router.delete("/:pid", async (req, res) => {
       mensaje: "Producto eliminado exitosamente",
     });
   } catch (e) {
-    res.json({
+    res.status(400).json({
       error: e.message,
     });
   }
