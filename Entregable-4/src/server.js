@@ -67,4 +67,9 @@ socketServer.on("connection", (socketCliente) => {
     }
   });
   socketCliente.emit("products_list", products);
+
+  socketCliente.on("product_delete",(data)=>{
+    console.log(data)
+  })
 });
+
