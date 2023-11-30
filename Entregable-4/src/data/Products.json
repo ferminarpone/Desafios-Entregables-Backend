@@ -1,0 +1,52 @@
+[
+	{
+		"title": "Producto 1",
+		"description": "Descripción del producto 1",
+		"code": "Abc1",
+		"price": 100,
+		"status": true,
+		"stock": 3,
+		"category": "productos",
+		"thumbnail": [
+			"img.com",
+			"img1.com"
+		],
+		"id": 1
+	},
+	{
+		"title": "Producto actualizado",
+		"description": "Producto actualizado",
+		"code": "Abc123",
+		"price": 100,
+		"status": true,
+		"stock": 1,
+		"category": "productos",
+		"thumbnails": "img.com",
+		"id": 3
+	},
+	{
+		"title": "Producto 4",
+		"description": "Descripción del producto 4",
+		"code": "Abc1234",
+		"price": 100,
+		"status": true,
+		"stock": 3,
+		"category": "productos",
+		"thumbnail": [
+			"img.com",
+			"img1.com"
+		],
+		"id": 4
+	},
+	{
+		"title": "Producto Prueba",
+		"description": "Descripcion producto prueba",
+		"code": "AbcPrueba",
+		"price": 100,
+		"status": true,
+		"stock": 0,
+		"category": "productos",
+		"thumbnails": [],
+		"id": 5
+	}
+]
