@@ -1,0 +1,33 @@
+<div>
+  <div>
+    <h1>Ingresar producto al maneger de productos</h1>
+    <form>
+      <label>Nombre *</label>
+      <input type="text" name="title" id="title" />
+      <br />
+      <label>Descripción *</label>
+      <input type="text" name="description" id="description" />
+      <br />
+      <label>Code *</label>
+      <input type="text" name="code" id="code" />
+      <br />
+      <label>Precio *</label>
+      <input type="number" name="price" id="price" />
+      <br />
+      <label>Stock *</label>
+      <input type="number" name="stock" id="stock" />
+      <br />
+      <label>Categoria *</label>
+      <input type="text" name="category" id="category" />
+      <br />
+      <label>Imagenes</label>
+      <input type="text" name="thumbnails" id="thumbnails" />
+      <br />
+      <p>* Campos obligatorios</p>
+      <input type="submit" value="Agregar producto" id="button" />
+    </form>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/realtimeproducts.js"></script>
+</div>

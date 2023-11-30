@@ -125,7 +125,7 @@ export class ProductManager {
       product.status,
       product.stock,
       product.category,
-      product.thumbnails,
+      product.thumbnails, 
     ];
     const required = arrayProduct.includes(undefined);
     return required;

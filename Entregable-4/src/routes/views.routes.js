@@ -6,14 +6,19 @@ const router = Router();
 
 const manager = new ProductManager(`${__dirname}/data/Products.json`);
 router.get("/", (req, res) => {
-  const products = manager.getProducts();
+ try {
+      const products = manager.getProducts();
   res.render("home", { products });
-  /*   try {
   } catch (e) {
-    res.render("home", {
+    console.log(e.message)
+    res.status(404).render("home", {
       error: e.message,
     });
-  } */
+  }
 });
+
+router.get("/realtimeproducts", (req, res)=>{
+  res.render("realtimeproducts", {});
+})
 
 export default router;

@@ -21,7 +21,7 @@
 		"status": true,
 		"stock": 1,
 		"category": "productos",
-		"thumbnails": "img.com",
+		"thumbnails": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9uZsuwDG3jRDo4t-JkEnvDHWoVGXA6F5Kbg&usqp=CAU",
 		"id": 3
 	},
 	{
@@ -48,5 +48,48 @@
 		"category": "productos",
 		"thumbnails": [],
 		"id": 5
+	},
+	{
+		"title": "Jack Ruseel",
+		"description": "perrito",
+		"code": "Perrito1",
+		"price": "10",
+		"status": "",
+		"stock": "3",
+		"category": "perruna",
+		"thumbnails": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQwH_Kl8hD70I09ZZ3ggeD7Kp02TDTrIyKwA&usqp=CAU",
+		"id": 6
+	},
+	{
+		"title": "Fermin",
+		"description": "Persona",
+		"code": "Persona1",
+		"price": "100",
+		"status": "",
+		"stock": "1",
+		"category": "humano",
+		"thumbnails": "no hay",
+		"id": 7
+	},
+	{
+		"title": "dfdf",
+		"description": "gdfg",
+		"code": "dsfsdf",
+		"price": "2",
+		"stock": "2",
+		"category": "dsfsdf",
+		"thumbnails": "dfsdf",
+		"id": 8
+	},
+	{
+		"title": "Felip",
+		"description": "sdj",
+		"code": "sdhsjd",
+		"price": "2",
+		"status": true,
+		"stock": "2",
+		"category": "dskjds",
+		"thumbnails": "sdkjsd",
+		"id": 9
 	}
 ]
