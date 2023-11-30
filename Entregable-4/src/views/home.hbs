@@ -1,7 +1,8 @@
 <div>
   {{#if products}}
+  <h1>Lista de productos</h1>
     {{#each products}}
-      <h1>{{this.title}}</h1>
+      <h2>{{this.title}}</h2>
       <img src={{this.thumbnails}} />
       <p>Descripcion: {{this.description}}</p>
       <p>Categoria: {{this.category}}</p>

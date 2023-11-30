@@ -24,7 +24,7 @@ export class ProductManager {
         `Para ingresar un nuevo producto, es necesario completar todos los campos. \n`
       );
       throw Error(
-        "Para ingresar un nuevo producto, es necesario completar todos los campos."
+        "Para ingresar un nuevo producto, es necesario completar los campos obligatorios."
       );
     }
     const codeValidation = this.validateCode(product);
@@ -122,12 +122,10 @@ export class ProductManager {
       product.description,
       product.code,
       product.price,
-      product.status,
       product.stock,
       product.category,
-      product.thumbnails, 
     ];
-    const required = arrayProduct.includes(undefined);
+    const required = arrayProduct.includes(undefined || "");
     return required;
   }
 

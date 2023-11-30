@@ -42,14 +42,9 @@ const manager = new ProductManager(`${__dirname}/data/Products.json`);
 const products = manager.getProducts();
 
 socketServer.on("connection", (socketCliente) => {
-  console.log("Cliente conectado");
 
-  socketCliente.on("message", (data) => {
-    console.log(data);
-  });
   socketCliente.on("form_connection", async (data) => {
     try {
-      console.log(data);
       const newProduct = new Product(
         data.title,
         data.description,
@@ -63,13 +58,19 @@ socketServer.on("connection", (socketCliente) => {
       await manager.addProduct(newProduct);
       socketCliente.emit("products_list", products);
     } catch (e) {
+      socketCliente.emit("products_list",  e.message );
+    }
+  });
+
+  socketCliente.on("product_delete",(data)=>{
+    try{
+      manager.deleteProduct(data);
+      socketCliente.emit("products_list", products);
+    }catch(e){
       socketCliente.emit("products_list", { error: e.message });
     }
   });
-  socketCliente.emit("products_list", products);
 
-  socketCliente.on("product_delete",(data)=>{
-    console.log(data)
-  })
+  socketCliente.emit("products_list", products);
 });
 
