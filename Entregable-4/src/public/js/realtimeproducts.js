@@ -21,7 +21,7 @@ button.addEventListener("click", (e) => {
     thumbnails: thumbnails.value,
   };
 
-  socketClient.emit("form_connection", newProduct);
+  socketClient.emit("form_information", newProduct);
 
   const input = document.querySelectorAll(
     "#title, #description, #code, #price, #stock, #category, #thumbnails"
@@ -53,9 +53,11 @@ socketClient.on("products_list", (data) => {
       });
     });
   } else {
-    const error = document.querySelector("#error");
-    error.innerHTML = `
-      <h1>Error</h1>
-      <p>${data}</p>`;
+    Swal.fire({
+      icon: "error",
+      text: `${data}`,
+      width: 400,
+
+    });
   }
 });

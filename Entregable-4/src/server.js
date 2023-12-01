@@ -5,36 +5,34 @@ import viewRouter from "./routes/views.routes.js";
 import { Server } from "socket.io";
 import { ProductManager } from "./classes/products/ProductManager.js";
 import { Product } from "./classes/products/Product.js";
+import productsRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
 
 const app = express();
 const PORT = 8080;
 const httpServer = app.listen(PORT, () =>
   console.log(`Server listening on port ${PORT}`)
 );
-
 const socketServer = new Server(httpServer);
-
 // Middlewares
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Configuramos el engine
+app.use(express.urlencoded({ extended: true })); 
+// Configuración engine
 app.engine(
   "hbs",
   handlebars.engine({
-    // index.hbs
     extname: "hbs",
-    // Plantilla principal
     defaultLayout: "main",
   })
 );
-
-// Seteamos nuestro motor
+// Seteando motor de plantillas
 app.set("view engine", "hbs");
 app.set("views", `${__dirname}/views`);
 // Public
 app.use(express.static(`${__dirname}/public`));
 // Routes
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 app.use("/", viewRouter);
 
 //Web Sockets
@@ -42,8 +40,7 @@ const manager = new ProductManager(`${__dirname}/data/Products.json`);
 const products = manager.getProducts();
 
 socketServer.on("connection", (socketCliente) => {
-
-  socketCliente.on("form_connection", async (data) => {
+  socketCliente.on("form_information", async (data) => {
     try {
       const newProduct = new Product(
         data.title,
