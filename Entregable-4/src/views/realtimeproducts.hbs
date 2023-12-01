@@ -1,35 +1,82 @@
-<div>
+<div class="container-md">
   <div>
-    <h1>Ingresar producto al maneger de productos</h1>
+    <h2
+      class="mt-4 mb-4 pt-2 pb-2 bg-opacity-8 border rounded text-center"
+    >Ingresar producto al maneger de productos</h2>
+
     <form>
-      <label>Nombre *</label>
-      <input type="text" name="title" id="title" />
-      <br />
-      <label>Descripción *</label>
-      <input type="text" name="description" id="description" />
-      <br />
-      <label>Code *</label>
-      <input type="text" name="code" id="code" />
-      <br />
-      <label>Precio *</label>
-      <input type="number" name="price" id="price" />
-      <br />
-      <label>Stock *</label>
-      <input type="number" name="stock" id="stock" />
-      <br />
-      <label>Categoria *</label>
-      <input type="text" name="category" id="category" />
-      <br />
-      <label>Imagen</label>
-      <input type="text" name="thumbnails" id="thumbnails" />
-      <br />
+      <div class="row g-0 pt-3 border rounded mt-4">
+        <div class="col pb-4 mx-4">
+          <label class="form-label">Nombre *</label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            class="form-control form-control-sm"
+          />
+          <label class="form-label mt-2">Descripción *</label>
+          <input
+            type="text"
+            name="description"
+            id="description"
+            class="form-control form-control-sm"
+          />
+          <label class="form-label mt-2">Code *</label>
+          <input
+            type="text"
+            name="code"
+            id="code"
+            class="form-control form-control-sm"
+          />
+        </div>
+        <div class="col">
+          <label class="form-label">Precio *</label>
+          <input
+            type="number"
+            name="price"
+            id="price"
+            class="form-control form-control-sm"
+          />
+
+          <label class="form-label mt-2">Stock *</label>
+          <input
+            type="number"
+            name="stock"
+            id="stock"
+            class="form-control form-control-sm"
+          />
+          <label class="form-label mt-2">Categoria *</label>
+          <input
+            type="text"
+            name="category"
+            id="category"
+            class="form-control form-control-sm"
+          />
+        </div>
+        <div class="col mx-4">
+          <label class="form-label">Imagen</label>
+          <input
+            type="text"
+            name="thumbnails"
+            id="thumbnails"
+            class="form-control form-control-sm"
+          />
+          <button
+            type="submit"
+            class="btn btn-primary btn-sm"
+            id="button"
+          >Agregar producto</button>
+        </div>
+      </div>
       <p>* Campos obligatorios</p>
-      <input type="submit" value="Agregar producto" id="button" />
     </form>
   </div>
-  <h1>Lista de productos</h1>
-  <div id="productList">
-
+  <h3 class="mt-4 mb-4 pt-2 pb-2 bg-opacity-8 border rounded text-center">Lista
+    de productos</h3>
+  <div
+    id="productList"
+    class="container row d-flex justify-content-start text-center"
+  >
   </div>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/socket.io/socket.io.js"></script>

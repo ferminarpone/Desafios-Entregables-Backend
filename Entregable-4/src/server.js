@@ -16,7 +16,7 @@ const httpServer = app.listen(PORT, () =>
 const socketServer = new Server(httpServer);
 // Middlewares
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(express.urlencoded({ extended: true }));
 // Configuración engine
 app.engine(
   "hbs",
@@ -55,19 +55,17 @@ socketServer.on("connection", (socketCliente) => {
       await manager.addProduct(newProduct);
       socketCliente.emit("products_list", products);
     } catch (e) {
-      socketCliente.emit("products_list",  e.message );
+      socketCliente.emit("products_list", e.message);
     }
   });
 
-  socketCliente.on("product_delete",(data)=>{
-    try{
+  socketCliente.on("product_delete", (data) => {
+    try {
       manager.deleteProduct(data);
       socketCliente.emit("products_list", products);
-    }catch(e){
+    } catch (e) {
       socketCliente.emit("products_list", { error: e.message });
     }
   });
-
   socketCliente.emit("products_list", products);
 });
-

@@ -10,7 +10,6 @@ button.addEventListener("click", (e) => {
   const stock = document.querySelector("#stock");
   const category = document.querySelector("#category");
   const thumbnails = document.querySelector("#thumbnails");
-
   const newProduct = {
     title: title.value,
     description: description.value,
@@ -20,9 +19,7 @@ button.addEventListener("click", (e) => {
     category: category.value,
     thumbnails: thumbnails.value,
   };
-
   socketClient.emit("form_information", newProduct);
-
   const input = document.querySelectorAll(
     "#title, #description, #code, #price, #stock, #category, #thumbnails"
   );
@@ -35,14 +32,22 @@ socketClient.on("products_list", (data) => {
     let products = " ";
     data.forEach((product) => {
       products += `
-          <h2>${product.title}</h2>
-          <img src=${product.thumbnails} />
-          <p>Descripcion: ${product.description}</p>
-          <p>Categoria: ${product.category}</p>
-          <p>Stock: ${product.stock}</p>
-          <p>Precio: ${product.price}</p>
-          <button id="delete${product.id}"> Eliminar Producto </button>
-          `;
+      <div class="col-sm-4 mb-4">
+      <div class="card" style="width: auto;">
+        <img src=${product.thumbnails} class="mx-auto mt-2" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">${product.title}</h5>
+          <p class="card-text"><strong>Descripcion:</strong> ${product.description}</p>
+          <p class="card-text"><strong>Categoria:</strong> ${product.category}</p>
+          <p class="card-text"><strong>Stock:</strong> ${product.stock}</p>
+          <p class="card-text"><strong>Precio:</strong> ${product.price}</p>
+          <p class="card-text"><strong>Code:</strong> ${product.code}</p>
+          <p class="card-text"><strong>Id:</strong> ${product.id}</p>
+          <button class="btn btn-outline-secondary" id="delete${product.id}"> Eliminar Producto </button>
+        </div>
+      </div>
+    </div>
+    `;
     });
     div.innerHTML = products;
     data.forEach((prod) => {
@@ -57,7 +62,6 @@ socketClient.on("products_list", (data) => {
       icon: "error",
       text: `${data}`,
       width: 400,
-
     });
   }
 });
