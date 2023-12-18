@@ -29,7 +29,7 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", `${__dirname}/views`);
 // Public
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`${__dirname}/../public`));
 // Routes
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
