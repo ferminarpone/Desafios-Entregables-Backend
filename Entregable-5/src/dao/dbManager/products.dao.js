@@ -1,5 +1,6 @@
 import { productModel } from "../../models/products.model.js";
 
+
 class ProductDao {
   async getAllProducts() {
     return await productModel.find();

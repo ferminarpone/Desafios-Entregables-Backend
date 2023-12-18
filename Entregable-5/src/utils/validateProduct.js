@@ -1,20 +1,27 @@
 import { ProductManager } from "../dao/classes/products/ProductManager.js";
+import ProductDao from "../dao/dbManager/products.dao.js";
 
-export const validateProduct = (req, res, next) => {
+export const validateProduct = async(req, res, next) => {
   const { pid } = req.params;
-  if (!pid) {
+  console.log(pid)
+  if (!pid || pid == null || pid == " ") {
     return res.json({
       erorr: `El pid es requerido `,
     });
   }
-  const dataProducts = new ProductManager("./src/data/Products.json");
+
   try {
-    const product = dataProducts.getProductById(Number(pid));
+    const product = await ProductDao.getProductById(pid);
+    if(!product){
+      return res.json({
+        error: `No existe el producto con id ${pid}`
+      })
+    }
     const stock = product.stock;
     if (stock > 0) {
       const stock = product.stock - 1;
       console.log(stock);
-        dataProducts.updateProduct(Number(pid), { stock: stock });
+        await ProductDao.updateProduct(pid ,{ stock: stock });
     } else {
       throw Error(`Stock insuficiente del producto con id ${pid}`);
     }

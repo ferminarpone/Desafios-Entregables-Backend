@@ -1,16 +1,18 @@
 import { Router } from "express";
-import { CartManager } from "../dao/classes/carts/CartManager.js";
-import { Carts } from "../dao/classes/carts/Carts.js";
+import CartDao from "../dao/dbManager/carts.dao.js";
+/* import { CartManager } from "../dao/classes/carts/CartManager.js";
+import { Carts } from "../dao/classes/carts/Carts.js"; */
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
 
 const router = Router();
-const manager = new CartManager("./src/data/Carts.json");
+/* const manager = new CartManager("./src/data/Carts.json"); */
 router.post("/", async (req, res) => {
-  const { products } = req.body;
-  const cart = new Carts(products);
+  const { cart } = req.body;
+  /*   const cart = new Carts(products); */
   try {
-    await manager.addCart(cart);
+    /*   await manager.addCart(cart); */
+    await CartDao.createCart(cart);
     res.json({
       mensaje: "El carrito fue agregado exitosamente.",
     });
@@ -21,19 +23,24 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:cid", (req, res) => {
+router.get("/:cid", async (req, res) => {
   const { cid } = req.params;
   try {
-    const carrito = manager.getCartById(Number(cid));
+    const carrito = await CartDao.getCartById(cid);
+    if (carrito == null) {
+      return res.json({
+        error: `El carrito con id ${cid} no existe`,
+      });
+    }
     const productsCart = carrito.products;
-    if(productsCart.length > 0){
+    if (productsCart.length > 0) {
       res.json({
         productList: productsCart,
       });
-    }else{
+    } else {
       res.json({
-        productList: "El carrito se encuentra vacio."
-      })
+        productList: "El carrito se encuentra vacio.",
+      });
     }
   } catch (e) {
     res.json({
@@ -49,7 +56,7 @@ router.post(
   async (req, res) => {
     const { cid, pid } = req.params;
     try {
-      await manager.addProductCart(Number(cid), Number(pid));
+      const response = await CartDao.addProductInCart(cid, pid);
       res.json({
         mensaje: `El producto con id ${pid} fue agregado exitosamente al carrito con id ${cid}`,
       });

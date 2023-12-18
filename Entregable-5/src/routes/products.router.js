@@ -1,63 +1,53 @@
 import { Router } from "express";
-import { ProductManager } from "../dao/classes/products/ProductManager.js";
-import { Product } from "../dao/classes/products/Product.js";
+import ProductsDao from "../dao/dbManager/products.dao.js";
 
 const router = Router();
 
-const manager = new ProductManager("./src/data/Products.json");
-
-router.get("/", (req, res) => {
-  const products = manager.getProducts();
-  const { limit } = req.query;
-  if (limit) {
-    if (limit > products.length) {
-      res.send({
-        mensaje: `Solo existen ${products.length} productos`,
-      });
+router.get("/", async (req, res) => {
+  try {
+    const products = await ProductsDao.getAllProducts();
+    const { limit } = req.query;
+    if (limit) {
+      if (limit > products.length) {
+        res.send({
+          mensaje: `Solo existen ${products.length} productos`,
+          products,
+        });
+      } else {
+        const limited = products.slice(0, limit);
+        res.json(limited);
+      }
     } else {
-      const limited = products.slice(0, limit);
-      res.json(limited);
+      res.json(products);
     }
-  } else {
-    res.json(products);
+  } catch (e) {
+    res.json({
+      e,
+    });
   }
 });
 
-router.get("/:pid", (req, res) => {
+router.get("/:pid", async (req, res) => {
   const { pid } = req.params;
-  const productId = manager.getProductById(Number(pid));
-  if (productId === undefined) {
-    return res.status(404).json({
-      error: `El producto con id: ${pid} no existe `,
+  try {
+    const productId = await ProductsDao.getProductById(pid);
+    if (productId == null) {
+      return res.json({
+        error: `El producto con id ${pid} no existe`,
+      });
+    }
+    res.json(productId);
+  } catch (e) {
+    res.json({
+      error: e,
     });
   }
-  res.json(productId);
 });
 
 router.post("/", async (req, res) => {
-  const {
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnails,
-  } = req.body;
-
-  const newProduct = new Product(
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnails
-  );
   try {
-    await manager.addProduct(newProduct);
+    const newProduct = req.body;
+    await ProductsDao.createProduct(newProduct);
     res.json({
       mensaje: "El producto fue agregado con exito",
     });
@@ -70,29 +60,14 @@ router.post("/", async (req, res) => {
 
 router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
-  const {
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnail,
-  } = req.body;
-
-  const newProduct = new Product(
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnail
-  );
+  const updatedProduct = req.body;
   try {
-    await manager.updateProduct(Number(pid), newProduct);
+    const response = await ProductsDao.updateProduct(pid, updatedProduct);
+    if (response == null) {
+      return res.json({
+        error: `El producto con id ${pid} no existe`,
+      });
+    }
     res.json({
       mensaje: "El producto se actualizo exitosamente.",
     });
@@ -106,7 +81,12 @@ router.put("/:pid", async (req, res) => {
 router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
-    await manager.deleteProduct(Number(pid));
+    const response = await ProductsDao.deleteProduct(pid);
+    if (response == null) {
+      return res.json({
+        error: `El producto con id ${pid} no existe`,
+      });
+    }
     res.json({
       mensaje: "Producto eliminado exitosamente",
     });

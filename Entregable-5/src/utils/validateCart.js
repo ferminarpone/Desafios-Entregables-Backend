@@ -1,15 +1,19 @@
-import { CartManager } from "../dao/classes/carts/CartManager.js";
+import CartDao from "../dao/dbManager/carts.dao.js";
 
-export const validateCart = (req, res, next) => {
+export const validateCart = async (req, res, next) => {
   const { cid } = req.params;
-  if (!cid) {
+  if (!cid || cid == null || cid == " ") {
     return res.json({
       erorr: `El cid es requerido `,
     });
   }
-  const managerCart = new CartManager("./src/data/Carts.json");
   try{
-    managerCart.getCartById(Number(cid));
+    const response = await CartDao.getCartById(cid);
+    if(!response){
+      return res.json({
+        error: `No existe el carrito con id ${cid}`
+      })
+    }
   }catch(e){
     return res.json({
       error: e.message
