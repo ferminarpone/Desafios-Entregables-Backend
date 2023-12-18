@@ -1,4 +1,4 @@
-import { ProductManager } from "../classes/products/ProductManager.js";
+import { ProductManager } from "../dao/classes/products/ProductManager.js";
 
 export const validateProduct = (req, res, next) => {
   const { pid } = req.params;

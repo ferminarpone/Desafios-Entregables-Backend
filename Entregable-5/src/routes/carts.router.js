@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { CartManager } from "../classes/carts/CartManager.js";
-import { Carts } from "../classes/carts/Carts.js";
+import { CartManager } from "../dao/classes/carts/CartManager.js";
+import { Carts } from "../dao/classes/carts/Carts.js";
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
 

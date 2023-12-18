@@ -1,22 +1,38 @@
 import express from "express";
 import { __dirname } from "./utils.js";
 import handlebars from "express-handlebars";
-import viewRouter from "./routes/views.routes.js";
 import { Server } from "socket.io";
-import { ProductManager } from "./classes/products/ProductManager.js";
-import { Product } from "./classes/products/Product.js";
+import viewsRouter from "./routes/views.routes.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
+import mongoose from "mongoose";
+import { ProductManager } from "./dao/classes/products/ProductManager.js";
+import { Product } from "./dao/classes/products/Product.js";
+import { PORT, db_name } from "./env.js";
+
 
 const app = express();
-const PORT = 8080;
 const httpServer = app.listen(PORT, () =>
   console.log(`Server listening on port ${PORT}`)
 );
-const socketServer = new Server(httpServer);
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Configuraciób web socket
+const socketServer = new Server(httpServer);
+
+// Configuración mongoose
+mongoose
+  .connect(
+    `mongodb://localhost:27017/${db_name}`
+  )
+  .then(() => console.log("Data base connected"))
+  .catch((e) => {
+    console.log("Data base connection error");
+    console.log(e);
+  });
+
 // Configuración engine
 app.engine(
   "hbs",
@@ -33,7 +49,7 @@ app.use(express.static(`${__dirname}/../public`));
 // Routes
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/", viewRouter);
+app.use("/", viewsRouter);
 
 //Web Sockets
 const manager = new ProductManager(`${__dirname}/data/Products.json`);

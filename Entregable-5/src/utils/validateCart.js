@@ -1,4 +1,4 @@
-import { CartManager } from "../classes/carts/CartManager.js";
+import { CartManager } from "../dao/classes/carts/CartManager.js";
 
 export const validateCart = (req, res, next) => {
   const { cid } = req.params;
