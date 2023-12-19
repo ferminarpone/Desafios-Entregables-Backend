@@ -1,11 +1,13 @@
 import express from "express";
-import { __dirname } from "./utils.js";
+import mongoose from "mongoose";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
+import { __dirname } from "./utils.js";
+import Handlebars from "handlebars";
+import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
 import viewsRouter from "./routes/views.routes.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
-import mongoose from "mongoose";
 import { ProductManager } from "./dao/classes/products/ProductManager.js";
 import { Product } from "./dao/classes/products/Product.js";
 import { PORT, db_name } from "./env.js";
@@ -39,6 +41,7 @@ app.engine(
   handlebars.engine({
     extname: "hbs",
     defaultLayout: "main",
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
   })
 );
 // Seteando motor de plantillas
@@ -52,9 +55,9 @@ app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 
 //Web Sockets
-const manager = new ProductManager(`${__dirname}/data/Products.json`);
+/* const manager = new ProductManager(`${__dirname}/data/Products.json`);
 const products = manager.getProducts();
-
+ */
 socketServer.on("connection", (socketCliente) => {
   socketCliente.on("form_information", async (data) => {
     try {

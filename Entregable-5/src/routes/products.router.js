@@ -32,7 +32,7 @@ router.get("/:pid", async (req, res) => {
   try {
     const productId = await ProductsDao.getProductById(pid);
     if (productId == null) {
-      return res.json({
+      return res.status(404).json({
         error: `El producto con id ${pid} no existe`,
       });
     }
@@ -64,7 +64,7 @@ router.put("/:pid", async (req, res) => {
   try {
     const response = await ProductsDao.updateProduct(pid, updatedProduct);
     if (response == null) {
-      return res.json({
+      return res.status(404).json({
         error: `El producto con id ${pid} no existe`,
       });
     }
@@ -83,7 +83,7 @@ router.delete("/:pid", async (req, res) => {
   try {
     const response = await ProductsDao.deleteProduct(pid);
     if (response == null) {
-      return res.json({
+      return res.status(404).json({
         error: `El producto con id ${pid} no existe`,
       });
     }

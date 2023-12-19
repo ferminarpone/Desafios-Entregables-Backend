@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { ProductManager } from "../dao/classes/products/ProductManager.js";
 import { __dirname } from "../utils.js";
+import productsDao from "../dao/dbManager/products.dao.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const manager = new ProductManager(`${__dirname}/data/Products.json`);
-    const products = manager.getProducts();
+    const products = await productsDao.getAllProducts();
     res.render("home", {
       title: "Productos",
       products,
