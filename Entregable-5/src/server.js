@@ -11,7 +11,7 @@ import cartsRouter from "./routes/carts.router.js";
 import { ProductManager } from "./dao/classes/products/ProductManager.js";
 import { Product } from "./dao/classes/products/Product.js";
 import { PORT, db_name } from "./env.js";
-
+import productsDao from "./dao/dbManager/products.dao.js";
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
@@ -26,9 +26,7 @@ const socketServer = new Server(httpServer);
 
 // Configuración mongoose
 mongoose
-  .connect(
-    `mongodb://localhost:27017/${db_name}`
-  )
+  .connect(`mongodb://localhost:27017/${db_name}`)
   .then(() => console.log("Data base connected"))
   .catch((e) => {
     console.log("Data base connection error");
@@ -41,7 +39,7 @@ app.engine(
   handlebars.engine({
     extname: "hbs",
     defaultLayout: "main",
-    handlebars: allowInsecurePrototypeAccess(Handlebars)
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
 );
 // Seteando motor de plantillas
@@ -55,36 +53,33 @@ app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 
 //Web Sockets
-/* const manager = new ProductManager(`${__dirname}/data/Products.json`);
-const products = manager.getProducts();
- */
-socketServer.on("connection", (socketCliente) => {
+
+socketServer.on("connection", async (socketCliente) => {
   socketCliente.on("form_information", async (data) => {
     try {
-      const newProduct = new Product(
-        data.title,
-        data.description,
-        data.code,
-        data.price,
-        data.status,
-        data.stock,
-        data.category,
-        data.thumbnails
-      );
-      await manager.addProduct(newProduct);
-      socketCliente.emit("products_list", products);
+      await productsDao.createProduct(data);
+      const prod = await productsDao.getAllProducts();
+      socketCliente.emit("products_list", prod);
     } catch (e) {
+      if (e.message.includes("required")) {
+        return socketCliente.emit(
+          "products_list",
+          "Para agregar un nuevo producto, es necesario ingresar todos los campos requeridos."
+        );
+      }
       socketCliente.emit("products_list", e.message);
     }
   });
 
-  socketCliente.on("product_delete", (data) => {
+  socketCliente.on("product_delete", async(data) => {
     try {
-      manager.deleteProduct(data);
-      socketCliente.emit("products_list", products);
+      await productsDao.deleteProduct(data);
+      const prod = await productsDao.getAllProducts();
+      socketCliente.emit("products_list", prod);
     } catch (e) {
       socketCliente.emit("products_list", { error: e.message });
     }
   });
-  socketCliente.emit("products_list", products);
+  const prod = await productsDao.getAllProducts();
+  socketCliente.emit("products_list", prod);
 });

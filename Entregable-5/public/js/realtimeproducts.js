@@ -9,15 +9,15 @@ button.addEventListener("click", (e) => {
   const price = document.querySelector("#price");
   const stock = document.querySelector("#stock");
   const category = document.querySelector("#category");
-  const thumbnails = document.querySelector("#thumbnails");
+  const thumbnail = document.querySelector("#thumbnails");
   const newProduct = {
     title: title.value,
     description: description.value,
     code: code.value,
-    price: price.value,
-    stock: stock.value,
+    price: Number(price.value),
+    stock: Number(stock.value),
     category: category.value,
-    thumbnails: thumbnails.value,
+    thumbnail: thumbnail.value,
   };
   socketClient.emit("form_information", newProduct);
   const input = document.querySelectorAll(
@@ -34,7 +34,7 @@ socketClient.on("products_list", (data) => {
       products += `
       <div class="col-sm-4 mb-4">
       <div class="card" style="width: auto;">
-        <img src=${product.thumbnails} class="mx-auto mt-2" alt="..." />
+        <img src=${product.thumbnail} class="mx-auto mt-2" alt="..." />
         <div class="card-body">
           <h5 class="card-title">${product.title}</h5>
           <p class="card-text"><strong>Descripcion:</strong> ${product.description}</p>
@@ -42,8 +42,8 @@ socketClient.on("products_list", (data) => {
           <p class="card-text"><strong>Stock:</strong> ${product.stock}</p>
           <p class="card-text"><strong>Precio:</strong> ${product.price}</p>
           <p class="card-text"><strong>Code:</strong> ${product.code}</p>
-          <p class="card-text"><strong>Id:</strong> ${product.id}</p>
-          <button class="btn btn-outline-secondary" id="delete${product.id}"> Eliminar Producto </button>
+          <p class="card-text"><strong>Id:</strong> ${product._id}</p>
+          <button class="btn btn-outline-secondary" id="delete${product._id}"> Eliminar Producto </button>
         </div>
       </div>
     </div>
@@ -51,10 +51,10 @@ socketClient.on("products_list", (data) => {
     });
     div.innerHTML = products;
     data.forEach((prod) => {
-      const deleteButton = document.querySelector(`#delete${prod.id}`);
+      const deleteButton = document.querySelector(`#delete${prod._id}`);
       deleteButton.addEventListener("click", (e) => {
         e.preventDefault();
-        socketClient.emit("product_delete", prod.id);
+        socketClient.emit("product_delete", prod._id);
       });
     });
   } else {
