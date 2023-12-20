@@ -2,11 +2,11 @@ import { chatModel } from "../../models/chat.model.js";
 
 class ChatDao {
   async getAllMessages() {
-    await chatModel.find();
+    return await chatModel.find();
   }
 
   async saveMessage(message) {
-    await chatModel.create(message);
+   return await chatModel.create(message);
   }
 }
 

@@ -86,13 +86,20 @@ socketServer.on("connection", async (socketCliente) => {
 
   //Socket chat
   socketCliente.on("chat_information", async(data)=>{
-    console.log(data)
     try{
       await chatDao.saveMessage(data);
-      const messages = await chatDao.getAllMessages()
-      socketCliente.emit("chat_allMessages", messages)
+      const messages = await chatDao.getAllMessages();
+      socketServer.emit("chat_allMessages", messages) 
     }catch (e) {
-      socketCliente.emit("chat_messages", { error: e.message });
+      if (e.message.includes("required")) {
+        return socketCliente.emit("chat_allMessages",
+          "Para comenzar es necesario ingresar todos los campos requeridos."
+        );
+      }
+      socketCliente.emit("chat_allMessages", { error: e.message });
     }
   })
+  const messages = await chatDao.getAllMessages();
+  socketCliente.emit("chat_allMessages", messages)
 });
+
