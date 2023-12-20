@@ -25,7 +25,6 @@ button.addEventListener("click", (e) => {
   );
   input.forEach((e) => (e.value = ""));
 });
-
 socketClient.on("products_list", (data) => {
   if (Array.isArray(data)) {
     const div = document.querySelector("#productList");
@@ -64,4 +63,4 @@ socketClient.on("products_list", (data) => {
       width: 400,
     });
   }
-});
+}); 

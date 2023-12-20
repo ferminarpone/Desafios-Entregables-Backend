@@ -27,4 +27,11 @@ router.get("/realtimeproducts", (req, res) => {
   });
 });
 
+router.get("/chat", (req, res) => {
+  res.render("chat.hbs", {
+    title: "Chat",
+    fileCss: "styles.css",
+  });
+});
+
 export default router;

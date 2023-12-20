@@ -8,10 +8,9 @@ import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access
 import viewsRouter from "./routes/views.routes.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
-import { ProductManager } from "./dao/classes/products/ProductManager.js";
-import { Product } from "./dao/classes/products/Product.js";
 import { PORT, db_name } from "./env.js";
 import productsDao from "./dao/dbManager/products.dao.js";
+import chatDao from "./dao/dbManager/chat.dao.js";
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
@@ -55,6 +54,7 @@ app.use("/", viewsRouter);
 //Web Sockets
 
 socketServer.on("connection", async (socketCliente) => {
+// Socket Realtimeproducts
   socketCliente.on("form_information", async (data) => {
     try {
       await productsDao.createProduct(data);
@@ -82,4 +82,17 @@ socketServer.on("connection", async (socketCliente) => {
   });
   const prod = await productsDao.getAllProducts();
   socketCliente.emit("products_list", prod);
+
+
+  //Socket chat
+  socketCliente.on("chat_information", async(data)=>{
+    console.log(data)
+    try{
+      await chatDao.saveMessage(data);
+      const messages = await chatDao.getAllMessages()
+      socketCliente.emit("chat_allMessages", messages)
+    }catch (e) {
+      socketCliente.emit("chat_messages", { error: e.message });
+    }
+  })
 });
