@@ -11,6 +11,7 @@ import cartsRouter from "./routes/carts.router.js";
 import { PORT, db_name } from "./env.js";
 import productsDao from "./dao/dbManager/products.dao.js";
 import chatDao from "./dao/dbManager/chat.dao.js";
+import cartsDao from "./dao/dbManager/carts.dao.js";
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
@@ -51,6 +52,11 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 
+/*  const carrit =  async()=>{
+  const carrito = await cartsDao.getAllCarts()
+  console.log(JSON.stringify(carrito, null, '\t'))
+}
+carrit()  */
 //Web Sockets
 
 socketServer.on("connection", async (socketCliente) => {

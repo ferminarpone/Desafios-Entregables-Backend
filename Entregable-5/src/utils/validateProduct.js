@@ -1,4 +1,4 @@
-import { ProductManager } from "../dao/classes/products/ProductManager.js";
+import { ProductManager } from "../dao/fsManager/products/ProductManager.js";
 import ProductDao from "../dao/dbManager/products.dao.js";
 
 export const validateProduct = async(req, res, next) => {
