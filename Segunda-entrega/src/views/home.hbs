@@ -1,0 +1,28 @@
+<div class="container-md">
+  {{#if products}}
+    <h1 class="mt-4 mb-4 bg-opacity-8 border rounded text-center">Home</h1>
+    <div class="container row d-flex justify-content-start text-center">
+      {{#each products}}
+        <div class="col-sm-4 mb-4">
+          <div class="card" style="width: auto;">
+            <img src={{this.thumbnail}} class="mx-auto mt-2" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title">{{this.title}}</h5>
+              <p class="card-text"><strong>Descripción:</strong>
+                {{this.description}}</p>
+              <p class="card-text"><strong>Categoria:</strong>
+                {{this.category}}</p>
+              <p class="card-text"><strong>Stock:</strong> {{this.stock}}</p>
+              <p class="card-text"><strong>Precio:</strong> {{this.price}}</p>
+              <p class="card-text"><strong>Code:</strong> {{this.code}}</p>
+              <p class="card-text"><strong>Id:</strong> {{this.id}}</p>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <h2>NOT FOUND</h2>
+    <p>{{error}}</p>
+  {{/if}}
+</div>
