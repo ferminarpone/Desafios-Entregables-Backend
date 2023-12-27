@@ -63,4 +63,23 @@ router.post(
   }
 );
 
+router.delete(
+  "/:cid/product/:pid",
+  validateCart,
+  /* validateProduct */
+  async (req, res) => {
+    const { cid, pid } = req.params;
+    try {
+      const response = await CartDao.deleteProductInCart(cid, pid);
+      res.json({
+        mensaje: `El producto con id ${pid} fue eliminado exitosamente al carrito con id ${cid}`,
+        response
+      });
+    } catch (e) {
+      res.json({
+        error: e.message,
+      });
+    }
+  }
+);
 export default router;

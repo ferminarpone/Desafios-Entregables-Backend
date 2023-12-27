@@ -27,6 +27,21 @@ class CartDao {
     }
     return await cartModel.findByIdAndUpdate(cid, cart);
   }
+  
+  async deleteProductInCart(cid, pid){
+    try{ 
+     let cart = await cartModel.findById(cid);
+      const productIndex = cart.products.findIndex((prod) => prod.productId == pid)
+    const removeProduct = cart.products.splice(productIndex, 1) 
+
+    return await cartModel.findByIdAndUpdate(cid, cart);
+
+
+   }catch(e){
+    throw Error(e.message)
+   }  
+  
+  }
 }
 
 export default new CartDao();
