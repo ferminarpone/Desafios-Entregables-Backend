@@ -2,6 +2,7 @@ import { Router } from "express";
 import CartDao from "../dao/dbManager/carts.dao.js";
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
+import { validateProdDel } from "../utils/validateProdDel.js";
 
 const router = Router();
 router.post("/", async (req, res) => {
@@ -66,14 +67,14 @@ router.post(
 router.delete(
   "/:cid/product/:pid",
   validateCart,
-  /* validateProduct */
+  validateProdDel,
   async (req, res) => {
     const { cid, pid } = req.params;
     try {
       const response = await CartDao.deleteProductInCart(cid, pid);
       res.json({
         mensaje: `El producto con id ${pid} fue eliminado exitosamente al carrito con id ${cid}`,
-        response
+        response,
       });
     } catch (e) {
       res.json({
@@ -82,4 +83,20 @@ router.delete(
     }
   }
 );
+
+router.put("/:cid", async(req, res)=>{
+  const { cid } = req.params;
+  const  updateProducts  = req.body;
+  try {
+    const response = await CartDao.updateCart(cid, updateProducts);
+    res.json({
+      mensaje: `El carrito con id ${cid} fue actualizado exitosamente`,
+    });
+  } catch (e) {
+    res.json({
+      error: e.message,
+    });
+  }
+
+})
 export default router;

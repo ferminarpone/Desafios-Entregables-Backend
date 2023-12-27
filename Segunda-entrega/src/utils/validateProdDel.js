@@ -1,7 +1,8 @@
+import cartsDao from "../dao/dbManager/carts.dao.js";
 import ProductDao from "../dao/dbManager/products.dao.js";
 
-export const validateProduct = async(req, res, next) => {
-  const { pid } = req.params;
+export const validateProdDel = async(req, res, next) => {
+  const { pid, cid } = req.params;
   console.log(pid)
   if (!pid || pid == null || pid == " ") {
     return res.json({
@@ -16,13 +17,13 @@ export const validateProduct = async(req, res, next) => {
         error: `No existe el producto con id ${pid}`
       })
     }
-    const stock = product.stock;
-    if (stock > 0) {
-      const stock = product.stock - 1;
-      console.log(stock);
-        await ProductDao.updateProduct(pid ,{ stock: stock });
-    } else {
-      throw Error(`Stock insuficiente del producto con id ${pid}`);
+    const cart = await cartsDao.getCartById(cid);
+    const productInCart = cart.products.find((prod)=> prod.productId == pid);
+    console.log(productInCart)
+    if(productInCart === undefined){
+      return res.json({
+        error: `No existe el producto con id ${pid} dentro del carrito con id ${cid}`
+      })
     }
   } catch (e) {
     return res.json({
