@@ -1,12 +1,43 @@
 import { Router } from "express";
 import ProductsDao from "../dao/dbManager/products.dao.js";
+import { productModel } from "../models/products.model.js";
 
 const router = Router();
 
 router.get("/", async (req, res) => {
-  try {
+
+const { limit, page, category } = req.query;
+
+try{
+  
+  const query = category ? { category: {$regex: new RegExp(category, 'i')}} : {};
+
+  /* ()=>{
+    if(category){
+      if(category == "electronica"){
+        return { category: { $regex: new RegExp(category, 'i') } 
+      }
+    }
+   throw Error ("Categoria inexistente")
+  } */
+  
+  const products = await productModel.paginate(
+  query,
+    {
+      page: page || 1,
+      limit: limit || 10
+    }
+  )
+  res.json(products)
+}catch(e){
+res.json({
+  message: e.message
+})
+}
+
+/*   try {
     const products = await ProductsDao.getAllProducts();
-    const { limit } = req.query;
+    const { limit, page, sort, query } = req.query;
     if (limit) {
       if (limit > products.length) {
         res.send({
@@ -24,7 +55,9 @@ router.get("/", async (req, res) => {
     res.json({
       e,
     });
-  }
+  } */
+
+
 });
 
 router.get("/:pid", async (req, res) => {

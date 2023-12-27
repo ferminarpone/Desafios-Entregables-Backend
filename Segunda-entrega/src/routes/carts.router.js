@@ -1,17 +1,12 @@
 import { Router } from "express";
 import CartDao from "../dao/dbManager/carts.dao.js";
-/* import { CartManager } from "../dao/classes/carts/CartManager.js";
-import { Carts } from "../dao/classes/carts/Carts.js"; */
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
 
 const router = Router();
-/* const manager = new CartManager("./src/data/Carts.json"); */
 router.post("/", async (req, res) => {
   const { cart } = req.body;
-  /*   const cart = new Carts(products); */
   try {
-    /*   await manager.addCart(cart); */
     await CartDao.createCart(cart);
     res.json({
       mensaje: "El carrito fue agregado exitosamente.",
