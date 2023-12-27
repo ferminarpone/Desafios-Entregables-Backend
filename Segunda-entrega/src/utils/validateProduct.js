@@ -8,7 +8,6 @@ export const validateProduct = async(req, res, next) => {
       erorr: `El pid es requerido `,
     });
   }
-
   try {
     const product = await ProductDao.getProductById(pid);
     if(!product){

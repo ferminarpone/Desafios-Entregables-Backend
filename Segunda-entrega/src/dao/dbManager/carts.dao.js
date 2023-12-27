@@ -5,8 +5,8 @@ class CartDao {
     return await cartModel.find();
   }
 
-  async getCartById(id /* , products */) {
-    return await cartModel.findById(id) /* .populate(products) */;
+  async getCartById(id  , products ) {
+    return await cartModel.findById(id).populate(products) ;
   }
 
   async createCart(cart) {
@@ -47,6 +47,27 @@ class CartDao {
       cart.products = updateProducts;
       return await cartModel.findByIdAndUpdate(cid, cart);
     } catch (e) {
+      throw Error(e.message);
+    }
+  }
+
+  async updateQuantity(cid, pid, quantity){
+    try{
+      const cart = await cartModel.findById(cid);
+      const indexProduct = cart.products.findIndex((prod)=> prod.productId == pid);
+      cart.products[indexProduct].quantity = quantity.quantity;
+      return await cartModel.findByIdAndUpdate(cid, cart);
+    } catch (e) {
+      throw Error(e.message);
+    }
+  }
+
+  async deleteProducts(cid){
+    try{
+      const cart = await cartModel.findById(cid);
+      cart.products = [];
+      return await cartModel.findByIdAndUpdate(cid, cart);
+    }catch(e){
       throw Error(e.message);
     }
   }
