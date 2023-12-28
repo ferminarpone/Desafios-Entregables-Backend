@@ -60,7 +60,7 @@ socketServer.on("connection", async (socketCliente) => {
     try {
       await productsDao.createProduct(data);
       const prod = await productsDao.getAllProducts();
-      socketCliente.emit("products_list", prod);
+      socketCliente.emit("products_list", prod.payload);
     } catch (e) {
       if (e.message.includes("required")) {
         return socketCliente.emit(
@@ -76,13 +76,13 @@ socketServer.on("connection", async (socketCliente) => {
     try {
       await productsDao.deleteProduct(data);
       const prod = await productsDao.getAllProducts();
-      socketCliente.emit("products_list", prod);
+      socketCliente.emit("products_list", prod.payload);
     } catch (e) {
       socketCliente.emit("products_list", { error: e.message });
     }
   });
   const prod = await productsDao.getAllProducts();
-  socketCliente.emit("products_list", prod);
+  socketCliente.emit("products_list", prod.payload);
 
 
   //Socket chat

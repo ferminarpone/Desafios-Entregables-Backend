@@ -12,7 +12,7 @@ const productSchema = new Schema({
   thumbnail: { type: String},
 });
 
-productSchema.plugin(mongoosePaginate);
+productSchema.plugin(mongoosePaginate); 
 
 const productModel = model("Products", productSchema);
 

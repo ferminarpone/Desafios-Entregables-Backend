@@ -1,8 +1,8 @@
 <div class="container-md">
-  {{#if products}}
+  {{#if renderProducts}}
     <h1 class="mt-4 mb-4 bg-opacity-8 border rounded text-center">Home</h1>
     <div class="container row d-flex justify-content-start text-center">
-      {{#each products}}
+      {{#each renderProducts}}
         <div class="col-sm-4 mb-4">
           <div class="card" style="width: auto;">
             <img src={{this.thumbnail}} class="mx-auto mt-2" alt="..." />
@@ -16,6 +16,7 @@
               <p class="card-text"><strong>Precio:</strong> {{this.price}}</p>
               <p class="card-text"><strong>Code:</strong> {{this.code}}</p>
               <p class="card-text"><strong>Id:</strong> {{this.id}}</p>
+              <button class="btn btn-outline-primary" id="delete{{this.id}}"> Agregar a carrito </button>
             </div>
           </div>
         </div>
