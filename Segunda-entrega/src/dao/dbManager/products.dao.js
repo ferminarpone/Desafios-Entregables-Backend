@@ -42,6 +42,8 @@ class ProductDao {
         hasPrevPage: products.hasPrevPage,
         hasNextPage: products.hasNextPage,
       };
+      newObject.nextLink = `/products?page=${newObject.nextPage}&&limit=${limit}`
+      newObject.prevLink = `/products?page=${newObject.prevPage}&&limit=${limit}`
       return newObject;
     } catch (e) {
       throw Error(e.message);

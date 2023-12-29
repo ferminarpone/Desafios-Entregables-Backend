@@ -16,11 +16,42 @@
               <p class="card-text"><strong>Precio:</strong> {{this.price}}</p>
               <p class="card-text"><strong>Code:</strong> {{this.code}}</p>
               <p class="card-text"><strong>Id:</strong> {{this.id}}</p>
-              <button class="btn btn-outline-primary" id="delete{{this.id}}"> Agregar a carrito </button>
+              <button class="btn btn-outline-primary" id="delete{{this.id}}">
+                Agregar a carrito
+              </button>
             </div>
           </div>
         </div>
       {{/each}}
+      <div class="d-flex justify-content-center m-4">
+
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            {{#if products.hasPrevPage}}
+              <li class="page-item me-2 text-body-secondary"><a
+                  class="page-link text-reset"
+                  href={{products.prevLink}}
+                ><<</a></li>
+            {{/if}}
+            <p class="btn">
+              Página
+              {{products.page}}
+              /
+              {{products.totalPages}}
+            </p>
+            {{! Links a siguientes páginas }}
+
+            {{#if products.hasNextPage}}
+              <li class="page-item ms-2 text-body-secondary"><a
+                  class="page-link text-reset"
+                  href={{products.nextLink}}
+                >>></a></li>
+            {{/if}}
+          </ul>
+        </nav>
+
+      </div>
+
     </div>
   {{else}}
     <h2>NOT FOUND</h2>

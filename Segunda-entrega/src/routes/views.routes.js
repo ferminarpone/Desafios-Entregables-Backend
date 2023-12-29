@@ -18,6 +18,7 @@ router.get("/products", async (req, res) => {
     res.render("home", {
       title: "Productos",
       renderProducts,
+      products,
       fileCss: "styles.css",
     });
   } catch (e) {
