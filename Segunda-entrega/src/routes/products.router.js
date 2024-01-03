@@ -12,9 +12,9 @@ router.get("/", async (req, res) => {
       sort,
       filter
     );
-    res.json(products);
+    res.status(200).json(products);
   } catch (e) {
-    res.json({
+    res.status(404).json({
       message: e.message,
     });
   }
@@ -29,9 +29,9 @@ router.get("/:pid", async (req, res) => {
         error: `El producto con id ${pid} no existe`,
       });
     }
-    res.json(productId);
+    res.status(200).json(productId);
   } catch (e) {
-    res.json({
+    res.status(404).jsonjson({
       error: e,
     });
   }
@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
   try {
     const newProduct = req.body;
     await ProductsDao.createProduct(newProduct);
-    res.json({
+    res.status(200).json({
       mensaje: "El producto fue agregado con exito",
     });
   } catch (e) {
@@ -61,11 +61,11 @@ router.put("/:pid", async (req, res) => {
         error: `El producto con id ${pid} no existe`,
       });
     }
-    res.json({
+    res.status(200).json({
       mensaje: "El producto se actualizo exitosamente.",
     });
   } catch (e) {
-    res.status(400).json({
+    res.status(404).json({
       error: e.message,
     });
   }
@@ -74,13 +74,8 @@ router.put("/:pid", async (req, res) => {
 router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
-    const response = await ProductsDao.deleteProduct(pid);
-    if (response == null) {
-      return res.status(404).json({
-        error: `El producto con id ${pid} no existe`,
-      });
-    }
-    res.json({
+    await ProductsDao.deleteProduct(pid);
+    res.status(200).json({
       mensaje: "Producto eliminado exitosamente",
     });
   } catch (e) {

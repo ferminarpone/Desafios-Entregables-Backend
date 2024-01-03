@@ -3,17 +3,19 @@ import CartDao from "../dao/dbManager/carts.dao.js";
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
 import { validateProdDel } from "../utils/validateProdDel.js";
+import { cartModel } from "../models/carts.model.js";
+import productsDao from "../dao/dbManager/products.dao.js";
 
 const router = Router();
 router.post("/", async (req, res) => {
   const { cart } = req.body;
   try {
     await CartDao.createCart(cart);
-    res.json({
+    res.status(200).json({
       mensaje: "El carrito fue agregado exitosamente.",
     });
   } catch (e) {
-    res.json({
+    res.status(404).json({
       error: e.message,
     });
   }
@@ -25,16 +27,16 @@ router.get("/:cid", validateCart, async (req, res) => {
     const carrito = await CartDao.getCartById(cid, "products.productId");
     const productsCart = carrito.products;
     if (productsCart.length > 0) {
-      res.json({
+      res.status(200).json({
         productList: productsCart,
       });
     } else {
-      res.json({
+      res.status(404).json({
         productList: "El carrito se encuentra vacio.",
       });
     }
   } catch (e) {
-    res.json({
+    res.status(404).json({
       error: e.message,
     });
   }
@@ -48,11 +50,11 @@ router.post(
     const { cid, pid } = req.params;
     try {
       const response = await CartDao.addProductInCart(cid, pid);
-      res.json({
+      res.status(200).json({
         mensaje: `El producto con id ${pid} fue agregado exitosamente al carrito con id ${cid}`,
       });
     } catch (e) {
-      res.json({
+      res.status(404).json({
         error: e.message,
       });
     }
@@ -67,21 +69,32 @@ router.delete(
     const { cid, pid } = req.params;
     try {
       const response = await CartDao.deleteProductInCart(cid, pid);
-      res.json({
+      res.status(200).json({
         mensaje: `El producto con id ${pid} fue eliminado exitosamente al carrito con id ${cid}`,
         response,
       });
     } catch (e) {
-      res.json({
+      res.status(404).json({
         error: e.message,
       });
     }
   }
 );
 
-router.put("/:cid", validateCart, async(req, res)=>{
+router.put("/:cid", validateCart, async (req, res) => {
   const { cid } = req.params;
-  const  updateProducts  = req.body;
+  const updateProducts = req.body;
+
+  console.log(updateProducts)
+  const products = await productsDao.getAllProducts();
+   const check =  products.payload.some(prod =>{ 
+    console.log(prod._id)
+    updateProducts.some(product => prod["_id"] === product["productId"])
+})
+   console.log(check)
+
+/* console.log(check) */
+
   try {
     const response = await CartDao.updateCart(cid, updateProducts);
     res.json({
@@ -92,24 +105,29 @@ router.put("/:cid", validateCart, async(req, res)=>{
       error: e.message,
     });
   }
-})
+});
 
-router.put("/:cid/product/:pid", validateCart, validateProdDel, async(req, res)=>{
-  const { cid, pid } = req.params;
-  const quantity = req.body;
-  try {
-    const response = await CartDao.updateQuantity(cid, pid, quantity);
-    res.json({
-      mensaje: `La cantidad del producto con id ${pid} en el carrito con id ${cid} fue actualizada exitosamente`,
-    });
-  } catch (e) {
-    res.json({
-      error: e.message,
-    });
+router.put(
+  "/:cid/product/:pid",
+  validateCart,
+  validateProdDel,
+  async (req, res) => {
+    const { cid, pid } = req.params;
+    const quantity = req.body;
+    try {
+      const response = await CartDao.updateQuantity(cid, pid, quantity);
+      res.json({
+        mensaje: `La cantidad del producto con id ${pid} en el carrito con id ${cid} fue actualizada exitosamente`,
+      });
+    } catch (e) {
+      res.json({
+        error: e.message,
+      });
+    }
   }
-})
+);
 
-router.delete("/:cid", validateCart, async(req, res)=>{
+router.delete("/:cid", validateCart, async (req, res) => {
   const { cid } = req.params;
   try {
     const response = await CartDao.deleteProducts(cid);
@@ -121,5 +139,5 @@ router.delete("/:cid", validateCart, async(req, res)=>{
       error: e.message,
     });
   }
-})
+});
 export default router;
