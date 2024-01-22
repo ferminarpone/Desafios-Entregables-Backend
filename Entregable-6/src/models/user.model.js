@@ -1,18 +1,19 @@
-import { Schema, model} from "mongoose";
+import { Schema, model } from "mongoose";
 
-const collection = 'users';
+const collection = "users";
 
 const userSchema = new Schema({
-    first_name: String,
-    last_name: String,
-    email: {
-        type: String,
-        unique: true
-    },
-    age: Number,
-    password: String 
-})
+  first_name: { type: String, required: true },
+  last_name: { type:  String, required: true },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  age: { type:  Number, required: true },
+  password: { type:  String, required: true },
+});
 
-const userModel = model(collection, userSchema)
+const userModel = model(collection, userSchema);
 
 export { userModel };

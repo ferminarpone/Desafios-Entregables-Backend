@@ -11,7 +11,6 @@ export const validateUser = async (req, res, next) => {
   }
   try {
     const exist = await userDao.getUser({email});
-    console.log(exist)
     if (exist) {
       return res
         .status(400)
