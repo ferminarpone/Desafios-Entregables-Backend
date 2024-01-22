@@ -31,7 +31,7 @@ router.get("/:pid", async (req, res) => {
     }
     res.status(200).json(productId);
   } catch (e) {
-    res.status(404).jsonjson({
+    res.status(404).json({
       error: e,
     });
   }
