@@ -85,13 +85,15 @@ router.put("/:cid", validateCart, async (req, res) => {
   const { cid } = req.params;
   const updateProducts = req.body;
 
+/*
+  Prueba de que existe el producto actualizado.
   console.log(updateProducts)
   const products = await productsDao.getAllProducts();
    const check =  products.payload.some(prod =>{ 
     console.log(prod._id)
     updateProducts.some(product => prod["_id"] === product["productId"])
 })
-   console.log(check)
+   console.log(check) */
 
 /* console.log(check) */
 
