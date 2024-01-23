@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { __dirname } from "../utils.js";
 import productsDao from "../dao/dbManager/products.dao.js";
+import { authentication } from "../utils/authentication.js";
 
 const router = Router();
 
-router.get("/products", async (req, res) => {
+router.get("/products", authentication, async (req, res) => {
   const { limit, page, sort, filter } = req.query;
   try {
     const products = await productsDao.getAllProducts(
@@ -19,6 +20,8 @@ router.get("/products", async (req, res) => {
       renderProducts,
       products,
       fileCss: "styles.css",
+      user: req.session.user,
+      role: req.session.admin
     });
   } catch (e) {
     console.log(e)

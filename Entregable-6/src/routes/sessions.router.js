@@ -22,35 +22,50 @@ router.post("/register", validateUser, async (req, res) => {
     });
   } catch (e) {
     res.status(401).json({
-        error: e.message,
-      });
+      error: e.message,
+    });
   }
 });
 
 // Login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-   try{ 
-      const user = await userDao.getUser({ email, password });
-      if (!user)
+  try {
+    const user = await userDao.getUser({ email, password });
+    if (!user)
       return res
-    .status(401)
-    .send({ status: "error", error: "Incorrect credentials" });
-     req.session.user = {
-        name: `${user.first_name} ${user.last_name}`,
-        email: user.email,
-        age: user.age,
+        .status(401)
+        .send({ status: "error", error: "Incorrect credentials" });
+    req.session.user = {
+      name: `${user.first_name} ${user.last_name}`,
+      email: user.email,
+      age: user.age,
     };
+    email === "adminCoder@coder.com"?
+      req.session.admin = true :
+      req.session.usuario = true;
+    
     res.send({
-        status: "success",
-        payload: req.session.user,
-        message: "¡Primer logueo realizado!",
-    }); 
- }catch(e){
+      status: "success",
+      payload: req.session.user,
+      message: "¡Primer logueo realizado!",
+    });
+  } catch (e) {
     res.status(401).json({
-        error: e.message,
-      });
-}
+      error: e.message,
+    });
+  }
 });
+
+router.get('/logout', (req, res)=>{
+  req.session.destroy(error =>{
+    if(error){
+      res.json({
+        error: "Error logout"
+      })
+    }
+    res.send("Session cerrada correctamente")
+  })
+})
 
 export default router;

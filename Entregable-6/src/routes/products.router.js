@@ -12,7 +12,10 @@ router.get("/", async (req, res) => {
       sort,
       filter
     );
-    res.status(200).json(products);
+    res.status(200).json({
+      products,
+      user: req.session.user,
+    });
   } catch (e) {
     res.status(404).json({
       message: e.message,
