@@ -1,71 +1,71 @@
 import { Router } from "express";
 import userDao from "../dao/dbManager/user.dao.js";
 import { validateUser } from "../utils/validateUser.js";
+import { createHash, isValidPassword } from "../utils.js";
+import passport from "passport";
 
 const router = Router();
 
 // Register
-router.post("/register", validateUser, async (req, res) => {
-  const { first_name, last_name, email, age, password } = req.body;
-  try {
-    const user = {
-      first_name,
-      last_name,
-      email,
-      age,
-      password,
-    };
-    const result = await userDao.createUser(user);
+router.post(
+  "/register",
+  validateUser,
+  passport.authenticate("register", {
+    failureRedirect: "/api/sessions/failregister",
+  }),
+  async (req, res) => {
     res.send({
       status: "success",
-      message: "Usuario creado con extito con ID: " + result.id,
-    });
-  } catch (e) {
-    res.status(401).json({
-      error: e.message,
+      message: "Usuario creado con exito"
     });
   }
+);
+
+router.get("/failregister", (req, res) => {
+  res.status(401).send({ error: "Failed to process register!" });
 });
 
 // Login
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await userDao.getUser({ email, password });
+router.post(
+  "/login",
+  passport.authenticate("login", {
+    failureRedirect: "/api/sessions/faillogin",
+  }),
+  async (req, res) => {
+    const user = req.user;
     if (!user)
-      return res
-        .status(401)
-        .send({ status: "error", error: "Incorrect credentials" });
+      return res.status(400).send({ error: "Credenciales invalidas." });
     req.session.user = {
       name: `${user.first_name} ${user.last_name}`,
       email: user.email,
       age: user.age,
     };
-    email === "adminCoder@coder.com"?
-      req.session.admin = true :
-      req.session.usuario = true;
-    
+    user.email === "adminCoder@coder.com"
+      ? (req.session.admin = true)
+      : (req.session.usuario = true);
+
     res.send({
       status: "success",
       payload: req.session.user,
       message: "¡Primer logueo realizado!",
     });
-  } catch (e) {
-    res.status(401).json({
-      error: e.message,
-    });
   }
+);
+
+router.get("/faillogin", (req, res) => {
+  res.status(401).send({ error: "Failed to process login!" });
 });
 
-router.get('/logout', (req, res)=>{
-  req.session.destroy(error =>{
-    if(error){
+//logout
+router.get("/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
       res.json({
-        error: "Error logout"
-      })
+        error: "Error logout",
+      });
     }
-    res.send("Session cerrada correctamente")
-  })
-})
+    res.send("Session cerrada correctamente");
+  });
+});
 
 export default router;

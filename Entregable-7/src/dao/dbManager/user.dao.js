@@ -6,6 +6,10 @@ class UserDao{
         return await userModel.findOne(condition);
     }
 
+    async getUserById(id){
+        return await userModel.findById(id)
+    }
+    
     async createUser(user){
         return await userModel.create(user);
     }
