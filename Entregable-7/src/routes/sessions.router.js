@@ -1,7 +1,5 @@
 import { Router } from "express";
-import userDao from "../dao/dbManager/user.dao.js";
 import { validateUser } from "../utils/validateUser.js";
-import { createHash, isValidPassword } from "../utils.js";
 import passport from "passport";
 
 const router = Router();

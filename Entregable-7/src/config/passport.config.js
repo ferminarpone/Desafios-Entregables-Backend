@@ -28,6 +28,7 @@ const initializePassport = () => {
             email,
             age,
             password: createHash(password),
+            loggedBy: "Registro Local"
           };
           const newUser = await userDao.createUser(user);
           return done(null, newUser);
