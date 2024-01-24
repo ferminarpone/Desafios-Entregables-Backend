@@ -12,7 +12,7 @@ const userSchema = new Schema({
   },
   age: { type:  Number, required: true },
   password: { type:  String },
-  loggedBy: String
+  loggedBy: {type: String, default: "Registro Local"}
 });
 
 const userModel = model(collection, userSchema);
