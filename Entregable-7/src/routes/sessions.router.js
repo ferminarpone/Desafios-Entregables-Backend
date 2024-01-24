@@ -16,7 +16,7 @@ router.post(
   async (req, res) => {
     res.send({
       status: "success",
-      message: "Usuario creado con exito"
+      message: "Usuario creado con exito",
     });
   }
 );
@@ -55,6 +55,31 @@ router.post(
 router.get("/faillogin", (req, res) => {
   res.status(401).send({ error: "Failed to process login!" });
 });
+
+//Passport gitHub
+
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  async (req, res) => {}
+);
+
+router.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "github/error" }),
+  async (req, res) => {
+    const user = req.user;
+    req.session.user = {
+      name: `${user.first_name} ${user.last_name}`,
+      email: user.email,
+      age: user.age,
+    };
+    user.email === "adminCoder@coder.com"
+    ? (req.session.admin = true)
+    : (req.session.usuario = true);
+    res.redirect("/products");
+  }
+);
 
 //logout
 router.get("/logout", (req, res) => {

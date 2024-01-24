@@ -17,6 +17,7 @@ import usersViewRouter from "./routes/user.views.router.js";
 
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import githubLoginViewRouter from "./routes/github-login.views.router.js";
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
@@ -79,4 +80,5 @@ app.use("/", viewsRouter);
 //Routes de usuarios
 app.use("/api/sessions", sessionRouter);
 app.use('/users', usersViewRouter);
- 
+//Routes login gitHub
+app.use("/github", githubLoginViewRouter)
