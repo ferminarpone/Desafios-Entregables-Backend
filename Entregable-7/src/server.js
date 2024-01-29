@@ -76,9 +76,9 @@ app.use(express.static(`${__dirname}/../public`));
 // Routes de productos y carritos
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/", viewsRouter);
+app.use("/products", viewsRouter);
 //Routes de usuarios
 app.use("/api/sessions", sessionRouter);
-app.use('/users', usersViewRouter);
+app.use('/', usersViewRouter);
 //Routes login gitHub
 app.use("/github", githubLoginViewRouter)

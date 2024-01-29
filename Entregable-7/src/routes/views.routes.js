@@ -5,7 +5,7 @@ import { authentication } from "../utils/authentication.js";
 
 const router = Router();
 
-router.get("/products", authentication, async (req, res) => {
+router.get("/", authentication, async (req, res) => {
   const { limit, page, sort, filter } = req.query;
   try {
     const products = await productsDao.getAllProducts(
