@@ -1,49 +1,42 @@
 import { Router } from "express";
 import CartDao from "../dao/dbManager/carts.dao.js";
-/* import { CartManager } from "../dao/classes/carts/CartManager.js";
-import { Carts } from "../dao/classes/carts/Carts.js"; */
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
+import { validateProdDel } from "../utils/validateProdDel.js";
+import { cartModel } from "../models/carts.model.js";
+import productsDao from "../dao/dbManager/products.dao.js";
 
 const router = Router();
-/* const manager = new CartManager("./src/data/Carts.json"); */
 router.post("/", async (req, res) => {
   const { cart } = req.body;
-  /*   const cart = new Carts(products); */
   try {
-    /*   await manager.addCart(cart); */
     await CartDao.createCart(cart);
-    res.json({
+    res.status(200).json({
       mensaje: "El carrito fue agregado exitosamente.",
     });
   } catch (e) {
-    res.json({
+    res.status(404).json({
       error: e.message,
     });
   }
 });
 
-router.get("/:cid", async (req, res) => {
+router.get("/:cid", validateCart, async (req, res) => {
   const { cid } = req.params;
   try {
-    const carrito = await CartDao.getCartById(cid);
-    if (carrito == null) {
-      return res.json({
-        error: `El carrito con id ${cid} no existe`,
-      });
-    }
+    const carrito = await CartDao.getCartById(cid, "products.productId");
     const productsCart = carrito.products;
     if (productsCart.length > 0) {
-      res.json({
+      res.status(200).json({
         productList: productsCart,
       });
     } else {
-      res.json({
+      res.status(404).json({
         productList: "El carrito se encuentra vacio.",
       });
     }
   } catch (e) {
-    res.json({
+    res.status(404).json({
       error: e.message,
     });
   }
@@ -57,8 +50,76 @@ router.post(
     const { cid, pid } = req.params;
     try {
       const response = await CartDao.addProductInCart(cid, pid);
-      res.json({
+      res.status(200).json({
         mensaje: `El producto con id ${pid} fue agregado exitosamente al carrito con id ${cid}`,
+      });
+    } catch (e) {
+      res.status(404).json({
+        error: e.message,
+      });
+    }
+  }
+);
+
+router.delete(
+  "/:cid/product/:pid",
+  validateCart,
+  validateProdDel,
+  async (req, res) => {
+    const { cid, pid } = req.params;
+    try {
+      const response = await CartDao.deleteProductInCart(cid, pid);
+      res.status(200).json({
+        mensaje: `El producto con id ${pid} fue eliminado exitosamente al carrito con id ${cid}`,
+        response,
+      });
+    } catch (e) {
+      res.status(404).json({
+        error: e.message,
+      });
+    }
+  }
+);
+
+router.put("/:cid", validateCart, async (req, res) => {
+  const { cid } = req.params;
+  const updateProducts = req.body;
+
+/*
+  Prueba de que existe el producto actualizado.
+  console.log(updateProducts)
+  const products = await productsDao.getAllProducts();
+   const check =  products.payload.some(prod =>{ 
+    console.log(prod._id)
+    updateProducts.some(product => prod["_id"] === product["productId"])
+})
+   console.log(check) */
+
+/* console.log(check) */
+
+  try {
+    const response = await CartDao.updateCart(cid, updateProducts);
+    res.json({
+      mensaje: `El carrito con id ${cid} fue actualizado exitosamente`,
+    });
+  } catch (e) {
+    res.json({
+      error: e.message,
+    });
+  }
+});
+
+router.put(
+  "/:cid/product/:pid",
+  validateCart,
+  validateProdDel,
+  async (req, res) => {
+    const { cid, pid } = req.params;
+    const quantity = req.body;
+    try {
+      const response = await CartDao.updateQuantity(cid, pid, quantity);
+      res.json({
+        mensaje: `La cantidad del producto con id ${pid} en el carrito con id ${cid} fue actualizada exitosamente`,
       });
     } catch (e) {
       res.json({
@@ -68,4 +129,17 @@ router.post(
   }
 );
 
+router.delete("/:cid", validateCart, async (req, res) => {
+  const { cid } = req.params;
+  try {
+    const response = await CartDao.deleteProducts(cid);
+    res.json({
+      mensaje: `El carrito con id ${cid} ha sido vaciado con exito`,
+    });
+  } catch (e) {
+    res.json({
+      error: e.message,
+    });
+  }
+});
 export default router;

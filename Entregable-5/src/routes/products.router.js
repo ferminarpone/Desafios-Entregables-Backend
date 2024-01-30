@@ -4,25 +4,21 @@ import ProductsDao from "../dao/dbManager/products.dao.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
+  const { limit, page, sort, filter } = req.query;
   try {
-    const products = await ProductsDao.getAllProducts();
-    const { limit } = req.query;
-    if (limit) {
-      if (limit > products.length) {
-        res.send({
-          mensaje: `Solo existen ${products.length} productos`,
-          products,
-        });
-      } else {
-        const limited = products.slice(0, limit);
-        res.json(limited);
-      }
-    } else {
-      res.json(products);
-    }
+    const products = await ProductsDao.getAllProducts(
+      limit,
+      page,
+      sort,
+      filter
+    );
+    res.status(200).json({
+      products,
+      user: req.session.user,
+    });
   } catch (e) {
-    res.json({
-      e,
+    res.status(404).json({
+      message: e.message,
     });
   }
 });
@@ -36,9 +32,9 @@ router.get("/:pid", async (req, res) => {
         error: `El producto con id ${pid} no existe`,
       });
     }
-    res.json(productId);
+    res.status(200).json(productId);
   } catch (e) {
-    res.json({
+    res.status(404).json({
       error: e,
     });
   }
@@ -48,7 +44,7 @@ router.post("/", async (req, res) => {
   try {
     const newProduct = req.body;
     await ProductsDao.createProduct(newProduct);
-    res.json({
+    res.status(200).json({
       mensaje: "El producto fue agregado con exito",
     });
   } catch (e) {
@@ -68,11 +64,11 @@ router.put("/:pid", async (req, res) => {
         error: `El producto con id ${pid} no existe`,
       });
     }
-    res.json({
+    res.status(200).json({
       mensaje: "El producto se actualizo exitosamente.",
     });
   } catch (e) {
-    res.status(400).json({
+    res.status(404).json({
       error: e.message,
     });
   }
@@ -81,13 +77,8 @@ router.put("/:pid", async (req, res) => {
 router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
-    const response = await ProductsDao.deleteProduct(pid);
-    if (response == null) {
-      return res.status(404).json({
-        error: `El producto con id ${pid} no existe`,
-      });
-    }
-    res.json({
+    await ProductsDao.deleteProduct(pid);
+    res.status(200).json({
       mensaje: "Producto eliminado exitosamente",
     });
   } catch (e) {
