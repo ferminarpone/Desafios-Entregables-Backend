@@ -1,36 +1,38 @@
 import { Router } from "express";
-import { __dirname } from "../utils.js";
+import { __dirname, authorization, passportCall } from "../utils.js";
 import productsDao from "../dao/dbManager/products.dao.js";
-import { authentication } from "../utils/authentication.js";
 
 const router = Router();
 
-router.get("/", /* authentication ,*/ async (req, res) => {
-  const { limit, page, sort, filter } = req.query;
-  try {
-    const products = await productsDao.getAllProducts(
-      limit,
-      page,
-      sort,
-      filter
-    );
-    const renderProducts = products.payload;
-    res.render("home", {
-      title: "Productos",
-      renderProducts,
-      products,
-      fileCss: "styles.css",
-      //CAMBIAR POR JWT
-      user: req.session.user,
-      role: req.session.admin
-    });
-  } catch (e) {
-    console.log(e)
-    res.render("home", {
-      error: e.message,
-    });
+router.get(
+  "/",
+  passportCall("jwt"),
+  authorization("user"),
+  async (req, res) => {
+    const { limit, page, sort, filter } = req.query;
+    try {
+      const products = await productsDao.getAllProducts(
+        limit,
+        page,
+        sort,
+        filter
+      );
+      const renderProducts = products.payload;
+      res.render("home", {
+        title: "Productos",
+        renderProducts,
+        products,
+        fileCss: "styles.css",
+        user: req.user,
+      });
+    } catch (e) {
+      console.log(e);
+      res.render("home", {
+        error: e.message,
+      });
+    }
   }
-});
+);
 
 router.get("/realtimeproducts", (req, res) => {
   res.render("realtimeproducts.hbs", {

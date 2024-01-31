@@ -7,14 +7,14 @@ form.addEventListener('submit', e => {
     data.forEach((value, key) => obj[key] = value)
 
     // Usamos Fetch
-    fetch('/api/sessions/register', {
+    fetch('/api/jwt/register', {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
             'Content-Type': 'application/json'
         }
     }).then(result => {
-        if (result.status === 200) {
+        if (result.status === 201) {
             window.location.replace('/')
         }else{
             Swal.fire({

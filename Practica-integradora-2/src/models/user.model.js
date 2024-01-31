@@ -13,8 +13,13 @@ const userSchema = new Schema({
   age: { type: Number, required: true },
   password: { type: String },
   loggedBy: String,
+  cart: { type: Schema.Types.ObjectId, ref: "Carts"},
   role: { type: String, default: "user", enum: ["user", "admin"] },
 });
+
+userSchema.pre("find", function(){
+  this.populate("cart")
+})
 
 const userModel = model(collection, userSchema);
 

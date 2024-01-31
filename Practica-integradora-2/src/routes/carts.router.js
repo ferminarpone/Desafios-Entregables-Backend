@@ -3,8 +3,6 @@ import CartDao from "../dao/dbManager/carts.dao.js";
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
 import { validateProdDel } from "../utils/validateProdDel.js";
-import { cartModel } from "../models/carts.model.js";
-import productsDao from "../dao/dbManager/products.dao.js";
 
 const router = Router();
 router.post("/", async (req, res) => {
@@ -84,19 +82,6 @@ router.delete(
 router.put("/:cid", validateCart, async (req, res) => {
   const { cid } = req.params;
   const updateProducts = req.body;
-
-/*
-  Prueba de que existe el producto actualizado.
-  console.log(updateProducts)
-  const products = await productsDao.getAllProducts();
-   const check =  products.payload.some(prod =>{ 
-    console.log(prod._id)
-    updateProducts.some(product => prod["_id"] === product["productId"])
-})
-   console.log(check) */
-
-/* console.log(check) */
-
   try {
     const response = await CartDao.updateCart(cid, updateProducts);
     res.json({

@@ -9,9 +9,6 @@ import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import { PORT, db_name, password } from "./env.js";
 import { initSocketServer } from "./services/socket.js";
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import sessionRouter from "./routes/sessions.router.js";
 import usersViewRouter from "./routes/user.views.router.js";
 
 
@@ -43,31 +40,13 @@ mongoose
     console.log(e);
   });
 
-// Configuracion de Session
-//Trabajando con JWT no necesito session
-
-app.use(
-  session({
-    store: MongoStore.create({
-      mongoUrl: MONGO_URL,
-      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-      ttl: 10 * 60,
-    }),
-    secret: "coderS3cr3t",
-    resave: false,
-    saveUninitialized: true,
-  })
-); 
 
 //Configuración de passport
 initializePassport();
 app.use(passport.initialize());
 
-app.use(passport.session());
-
 //Cookies
-//router.use(cookieParser());
-app.use(cookieParser("CoderS3cr3tC0d3"));
+app.use(cookieParser("EcommerceS3cr3tC0d3"));
 
 // Configuración engine
 app.engine(
@@ -91,8 +70,6 @@ app.use("/api/carts", cartsRouter);
 app.use("/products", viewsRouter);
 
 //Routes de usuarios
-app.use("/api/sessions", sessionRouter); 
-
 //JWT
 app.use("/api/jwt", jwtRouter);
 app.use('/', usersViewRouter);
