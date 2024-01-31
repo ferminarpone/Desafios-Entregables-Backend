@@ -6,13 +6,13 @@ import userDao from "../dao/dbManager/user.dao.js";
 import { PRIVATE_KEY, createHash, isValidPassword } from "../utils.js";
 
 //Declaración de estrategia
-// const localStrategy = passportLocal.Strategy;
+ const localStrategy = passportLocal.Strategy;
 
 const JwtStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
 const initializePassport = () => {
-/* LOCAL STRATEGY
+
   //Register
   passport.use(
     "register",
@@ -42,7 +42,7 @@ const initializePassport = () => {
       }
     )
   );
-
+/* LOCAL STRATEGY
   //Login
   passport.use(
     "login",
@@ -66,6 +66,7 @@ const initializePassport = () => {
       }
     )
   );
+  */
 
   //Login con Github
   passport.use('github', new GitHubStrategy({
@@ -94,7 +95,7 @@ const initializePassport = () => {
     } catch (error) {
       return done(error)
     }
-  })) */
+  })) 
 
   //JWT STRATEGY
   passport.use('jwt', new JwtStrategy(

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { authorization, passportCall } from "../utils.js";
 
 const router = Router();
 router.get("/", (req, res) => {
@@ -13,7 +14,9 @@ router.get("/register", (req, res) => {
 // Renderización del perfil del usuario, pasar a /products
 router.get(
   "/users",
-  passport.authenticate('jwt', { session: false }),
+  /* passport.authenticate('jwt', { session: false }) */
+  passportCall('jwt'),
+  authorization('user'),
   (req, res) => {
     res.render("profile", {
       user: req.user

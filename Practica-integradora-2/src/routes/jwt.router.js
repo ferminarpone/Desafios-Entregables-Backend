@@ -2,6 +2,7 @@ import { Router } from "express";
 import { isValidPassword } from "../utils.js";
 import { generateJWTToken } from "../utils.js";
 import userDao from "../dao/dbManager/user.dao.js";
+import passport from "passport";
 
 const router = Router();
 

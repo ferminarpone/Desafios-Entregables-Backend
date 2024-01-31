@@ -44,6 +44,8 @@ mongoose
   });
 
 // Configuracion de Session
+//Trabajando con JWT no necesito session
+
 app.use(
   session({
     store: MongoStore.create({
@@ -55,13 +57,13 @@ app.use(
     resave: false,
     saveUninitialized: true,
   })
-);
+); 
 
 //Configuración de passport
 initializePassport();
 app.use(passport.initialize());
 
-//app.use(passport.session());
+app.use(passport.session());
 
 //Cookies
 //router.use(cookieParser());
@@ -79,14 +81,18 @@ app.engine(
 // Seteando motor de plantillas
 app.set("view engine", "hbs");
 app.set("views", `${__dirname}/views`);
+
 // Public
 app.use(express.static(`${__dirname}/../public`));
+
 // Routes de productos y carritos
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/products", viewsRouter);
+
 //Routes de usuarios
-/* app.use("/api/sessions", sessionRouter); si uso jwt no uso session */
+app.use("/api/sessions", sessionRouter); 
+
 //JWT
 app.use("/api/jwt", jwtRouter);
 app.use('/', usersViewRouter);

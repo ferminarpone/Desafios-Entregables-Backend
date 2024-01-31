@@ -24,7 +24,7 @@ router.get("/failregister", (req, res) => {
   res.status(401).send({ error: "Failed to process register!" });
 });
 
-// Login
+// Login VER, POR QUE NO SE USA, UTILIZO JWT
 router.post(
   "/login",
   passport.authenticate("login", {
@@ -41,9 +41,9 @@ router.post(
     };
     user.email === "adminCoder@coder.com"
       ? (req.session.admin = true)
-      : (req.session.usuario = true); */
-
-    /*       res.send({
+      : (req.session.usuario = true);
+    
+      res.send({
         status: "success",
         payload: req.session.user,
         message: "¡Primer logueo realizado!",
@@ -51,7 +51,7 @@ router.post(
 
     //JWT
     const acces_token = generateJWTToken(user);
-    console.log(acces_token)
+    console.log(acces_token);
     res.send({ acces_token: acces_token });
   }
 );
