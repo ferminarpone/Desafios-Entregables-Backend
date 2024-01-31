@@ -5,7 +5,7 @@ import { authentication } from "../utils/authentication.js";
 
 const router = Router();
 
-router.get("/", authentication, async (req, res) => {
+router.get("/", /* authentication ,*/ async (req, res) => {
   const { limit, page, sort, filter } = req.query;
   try {
     const products = await productsDao.getAllProducts(
@@ -20,6 +20,7 @@ router.get("/", authentication, async (req, res) => {
       renderProducts,
       products,
       fileCss: "styles.css",
+      //CAMBIAR POR JWT
       user: req.session.user,
       role: req.session.admin
     });

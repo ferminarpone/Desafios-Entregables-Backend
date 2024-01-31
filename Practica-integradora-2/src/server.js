@@ -18,6 +18,7 @@ import usersViewRouter from "./routes/user.views.router.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
+import jwtRouter from "./routes/jwt.router.js";
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
@@ -78,7 +79,9 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/products", viewsRouter);
 //Routes de usuarios
-app.use("/api/sessions", sessionRouter);
+/* app.use("/api/sessions", sessionRouter); si uso jwt no uso session */
+//JWT
+app.use("/api/jwt", jwtRouter);
 app.use('/', usersViewRouter);
 //Routes login gitHub
-app.use("/github", githubLoginViewRouter)
+app.use("/github", githubLoginViewRouter);

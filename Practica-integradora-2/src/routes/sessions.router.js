@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { validateUser } from "../utils/validateUser.js";
 import passport from "passport";
+import { generateJWTToken } from "../utils.js";
 
 const router = Router();
 
@@ -33,25 +34,30 @@ router.post(
     const user = req.user;
     if (!user)
       return res.status(400).send({ error: "Credenciales invalidas." });
-    req.session.user = {
+    /*    req.session.user = {
       name: `${user.first_name} ${user.last_name}`,
       email: user.email,
       age: user.age,
     };
     user.email === "adminCoder@coder.com"
       ? (req.session.admin = true)
-      : (req.session.usuario = true);
+      : (req.session.usuario = true); */
 
-    res.send({
-      status: "success",
-      payload: req.session.user,
-      message: "¡Primer logueo realizado!",
-    });
+    /*       res.send({
+        status: "success",
+        payload: req.session.user,
+        message: "¡Primer logueo realizado!",
+      }); */
+
+    //JWT
+    const acces_token = generateJWTToken(user);
+    console.log(acces_token)
+    res.send({ acces_token: acces_token });
   }
 );
 
 router.get("/faillogin", (req, res) => {
-  res.status(401).send({ error: "Failed to process login!" });
+  res.status(401).send({ error: "Fallo en el proceso de login!" });
 });
 
 //Passport gitHub
@@ -73,8 +79,8 @@ router.get(
       age: user.age,
     };
     user.email === "adminCoder@coder.com"
-    ? (req.session.admin = true)
-    : (req.session.usuario = true);
+      ? (req.session.admin = true)
+      : (req.session.usuario = true);
     res.redirect("/products");
   }
 );
