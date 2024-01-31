@@ -16,8 +16,9 @@ form.addEventListener('submit', e => {
             result.json()
                 .then(json =>{
                     console.log(document.cookie);
-                    alert("Login exitoso")
-                    window.location.replace('/products');
+                     alert("Login exitoso")
+                     window.location.replace('/users'); 
+                    /* window.location.replace('/products');  */
                 })
         }else{
         Swal.fire({

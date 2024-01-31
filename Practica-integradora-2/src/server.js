@@ -17,8 +17,10 @@ import usersViewRouter from "./routes/user.views.router.js";
 
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import cookieParser from 'cookie-parser'
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
 import jwtRouter from "./routes/jwt.router.js";
+
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
@@ -58,7 +60,12 @@ app.use(
 //Configuración de passport
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
+
+//app.use(passport.session());
+
+//Cookies
+//router.use(cookieParser());
+app.use(cookieParser("CoderS3cr3tC0d3"));
 
 // Configuración engine
 app.engine(
