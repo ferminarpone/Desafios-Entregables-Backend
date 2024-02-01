@@ -14,7 +14,7 @@ const userSchema = new Schema({
   password: { type: String },
   loggedBy: String,
   cart: { type: Schema.Types.ObjectId, ref: "Carts"},
-  role: { type: String, default: "user", enum: ["user", "admin"] },
+  role: { type: String, default: "User", enum: ["User", "Admin"] },
 });
 
 userSchema.pre("find", function(){

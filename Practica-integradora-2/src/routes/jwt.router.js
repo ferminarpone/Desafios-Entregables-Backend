@@ -91,7 +91,6 @@ router.get(
       maxAge: 60000,
       httpOnly: true,
     });
-    /*     res.redirect("/users"); */
     res.redirect("/products");
   }
 );

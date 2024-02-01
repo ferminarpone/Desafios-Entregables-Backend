@@ -6,8 +6,8 @@ class UserDao{
         return await userModel.findOne(condition);
     }
 
-    async getUserById(id){
-        return await userModel.findById(id)
+    async getUserById(id, cart){
+        return await userModel.findById(id).populate(cart)
     }
     
     async createUser(user){

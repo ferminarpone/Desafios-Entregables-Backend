@@ -7,11 +7,7 @@
       <p>Nombre: {{user.name}}</p>
       <p>Email: {{user.email}}</p>
       <p>Edad: {{user.age}}</p> 
-      {{#if role}}
-      <p>Rol: Admin</p>
-      {{else}}
-      <p>Rol: Usuario</p>
-      {{/if}}
+      <p>Rol: {{user.role}}</p>
       <button id="logout" class="btn btn-outline-secondary mb-3"> Cerrar sesión</button>
     </div>
     <div class="container row d-flex justify-content-start text-center">
