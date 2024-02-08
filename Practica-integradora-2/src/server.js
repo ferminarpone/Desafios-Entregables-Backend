@@ -11,7 +11,6 @@ import { PORT, db_name, password } from "./env.js";
 import { initSocketServer } from "./services/socket.js";
 import usersViewRouter from "./routes/user.views.router.js";
 
-
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import cookieParser from 'cookie-parser'
