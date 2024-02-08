@@ -9,11 +9,15 @@ import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import { PORT, db_name, password } from "./env.js";
 import { initSocketServer } from "./services/socket.js";
-
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import sessionRouter from "./routes/sessions.router.js";
 import usersViewRouter from "./routes/user.views.router.js";
+
+
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+import githubLoginViewRouter from "./routes/github-login.views.router.js";
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
@@ -49,6 +53,12 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+//Configuración de passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Configuración engine
 app.engine(
   "hbs",
@@ -66,8 +76,9 @@ app.use(express.static(`${__dirname}/../public`));
 // Routes de productos y carritos
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/", viewsRouter);
+app.use("/products", viewsRouter);
 //Routes de usuarios
 app.use("/api/sessions", sessionRouter);
-app.use('/users', usersViewRouter);
- 
+app.use('/', usersViewRouter);
+//Routes login gitHub
+app.use("/github", githubLoginViewRouter)

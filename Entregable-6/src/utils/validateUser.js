@@ -9,17 +9,5 @@ export const validateUser = async (req, res, next) => {
         error: "Se debe completar todos los campos requeridos",
       });
   }
-  try {
-    const exist = await userDao.getUser({email});
-    if (exist) {
-      return res
-        .status(400)
-        .send({ status: "error", message: "Usuario ya existe!" });
-    }
-  } catch (e) {
-    return res.json({
-      error: e.message,
-    });
-  }
   next();
 };

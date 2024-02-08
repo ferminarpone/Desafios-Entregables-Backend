@@ -4,7 +4,7 @@ logout.addEventListener("click", (e) => {
   e.preventDefault();
   fetch("/api/sessions/logout").then((result) => {
     if (result.status === 200) {
-      window.location.replace("/users/login");
+      window.location.replace("/");
     }
   });
 });
