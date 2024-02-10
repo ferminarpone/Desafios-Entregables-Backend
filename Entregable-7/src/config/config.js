@@ -1,9 +1,8 @@
 import dotenv from  'dotenv';
 import program from '../process.js';
 
-//const enviroment = program.opts().mode;
+const environment = program.opts().mode;
 
-const environment = "dev";
 dotenv.config({
     path: environment === "prod" ? "./src/config/.env.production" : "./src/config/.env.development"
 });

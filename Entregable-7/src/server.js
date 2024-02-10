@@ -16,15 +16,14 @@ import cookieParser from 'cookie-parser'
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
 import jwtRouter from "./routes/jwt.router.js";
 import config from "./config/config.js";
-//import program from "./process.js";
+import program from "./process.js";
 
-//VER PROBLEMA con el port
-//const PORT=config.port;
+const PORT=  program.opts().p === 8080 ? config.port : program.opts().p;
 const MONGO_URL = config.mongo_url;
 
 const app = express();
-const httpServer = app.listen(config.port, () =>
-  console.log(`Server listening on port ${config.port}`)
+const httpServer = app.listen(PORT, () =>
+  console.log(`Server listening on port ${PORT}`)
 );
 // Middlewares
 app.use(express.json());
