@@ -3,4 +3,5 @@
 logs
 *.log
 
-.env
+.env.development
+.env.production
