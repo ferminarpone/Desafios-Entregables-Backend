@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CartDao from "../dao/dbManager/carts.dao.js";
+import CartDao from "../services/dbManager/carts.dao.js";
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
 import { validateProdDel } from "../utils/validateProdDel.js";

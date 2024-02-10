@@ -6,7 +6,7 @@ import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access
 import viewsRouter from "./routes/views.routes.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
-import { initSocketServer } from "./services/socket.js";
+import { initSocketServer } from "./socket/socket.js";
 import usersViewRouter from "./routes/user.views.router.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
@@ -16,6 +16,7 @@ import jwtRouter from "./routes/jwt.router.js";
 import config from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
+
 
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
 

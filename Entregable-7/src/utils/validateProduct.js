@@ -1,4 +1,5 @@
-import ProductDao from "../dao/dbManager/products.dao.js";
+import ProductServices from "../services/dbManager/products.services.js";
+
 
 export const validateProduct = async(req, res, next) => {
   const { pid } = req.params;
@@ -8,7 +9,7 @@ export const validateProduct = async(req, res, next) => {
     });
   }
   try {
-    const product = await ProductDao.getProductById(pid);
+    const product = await ProductServices.getProductById(pid);
     if(!product){
       return res.json({
         error: `No existe el producto con id ${pid}`
@@ -17,7 +18,7 @@ export const validateProduct = async(req, res, next) => {
     const stock = product.stock;
     if (stock > 0) {
       const stock = product.stock - 1;
-        await ProductDao.updateProduct(pid ,{ stock: stock });
+        await ProductServices.updateProduct(pid ,{ stock: stock });
     } else {
       throw Error(`Stock insuficiente del producto con id ${pid}`);
     }

@@ -1,9 +1,13 @@
 import { Router } from "express";
-import ProductsDao from "../dao/dbManager/products.dao.js";
+import ProductsDao from "../services/dbManager/products.services.js";
+import { getProductsControllers } from "../controllers/products.controller.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+
+router.get('/', getProductsControllers);
+
+/* router.get("/", async (req, res) => {
   const { limit, page, sort, filter } = req.query;
   try {
     const products = await ProductsDao.getAllProducts(
@@ -20,8 +24,13 @@ router.get("/", async (req, res) => {
       message: e.message,
     });
   }
-});
+}); */
 
+
+
+
+
+/* 
 router.get("/:pid", async (req, res) => {
   const { pid } = req.params;
   try {
@@ -85,6 +94,6 @@ router.delete("/:pid", async (req, res) => {
       error: e.message,
     });
   }
-});
+}); */
 
 export default router;

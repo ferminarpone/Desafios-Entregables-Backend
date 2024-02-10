@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { __dirname, authorization, passportCall } from "../utils.js";
-import productsDao from "../dao/dbManager/products.dao.js";
+/* import productsDao from "../dao/dbManager/products.dao.js"; */
+import ProductServices from "../services/dbManager/products.services.js";
 
 const router = Router();
 
@@ -11,7 +12,7 @@ router.get(
   async (req, res) => {
     const { limit, page, sort, filter } = req.query;
     try {
-      const products = await productsDao.getAllProducts(
+      const products = await ProductServices.getAllProducts(
         limit,
         page,
         sort,

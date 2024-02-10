@@ -1,6 +1,6 @@
-import { productModel } from "../../models/products.model.js";
+import { productModel } from "./models/products.model.js";
 
-class ProductDao {
+class ProductServices {
   async getAllProducts(limit, page, sort, filter) {
     const query = {};
     if (filter !== undefined) {
@@ -110,4 +110,4 @@ class ProductDao {
   }
 }
 
-export default new ProductDao();
+export default new ProductServices();

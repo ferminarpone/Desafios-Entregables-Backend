@@ -1,5 +1,6 @@
-import cartsDao from "../dao/dbManager/carts.dao.js";
-import ProductDao from "../dao/dbManager/products.dao.js";
+import cartsDao from "../services/dbManager/carts.dao.js";
+import ProductServices from "../services/dbManager/products.services.js";
+
 
 export const validateProdDel = async (req, res, next) => {
   const { pid, cid } = req.params;
@@ -9,7 +10,7 @@ export const validateProdDel = async (req, res, next) => {
     });
   }
   try {
-    const product = await ProductDao.getProductById(pid);
+    const product = await ProductServices.getProductById(pid);
     if (!product) {
       return res.json({
         error: `No existe el producto con id ${pid}`,

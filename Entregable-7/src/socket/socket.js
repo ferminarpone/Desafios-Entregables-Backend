@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
-import productsDao from "../dao/dbManager/products.dao.js";
-import chatDao from "../dao/dbManager/chat.dao.js";
+/* import productsDao from "../services/dbManager/products.dao.js"; */
+import chatDao from "../services/dbManager/chat.dao.js";
+import ProductServices from "../services/dbManager/products.services.js";
 
 const initSocketServer = (server) =>{
     const socketServer = new Server(server);
@@ -9,8 +10,8 @@ const initSocketServer = (server) =>{
         // Socket Realtimeproducts
           socketCliente.on("form_information", async (data) => {
             try {
-              await productsDao.createProduct(data);
-              const prod = await productsDao.getAllProducts();
+              await ProductServices.createProduct(data);
+              const prod = await ProductServices.getAllProducts();
               socketCliente.emit("products_list", prod.payload);
             } catch (e) {
               if (e.message.includes("required")) {
@@ -25,14 +26,14 @@ const initSocketServer = (server) =>{
         
           socketCliente.on("product_delete", async(data) => {
             try {
-              await productsDao.deleteProduct(data);
-              const prod = await productsDao.getAllProducts();
+              await ProductServices.deleteProduct(data);
+              const prod = await ProductServices.getAllProducts();
               socketCliente.emit("products_list", prod.payload);
             } catch (e) {
               socketCliente.emit("products_list", { error: e.message });
             }
           });
-          const prod = await productsDao.getAllProducts();
+          const prod = await ProductServices.getAllProducts();
           socketCliente.emit("products_list", prod.payload);
         
         
