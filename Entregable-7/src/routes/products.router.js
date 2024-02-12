@@ -1,99 +1,22 @@
 import { Router } from "express";
-import ProductsDao from "../services/dbManager/products.services.js";
-import { getProductsControllers } from "../controllers/products.controller.js";
+import {
+  createProductController,
+  deleteProductController,
+  getProductByIdController,
+  getProductsController,
+  updateProductController,
+} from "../controllers/products.controller.js";
 
 const router = Router();
 
+router.get("/", getProductsController);
 
-router.get('/', getProductsControllers);
+router.get("/:pid", getProductByIdController);
 
-/* router.get("/", async (req, res) => {
-  const { limit, page, sort, filter } = req.query;
-  try {
-    const products = await ProductsDao.getAllProducts(
-      limit,
-      page,
-      sort,
-      filter
-    );
-    res.status(200).json({
-      products
-    });
-  } catch (e) {
-    res.status(404).json({
-      message: e.message,
-    });
-  }
-}); */
+router.post("/", createProductController);
 
+router.put("/:pid", updateProductController);
 
-
-
-
-/* 
-router.get("/:pid", async (req, res) => {
-  const { pid } = req.params;
-  try {
-    const productId = await ProductsDao.getProductById(pid);
-    if (productId == null) {
-      return res.status(404).json({
-        error: `El producto con id ${pid} no existe`,
-      });
-    }
-    res.status(200).json(productId);
-  } catch (e) {
-    res.status(404).json({
-      error: e,
-    });
-  }
-});
-
-router.post("/", async (req, res) => {
-  try {
-    const newProduct = req.body;
-    await ProductsDao.createProduct(newProduct);
-    res.status(200).json({
-      mensaje: "El producto fue agregado con exito",
-    });
-  } catch (e) {
-    res.status(404).json({
-      error: e.message,
-    });
-  }
-});
-
-router.put("/:pid", async (req, res) => {
-  const { pid } = req.params;
-  const updatedProduct = req.body;
-  try {
-    const response = await ProductsDao.updateProduct(pid, updatedProduct);
-    if (response == null) {
-      return res.status(404).json({
-        error: `El producto con id ${pid} no existe`,
-      });
-    }
-    res.status(200).json({
-      mensaje: "El producto se actualizo exitosamente.",
-    });
-  } catch (e) {
-    res.status(404).json({
-      error: e.message,
-    });
-  }
-});
-
-router.delete("/:pid", async (req, res) => {
-  const { pid } = req.params;
-  try {
-    await ProductsDao.deleteProduct(pid);
-    res.status(200).json({
-      mensaje: "Producto eliminado exitosamente",
-    });
-  } catch (e) {
-    res.status(400).json({
-      error: e.message,
-    });
-  }
-}); */
+router.delete("/:pid", deleteProductController);
 
 export default router;

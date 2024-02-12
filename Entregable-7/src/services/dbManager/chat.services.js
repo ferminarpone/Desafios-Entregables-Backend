@@ -1,6 +1,6 @@
 import { chatModel } from "./models/chat.model.js";
 
-class ChatDao {
+class ChatServices {
   async getAllMessages() {
     return await chatModel.find();
   }
@@ -10,4 +10,4 @@ class ChatDao {
   }
 }
 
-export default new ChatDao();
+export default new ChatServices();

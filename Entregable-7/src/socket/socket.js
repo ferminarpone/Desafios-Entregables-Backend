@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 /* import productsDao from "../services/dbManager/products.dao.js"; */
-import chatDao from "../services/dbManager/chat.dao.js";
+import ChatServices from "../services/dbManager/chat.services.js";
 import ProductServices from "../services/dbManager/products.services.js";
 
 const initSocketServer = (server) =>{
@@ -40,8 +40,8 @@ const initSocketServer = (server) =>{
           //Socket chat
           socketCliente.on("chat_information", async(data)=>{
             try{
-              await chatDao.saveMessage(data);
-              const messages = await chatDao.getAllMessages();
+              await ChatServices.saveMessage(data);
+              const messages = await ChatServices.getAllMessages();
               socketServer.emit("chat_allMessages", messages) 
             }catch (e) {
               if (e.message.includes("required")) {
@@ -52,7 +52,7 @@ const initSocketServer = (server) =>{
               socketCliente.emit("chat_allMessages", { error: e.message });
             }
           })
-          const messages = await chatDao.getAllMessages();
+          const messages = await ChatServices.getAllMessages();
           socketCliente.emit("chat_allMessages", messages)
         });
         

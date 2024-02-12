@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { __dirname, authorization, passportCall } from "../utils.js";
-/* import productsDao from "../dao/dbManager/products.dao.js"; */
-import ProductServices from "../services/dbManager/products.services.js";
+import { productsViewController } from "../controllers/views.controller.js";
 
 const router = Router();
 
@@ -9,30 +8,7 @@ router.get(
   "/",
   passportCall("jwt"),
   authorization("User"),
-  async (req, res) => {
-    const { limit, page, sort, filter } = req.query;
-    try {
-      const products = await ProductServices.getAllProducts(
-        limit,
-        page,
-        sort,
-        filter
-      );
-      const renderProducts = products.payload;
-      res.render("home", {
-        title: "Productos",
-        renderProducts,
-        products,
-        fileCss: "styles.css",
-        user: req.user,
-      });
-    } catch (e) {
-      console.log(e);
-      res.render("home", {
-        error: e.message,
-      });
-    }
-  }
+  productsViewController
 );
 
 router.get("/realtimeproducts", (req, res) => {
