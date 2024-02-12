@@ -1,7 +1,7 @@
 import { userModel } from "./models/user.model.js";
 
 
-class UserDao{
+class UserServices{
     async getUser(condition){
         return await userModel.findOne(condition);
     }
@@ -15,4 +15,4 @@ class UserDao{
     }
 }
 
-export default new UserDao();
+export default new UserServices();

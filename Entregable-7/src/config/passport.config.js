@@ -2,7 +2,7 @@ import passport from "passport";
 import passportLocal from "passport-local";
 import GitHubStrategy from "passport-github2";
 import jwt from "passport-jwt";
-import userDao from "../services/dbManager/user.dao.js";
+import userDao from "../services/dbManager/user.services.js";
 import { PRIVATE_KEY, createHash } from "../utils.js";
 
 //Declaración de estrategia

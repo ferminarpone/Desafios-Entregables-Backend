@@ -1,4 +1,4 @@
-import userDao from "../services/dbManager/user.dao.js";
+import userDao from "../services/dbManager/user.services.js";
 
 export const validateUser = async (req, res, next) => {
   const { first_name, last_name, email, age, password } = req.body;
