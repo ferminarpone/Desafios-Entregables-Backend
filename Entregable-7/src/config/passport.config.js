@@ -52,23 +52,27 @@ const initializePassport = () => {
       },
       async (accesToken, refreshToken, profile, done) => {
         console.log("Profile obtenido del usuario de GitHub");
-        console.log(profile);
+        console.log(profile._json);
         try {
-          const user = await userDao.getUser({ email: profile._json.email });
-          if (!user) {
-            let newUser = {
-              first_name: profile._json.name,
-              last_name: "",
-              age: 28,
-              email: profile._json.email,
-              password: "",
-              loggedBy: "GitHub",
-            };
-            const result = await userDao.createUser(newUser);
-            return done(null, result);
-          } else {
-            return done(null, user);
-          }
+          const email =
+            profile._json.email === null
+              ? profile._json.html_url
+              : profile._json.email;
+          const user = await userDao.getUser({ email: email });
+          if (user) return done(null, user);
+          let newUser = {
+            first_name: profile._json.name,
+            last_name: "",
+            age: 28,
+            email:
+              profile._json.email === null
+                ? profile._json.html_url
+                : profile._json.email,
+            password: "",
+            loggedBy: "GitHub",
+          };
+          const result = await userDao.createUser(newUser);
+          return done(null, result);
         } catch (error) {
           return done(error);
         }
