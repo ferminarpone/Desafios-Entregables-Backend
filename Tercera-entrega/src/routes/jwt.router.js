@@ -1,14 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { validateUser } from "../utils/validateUser.js";
-import {
-  jwtFailRegisterController,
-  jwtRegisterController,
-  loginController,
-  loginGithubCallbackController,
-  loginGithubController,
-  logoutController,
-} from "../controllers/jwt.controller.js";
+import * as jwtController from "../controllers/jwt.controller.js";
 
 const router = Router();
 
@@ -20,19 +13,19 @@ router.post(
     session: false,
     failureRedirect: "/api/jwt/failregister",
   }),
-  jwtRegisterController
+  jwtController.jwtRegisterController
 );
 
-router.get("/failregister", jwtFailRegisterController);
+router.get("/failregister", jwtController.jwtFailRegisterController);
 
 //Login
-router.post("/login", loginController);
+router.post("/login", jwtController.loginController);
 
 //Login Github con Jwt
 router.get(
   "/github",
   passport.authenticate("github", { scope: ["user:email"] }),
-  loginGithubController
+  jwtController.loginGithubController
 );
 
 router.get(
@@ -41,9 +34,9 @@ router.get(
     session: false,
     failureRedirect: "github/error",
   }),
-  loginGithubCallbackController
+  jwtController.loginGithubCallbackController
 );
 
-router.get("/logout", logoutController);
+router.get("/logout", jwtController.logoutController);
 
 export default router;

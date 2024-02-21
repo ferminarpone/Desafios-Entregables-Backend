@@ -30,6 +30,7 @@ export const loginController = async (req, res) => {
         .status(401)
         .send({ status: "error", error: "Credenciales invalidas" });
     }
+    //GENERAR DTO
     const tokenUser = {
       name: `${user.first_name} ${user.last_name}`,
       email: user.email,
