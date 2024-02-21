@@ -2,45 +2,37 @@ import { Router } from "express";
 import { validateCart } from "../utils/validateCart.js";
 import { validateProduct } from "../utils/validateProduct.js";
 import { validateProdDel } from "../utils/validateProdDel.js";
-import {
-  addProductInCartController,
-  createCartController,
-  deleteProductInCartController,
-  deleteProductsInCartController,
-  getCartByIdController,
-  updateCartController,
-  updateQuantityController,
-} from "../controllers/carts.controller.js";
+import * as CartsController from "../controllers/carts.controller.js";
 
 const router = Router();
 
-router.post("/", createCartController);
+router.post("/", CartsController.createCartController);
 
-router.get("/:cid", validateCart, getCartByIdController);
+router.get("/:cid", validateCart, CartsController.getCartByIdController);
 
 router.post(
   "/:cid/product/:pid",
   validateCart,
   validateProduct,
-  addProductInCartController
+  CartsController.addProductInCartController
 );
 
 router.delete(
   "/:cid/product/:pid",
   validateCart,
   validateProdDel,
-  deleteProductInCartController
+  CartsController.deleteProductInCartController
 );
 
-router.put("/:cid", validateCart, updateCartController);
+router.put("/:cid", validateCart, CartsController.updateCartController);
 
 router.put(
   "/:cid/product/:pid",
   validateCart,
   validateProdDel,
-  updateQuantityController
+  CartsController.updateQuantityController
 );
 
-router.delete("/:cid", validateCart, deleteProductsInCartController);
+router.delete("/:cid", validateCart, CartsController.deleteProductsInCartController);
 
 export default router;

@@ -1,9 +1,9 @@
-import ProductServices from "../services/dbManager/dao/products.services.js";
+import { productService } from "../services/service.js";
 
 export const getProductsController = async (req, res) => {
   const { limit, page, sort, filter } = req.query;
   try {
-    const products = await ProductServices.getAllProducts(
+    const products = await productService.getAllProducts(
       limit,
       page,
       sort,
@@ -22,7 +22,7 @@ export const getProductsController = async (req, res) => {
 export const getProductByIdController = async (req, res) => {
   const { pid } = req.params;
   try {
-    const productId = await ProductServices.getProductById(pid);
+    const productId = await productService.getProductById(pid);
     if (productId == null) {
       return res.status(404).json({
         error: `El producto con id ${pid} no existe`,
@@ -39,7 +39,7 @@ export const getProductByIdController = async (req, res) => {
 export const createProductController = async (req, res) => {
   try {
     const newProduct = req.body;
-    await ProductServices.createProduct(newProduct);
+    await productService.createProduct(newProduct);
     res.status(200).json({
       mensaje: "El producto fue agregado con exito",
     });
@@ -54,7 +54,7 @@ export const updateProductController = async (req, res) => {
   const { pid } = req.params;
   const updatedProduct = req.body;
   try {
-    const response = await ProductServices.updateProduct(pid, updatedProduct);
+    const response = await productService.updateProduct(pid, updatedProduct);
     if (response == null) {
       return res.status(404).json({
         error: `El producto con id ${pid} no existe`,
@@ -73,7 +73,7 @@ export const updateProductController = async (req, res) => {
 export const deleteProductController = async (req, res) => {
   const { pid } = req.params;
   try {
-    await ProductServices.deleteProduct(pid);
+    await productService.deleteProduct(pid);
     res.status(200).json({
       mensaje: "Producto eliminado exitosamente",
     });

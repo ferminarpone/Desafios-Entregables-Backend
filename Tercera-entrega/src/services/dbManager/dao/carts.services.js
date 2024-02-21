@@ -6,7 +6,7 @@ class CartServices {
     return await cartModel.find();
   }
 
-  async getCartById(id  , products ) {
+  async getCartById(id  , products) {
     return await cartModel.findById(id).populate(products) ;
   }
 

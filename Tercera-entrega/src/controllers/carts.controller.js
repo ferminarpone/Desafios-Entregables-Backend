@@ -1,9 +1,9 @@
-import CartServices from "../services/dbManager/dao/carts.services.js";
+import { cartService } from "../services/service.js";
 
 export const createCartController = async (req, res) => {
   const { cart } = req.body;
   try {
-    await CartServices.createCart(cart);
+    await cartService.createCart(cart);
     res.status(200).json({
       mensaje: "El carrito fue agregado exitosamente.",
     });
@@ -17,7 +17,7 @@ export const createCartController = async (req, res) => {
 export const getCartByIdController = async (req, res) => {
   const { cid } = req.params;
   try {
-    const carrito = await CartServices.getCartById(cid, "products.productId");
+    const carrito = await cartService.getCartById(cid, "products.productId");
     const productsCart = carrito.products;
     if (productsCart.length > 0) {
       res.status(200).json({
@@ -38,7 +38,7 @@ export const getCartByIdController = async (req, res) => {
 export const addProductInCartController = async (req, res) => {
   const { cid, pid } = req.params;
   try {
-    const response = await CartServices.addProductInCart(cid, pid);
+    const response = await cartService.addProductInCart(cid, pid);
     res.status(200).json({
       mensaje: `El producto con id ${pid} fue agregado exitosamente al carrito con id ${cid}`,
     });
@@ -52,7 +52,7 @@ export const addProductInCartController = async (req, res) => {
 export const deleteProductInCartController = async (req, res) => {
   const { cid, pid } = req.params;
   try {
-    const response = await CartServices.deleteProductInCart(cid, pid);
+    const response = await cartService.deleteProductInCart(cid, pid);
     res.status(200).json({
       mensaje: `El producto con id ${pid} fue eliminado exitosamente al carrito con id ${cid}`,
       response,
@@ -68,7 +68,7 @@ export const updateCartController = async (req, res) => {
   const { cid } = req.params;
   const updateProducts = req.body;
   try {
-    const response = await CartServices.updateCart(cid, updateProducts);
+    const response = await cartService.updateCart(cid, updateProducts);
     res.json({
       mensaje: `El carrito con id ${cid} fue actualizado exitosamente`,
     });
@@ -83,7 +83,7 @@ export const updateQuantityController = async (req, res) => {
   const { cid, pid } = req.params;
   const quantity = req.body;
   try {
-    const response = await CartServices.updateQuantity(cid, pid, quantity);
+    const response = await cartService.updateQuantity(cid, pid, quantity);
     res.json({
       mensaje: `La cantidad del producto con id ${pid} en el carrito con id ${cid} fue actualizada exitosamente`,
     });
@@ -97,7 +97,7 @@ export const updateQuantityController = async (req, res) => {
 export const deleteProductsInCartController = async (req, res) => {
   const { cid } = req.params;
   try {
-    const response = await CartServices.deleteProducts(cid);
+    const response = await cartService.deleteProducts(cid);
     res.json({
       mensaje: `El carrito con id ${cid} ha sido vaciado con exito`,
     });
