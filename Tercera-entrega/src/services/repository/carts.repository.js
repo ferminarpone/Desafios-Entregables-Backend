@@ -26,4 +26,7 @@ export default class CartsRepository {
     deleteProducts =  (cid) => {
         return this.dao.deleteProducts(cid);
     };
+    createPurchase = (cid) => {
+        return this.dao.createPurchase(cid);
+    }
 };

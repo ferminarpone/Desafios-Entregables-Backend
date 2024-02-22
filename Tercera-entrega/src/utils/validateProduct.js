@@ -16,12 +16,13 @@ export const validateProduct = async(req, res, next) => {
       })
     }
     const stock = product.stock;
-    if (stock > 0) {
+    if(stock == 0) throw Error(`Stock insuficiente del producto con id ${pid}`);
+/*     if (stock > 0) {
       const stock = product.stock - 1;
         await ProductServices.updateProduct(pid ,{ stock: stock });
     } else {
       throw Error(`Stock insuficiente del producto con id ${pid}`);
-    }
+    } */
   } catch (e) {
     return res.json({
       error: e.message,

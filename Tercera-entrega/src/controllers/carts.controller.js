@@ -107,3 +107,19 @@ export const deleteProductsInCartController = async (req, res) => {
     });
   }
 };
+
+
+export const createPurchaseController = async (req, res) => {
+  const { cid } = req.params;
+  try {
+    const response = await cartService.createPurchase(cid); 
+    res.json({
+      mensaje: `Tu compra se ha generado con exito`,
+      response
+    });
+  } catch (e) {
+    res.json({
+      error: e.message,
+    });
+  }
+}
