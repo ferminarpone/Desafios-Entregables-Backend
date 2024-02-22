@@ -1,4 +1,5 @@
 import UserServices from "../services/dbManager/dao/user.services.js";
+import UsersDto from "../services/dto/users.dto.js";
 import { generateJWTToken, isValidPassword } from "../utils.js";
 
 //Register
@@ -30,13 +31,7 @@ export const loginController = async (req, res) => {
         .status(401)
         .send({ status: "error", error: "Credenciales invalidas" });
     }
-    //GENERAR DTO
-    const tokenUser = {
-      name: `${user.first_name} ${user.last_name}`,
-      email: user.email,
-      age: user.age,
-      role: user.role,
-    };
+    const tokenUser = new UsersDto(user);
     const acces_token = generateJWTToken(tokenUser);
     res.cookie("jwtCookieToken", acces_token, {
       maxAge: 60000,

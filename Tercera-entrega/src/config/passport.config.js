@@ -2,7 +2,7 @@ import passport from "passport";
 import passportLocal from "passport-local";
 import GitHubStrategy from "passport-github2";
 import jwt from "passport-jwt";
-import userDao from "../services/dbManager/dao/user.services.js";
+import UserServices from "../services/dbManager/dao/user.services.js";
 import { PRIVATE_KEY, createHash } from "../utils.js";
 
 //Declaración de estrategia
@@ -19,7 +19,7 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         const { first_name, last_name, email, age } = req.body;
         try {
-          const exist = await userDao.getUser({ email: username });
+          const exist = await UserServices.getUser({ email: username });
           if (exist) {
             console.log("El usuario ya existe");
             return done(null, false);
@@ -32,7 +32,7 @@ const initializePassport = () => {
             password: createHash(password),
             loggedBy: "Registro Local",
           };
-          const newUser = await userDao.createUser(user);
+          const newUser = await UserServices.createUser(user);
           return done(null, newUser);
         } catch (error) {
           return done("Error registrando al usuario " + error);
@@ -58,7 +58,7 @@ const initializePassport = () => {
             profile._json.email === null
               ? profile._json.html_url
               : profile._json.email;
-          const user = await userDao.getUser({ email: email });
+          const user = await UserServices.getUser({ email: email });
           if (user) return done(null, user);
           let newUser = {
             first_name: profile._json.name,
@@ -71,7 +71,7 @@ const initializePassport = () => {
             password: "",
             loggedBy: "GitHub",
           };
-          const result = await userDao.createUser(newUser);
+          const result = await UserServices.createUser(newUser);
           return done(null, result);
         } catch (error) {
           return done(error);
@@ -108,7 +108,7 @@ const initializePassport = () => {
 
   passport.deserializeUser(async (id, done) => {
     try {
-      let user = await userDao.getUserById(id);
+      let user = await UserServices.getUserById(id);
       done(null, user);
     } catch (error) {
       console.error("Error deserializando el usuario: " + error);

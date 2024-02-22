@@ -11,7 +11,7 @@ router.get(
   productsViewController
 );
 
-router.get("/realtimeproducts", (req, res) => {
+router.get("/realtimeproducts", authorization("User"), (req, res) => {
   res.render("realtimeproducts.hbs", {
     title: "Ingresar productos",
     fileCss: "styles.css",
