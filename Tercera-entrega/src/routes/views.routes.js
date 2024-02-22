@@ -7,11 +7,11 @@ const router = Router();
 router.get(
   "/",
   passportCall("jwt"),
-  authorization("User"),
-  productsViewController
+  authorization("User"), 
+  productsViewController 
 );
 
-router.get("/realtimeproducts", authorization("User"), (req, res) => {
+router.get("/realtimeproducts", passportCall("jwt"), authorization("Admin"), (req, res) => {
   res.render("realtimeproducts.hbs", {
     title: "Ingresar productos",
     fileCss: "styles.css",

@@ -14,9 +14,13 @@ form.addEventListener("submit", (e) => {
   }).then((result) => {
     if (result.status === 200) {
       result.json().then((json) => {
-        console.log(document.cookie);
+        console.log(json.role)
         alert("Login exitoso");
-        window.location.replace("/products");
+/*         window.location.replace("/products"); */
+         if(json.role === "User")
+         window.location.replace("/products");
+         if(json.role === "Admin") 
+         window.location.replace("/products/realtimeproducts"); 
       });
     } else {
       Swal.fire({

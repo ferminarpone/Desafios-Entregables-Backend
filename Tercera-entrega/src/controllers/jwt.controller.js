@@ -20,7 +20,7 @@ export const loginController = async (req, res) => {
     const user = await UserServices.getUser({ email: email });
     if (!user) {
       console.warn("No existe ningun usuario con email: " + email);
-      return res.status(204).send({
+      return res.status(404).send({
         error: "Not found",
         message: "No existe ningun usuario con email: " + email,
       });
@@ -34,10 +34,10 @@ export const loginController = async (req, res) => {
     const tokenUser = new UsersDto(user);
     const acces_token = generateJWTToken(tokenUser);
     res.cookie("jwtCookieToken", acces_token, {
-      maxAge: 60000,
-      httpOnly: true,
+      maxAge: 360000,
+      httpOnly: true, 
     });
-    res.send({ message: "Login exitoso" });
+    res.status(200).json({ message: "Login exitoso", role: `${tokenUser.role}` });
   } catch (error) {
     console.log(error);
     return res

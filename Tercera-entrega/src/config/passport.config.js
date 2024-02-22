@@ -32,6 +32,7 @@ const initializePassport = () => {
             password: createHash(password),
             loggedBy: "Registro Local",
           };
+          email === "adminCoder@coder.com" || email === "fermin@gmail.com" ? user.role = "Admin" : user.role = "User";
           const newUser = await UserServices.createUser(user);
           return done(null, newUser);
         } catch (error) {
