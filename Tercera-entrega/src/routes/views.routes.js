@@ -7,7 +7,6 @@ const router = Router();
 router.get(
   "/",
   passportCall("jwt"),
-  authorization("User"), 
   productsViewController 
 );
 
@@ -18,7 +17,7 @@ router.get("/realtimeproducts", passportCall("jwt"), authorization("Admin"), (re
   });
 });
 
-router.get("/chat", (req, res) => {
+router.get("/chat",passportCall("jwt"), authorization("User"), (req, res) => {
   res.render("chat.hbs", {
     title: "Chat",
     fileCss: "styles.css",
