@@ -4,6 +4,7 @@ import GitHubStrategy from "passport-github2";
 import jwt from "passport-jwt";
 import UserServices from "../services/dbManager/dao/user.services.js";
 import { PRIVATE_KEY, createHash } from "../utils.js";
+import { cartService } from "../services/service.js";
 
 //Declaración de estrategia
 const localStrategy = passportLocal.Strategy;
@@ -33,6 +34,12 @@ const initializePassport = () => {
             loggedBy: "Registro Local",
           };
           email === "adminCoder@coder.com" || email === "fermin@gmail.com" ? user.role = "Admin" : user.role = "User";
+          if(user.role == "User"){
+            const cart = await cartService.createCart();
+            console.log("carrito creado");
+            console.log(cart);
+            user.cart = cart._id;
+          }
           const newUser = await UserServices.createUser(user);
           return done(null, newUser);
         } catch (error) {

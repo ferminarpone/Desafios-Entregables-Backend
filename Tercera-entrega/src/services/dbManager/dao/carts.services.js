@@ -1,9 +1,7 @@
-
-
 import { cartModel } from "../models/carts.model.js";
 import { ticketModel } from "../models/ticket.model.js";
 import productsServices from "./products.services.js";
-
+import userServices from "./user.services.js";
 
 class CartServices {
   async getAllCarts() {
@@ -37,7 +35,7 @@ class CartServices {
     try {
       const cart = await cartModel.findById(cid);
       const productIndex = cart.products.findIndex(
-        (prod) => prod.productId == pid
+        (prod) => prod.productId.equals(pid)
       );
       const removeProduct = cart.products.splice(productIndex, 1);
       return await cartModel.findByIdAndUpdate(cid, cart);
@@ -83,25 +81,29 @@ class CartServices {
     try {
       const cart = await this.getCartById(cid, "products.productId");
       const newCart = await this.stockControl(cart);
-      console.log("newCart");
-      console.log(newCart);
-     /*  await this.createTicket(newCart) */
+      console.log(newCart)
+      const cartId = cart._id;
+      //Busco el usuario que pertenece a este carrito - Actualizar con User repository
+      const user = await userServices.getUser({ cart: cartId });
+      /* console.log(user); */
+      /*   await this.createTicket(newCart)  */
 
-      const secondcart = await this.getCartById(cid, "products.productId");
-      return secondcart;
+       const secondcart = await this.getCartById(cid, "products.productId");
+      return secondcart; 
     } catch (e) {
       return res.json({
-        error: e.message,
+        error: e.message, 
       });
     }
   }
 
   stockControl = async (cart) => {
-    /*     let amount = 0; */
     let purchaseCart = [];
     for await (const el of cart.products) {
       const newStock = el.productId.stock - el.quantity;
       if (newStock >= 0) {
+        const pid = el.productId._id ;
+        const cartNew = await this.deleteProductInCart(cart._id, pid);
         // Esperar a que se actualice el producto
         const updatedProduct = await productsServices.updateProduct(
           el.productId._id,
@@ -110,20 +112,15 @@ class CartServices {
           }
         );
         purchaseCart.push(updatedProduct);
-        await this.deleteProductInCart(cart._id, el.productId._id); 
-        /*         amount = amount + el.quantity * el.productId.price 
-        console.log(el.productId.title)
-        console.log(amount) */
       }
     }
-    /*     return amount; */
+
     return purchaseCart;
   };
 
-/* 
   async createTicket(cart) {
-    return await ticketModel.create(cart);
-  } */
+    /*  return await ticketModel.create(cart); */
+  }
 }
 
 export default new CartServices();
