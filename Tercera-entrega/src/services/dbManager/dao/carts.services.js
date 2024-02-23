@@ -1,6 +1,9 @@
-import { productService } from "../../service.js";
+
+
 import { cartModel } from "../models/carts.model.js";
+import { ticketModel } from "../models/ticket.model.js";
 import productsServices from "./products.services.js";
+
 
 class CartServices {
   async getAllCarts() {
@@ -79,8 +82,13 @@ class CartServices {
   async createPurchase(cid) {
     try {
       const cart = await this.getCartById(cid, "products.productId");
-      const amount = await this.stockControl(cart);
-      console.log(amount); 
+      const newCart = await this.stockControl(cart);
+      console.log("newCart");
+      console.log(newCart);
+     /*  await this.createTicket(newCart) */
+
+      const secondcart = await this.getCartById(cid, "products.productId");
+      return secondcart;
     } catch (e) {
       return res.json({
         error: e.message,
@@ -88,25 +96,34 @@ class CartServices {
     }
   }
 
-
   stockControl = async (cart) => {
-    let amount = 0;
+    /*     let amount = 0; */
+    let purchaseCart = [];
     for await (const el of cart.products) {
       const newStock = el.productId.stock - el.quantity;
       if (newStock >= 0) {
         // Esperar a que se actualice el producto
-        const updatedProduct = await productsServices.updateProduct(el.productId._id, {
-          stock: newStock,
-        });
-        amount = amount + el.quantity * el.productId.price
+        const updatedProduct = await productsServices.updateProduct(
+          el.productId._id,
+          {
+            stock: newStock,
+          }
+        );
+        purchaseCart.push(updatedProduct);
+        await this.deleteProductInCart(cart._id, el.productId._id); 
+        /*         amount = amount + el.quantity * el.productId.price 
         console.log(el.productId.title)
-        console.log(amount)
+        console.log(amount) */
       }
     }
-    return amount;
+    /*     return amount; */
+    return purchaseCart;
   };
 
+/* 
+  async createTicket(cart) {
+    return await ticketModel.create(cart);
+  } */
 }
 
 export default new CartServices();
-
