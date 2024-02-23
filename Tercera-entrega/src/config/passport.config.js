@@ -36,8 +36,6 @@ const initializePassport = () => {
           email === "adminCoder@coder.com" || email === "fermin@gmail.com" ? user.role = "Admin" : user.role = "User";
           if(user.role == "User"){
             const cart = await cartService.createCart();
-            console.log("carrito creado");
-            console.log(cart);
             user.cart = cart._id;
           }
           const newUser = await UserServices.createUser(user);

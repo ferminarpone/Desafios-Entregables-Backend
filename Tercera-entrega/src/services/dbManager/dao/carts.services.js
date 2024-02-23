@@ -81,12 +81,10 @@ class CartServices {
     try {
       const cart = await this.getCartById(cid, "products.productId");
       const newCart = await this.stockControl(cart);
-      console.log(newCart)
-      const cartId = cart._id;
       //Busco el usuario que pertenece a este carrito - Actualizar con User repository
+      const cartId = cart._id;
       const user = await userServices.getUser({ cart: cartId });
-      /* console.log(user); */
-      /*   await this.createTicket(newCart)  */
+      await this.createTicket(newCart, user); 
 
        const secondcart = await this.getCartById(cid, "products.productId");
       return secondcart; 
@@ -105,22 +103,29 @@ class CartServices {
         const pid = el.productId._id ;
         const cartNew = await this.deleteProductInCart(cart._id, pid);
         // Esperar a que se actualice el producto
+        const amount =  el.quantity * el.productId.price;
         const updatedProduct = await productsServices.updateProduct(
           el.productId._id,
           {
             stock: newStock,
           }
-        );
-        purchaseCart.push(updatedProduct);
+        ); 
+        const purchaseProduct = {updatedProduct, amount}
+        purchaseCart.push(purchaseProduct)
       }
     }
 
     return purchaseCart;
   };
 
-  async createTicket(cart) {
-    /*  return await ticketModel.create(cart); */
-  }
+  async createTicket(cart, user) {
+    const totalAmount = cart.reduce((acumulador, objeto) => {
+      return acumulador + objeto.amount;
+    }, 0);
+     const ticket = { amount: totalAmount, purchaser: user.email, purchase_datetime: new Date() }
+     console.log(ticket)
+     return await ticketModel.create(ticket);   
+  } 
 }
 
 export default new CartServices();
