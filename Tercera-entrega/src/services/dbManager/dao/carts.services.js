@@ -85,7 +85,6 @@ class CartServices {
       const cartId = cart._id;
       const user = await userServices.getUser({ cart: cartId });
       const ticket = await this.createTicket(newCart, user);
-      s;
       const secondcart = await this.getCartById(cid, "products.productId");
       return secondcart;
     } catch (e) {
