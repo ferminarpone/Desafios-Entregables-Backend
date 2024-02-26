@@ -2,8 +2,6 @@ import nodemailer from "nodemailer";
 import config from "../config/config.js";
 import jwt from "jsonwebtoken";
 
-
-
 const transporter = nodemailer.createTransport({
   service: "gmail",
   port: 587,
@@ -21,12 +19,8 @@ transporter.verify(function (error, success) {
   }
 });
 
-
-
 export const sendEmailController = (req, res) => {
-  console.log("req")
-  const user = jwt.verify(req.cookies.jwtCookieToken,"EcommerceSecretKeyJWT")
-  console.log(user.user.email)
+  const user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
 
   const mailOptions = {
     from: "Ecommerce - " + config.gmailAccount,
@@ -47,11 +41,9 @@ export const sendEmailController = (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .send({
-        error: error,
-        message: "No se pudo enviar el email desde:" + config.gmailAccount,
-      });
+    res.status(500).send({
+      error: error,
+      message: "No se pudo enviar el email desde:" + config.gmailAccount,
+    });
   }
 };
