@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
 /* import productsDao from "../services/dbManager/products.dao.js"; */
-import ChatServices from "../services/dbManager/chat.services.js";
-import ProductServices from "../services/dbManager/products.services.js";
+import ChatServices from "../services/dbManager/dao/chat.services.js";
+import ProductServices from "../services/dbManager/dao/products.services.js";
 
 const initSocketServer = (server) =>{
     const socketServer = new Server(server);

@@ -1,7 +1,6 @@
 import ProductServices from "../services/dbManager/dao/products.services.js";
 
-
-export const validateProduct = async(req, res, next) => {
+export const validateProduct = async (req, res, next) => {
   const { pid } = req.params;
   if (!pid || pid == null || pid == " ") {
     return res.json({
@@ -10,14 +9,15 @@ export const validateProduct = async(req, res, next) => {
   }
   try {
     const product = await ProductServices.getProductById(pid);
-    if(!product){
+    if (!product) {
       return res.json({
-        error: `No existe el producto con id ${pid}`
-      })
+        error: `No existe el producto con id ${pid}`,
+      });
     }
     const stock = product.stock;
-    if(stock == 0) throw Error(`Stock insuficiente del producto con id ${pid}`);
-/*     if (stock > 0) {
+    if (stock == 0)
+      throw Error(`Stock insuficiente del producto con id ${pid}`);
+    /*     if (stock > 0) {
       const stock = product.stock - 1;
         await ProductServices.updateProduct(pid ,{ stock: stock });
     } else {

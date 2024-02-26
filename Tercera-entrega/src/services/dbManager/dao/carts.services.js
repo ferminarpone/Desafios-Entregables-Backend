@@ -34,8 +34,8 @@ class CartServices {
   async deleteProductInCart(cid, pid) {
     try {
       const cart = await cartModel.findById(cid);
-      const productIndex = cart.products.findIndex(
-        (prod) => prod.productId.equals(pid)
+      const productIndex = cart.products.findIndex((prod) =>
+        prod.productId.equals(pid)
       );
       const removeProduct = cart.products.splice(productIndex, 1);
       return await cartModel.findByIdAndUpdate(cid, cart);
@@ -81,16 +81,15 @@ class CartServices {
     try {
       const cart = await this.getCartById(cid, "products.productId");
       const newCart = await this.stockControl(cart);
-      //Busco el usuario que pertenece a este carrito - Actualizar con User repository
       const cartId = cart._id;
       const user = await userServices.getUser({ cart: cartId });
-      await this.createTicket(newCart, user); 
-
-       const secondcart = await this.getCartById(cid, "products.productId");
-      return secondcart; 
+      await this.createTicket(newCart, user);
+      s;
+      const secondcart = await this.getCartById(cid, "products.productId");
+      return secondcart;
     } catch (e) {
       return res.json({
-        error: e.message, 
+        error: e.message,
       });
     }
   }
@@ -100,18 +99,18 @@ class CartServices {
     for await (const el of cart.products) {
       const newStock = el.productId.stock - el.quantity;
       if (newStock >= 0) {
-        const pid = el.productId._id ;
+        const pid = el.productId._id;
         const cartNew = await this.deleteProductInCart(cart._id, pid);
         // Esperar a que se actualice el producto
-        const amount =  el.quantity * el.productId.price;
+        const amount = el.quantity * el.productId.price;
         const updatedProduct = await productsServices.updateProduct(
           el.productId._id,
           {
             stock: newStock,
           }
-        ); 
-        const purchaseProduct = {updatedProduct, amount}
-        purchaseCart.push(purchaseProduct)
+        );
+        const purchaseProduct = { updatedProduct, amount };
+        purchaseCart.push(purchaseProduct);
       }
     }
 
@@ -122,10 +121,14 @@ class CartServices {
     const totalAmount = cart.reduce((acumulador, objeto) => {
       return acumulador + objeto.amount;
     }, 0);
-     const ticket = { amount: totalAmount, purchaser: user.email, purchase_datetime: new Date() }
-     console.log(ticket)
-     return await ticketModel.create(ticket);   
-  } 
+    const ticket = {
+      amount: totalAmount,
+      purchaser: user.email,
+      purchase_datetime: new Date(),
+    };
+    console.log(ticket);
+    return await ticketModel.create(ticket);
+  }
 }
 
 export default new CartServices();

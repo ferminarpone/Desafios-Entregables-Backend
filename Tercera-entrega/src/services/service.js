@@ -4,4 +4,4 @@ import CartsRepository from "./repository/carts.repository.js";
 import ProductsRepository from "./repository/products.repository.js";
 
 export const productService = new ProductsRepository(ProductServices);
-export const cartService = new CartsRepository(CartServices); 
+export const cartService = new CartsRepository(CartServices);

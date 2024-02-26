@@ -17,7 +17,6 @@ import config from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
 
-
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
 
 const app = express();

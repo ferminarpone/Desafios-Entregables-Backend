@@ -4,7 +4,6 @@ import { validateProduct } from "../utils/validateProduct.js";
 import { validateProdDel } from "../utils/validateProdDel.js";
 import * as CartsController from "../controllers/carts.controller.js";
 
-
 const router = Router();
 
 router.post("/", CartsController.createCartController);
@@ -34,8 +33,12 @@ router.put(
   CartsController.updateQuantityController
 );
 
-router.delete("/:cid", validateCart, CartsController.deleteProductsInCartController);
+router.delete(
+  "/:cid",
+  validateCart,
+  CartsController.deleteProductsInCartController
+);
 
-router.post("/:cid/purchase", CartsController.createPurchaseController )
+router.post("/:cid/purchase", CartsController.createPurchaseController);
 
 export default router;

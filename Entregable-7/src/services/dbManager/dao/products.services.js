@@ -1,4 +1,4 @@
-import { productModel } from "./models/products.model.js";
+import { productModel } from "../models/products.model.js";
 
 class ProductServices {
   async getAllProducts(limit, page, sort, filter) {

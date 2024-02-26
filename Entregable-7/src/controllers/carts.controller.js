@@ -1,4 +1,4 @@
-import CartServices from "../services/dbManager/carts.services.js";
+import CartServices from "../services/dbManager/dao/carts.services.js";
 
 export const createCartController = async (req, res) => {
   const { cart } = req.body;

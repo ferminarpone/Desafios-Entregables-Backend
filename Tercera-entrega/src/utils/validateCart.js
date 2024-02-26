@@ -7,16 +7,16 @@ export const validateCart = async (req, res, next) => {
       erorr: `El cid es requerido `,
     });
   }
-  try{
+  try {
     const response = await CartDao.getCartById(cid);
-    if(!response){
+    if (!response) {
       return res.json({
-        error: `No existe el carrito con id ${cid}`
-      })
+        error: `No existe el carrito con id ${cid}`,
+      });
     }
-  }catch(e){
+  } catch (e) {
     return res.json({
-      error: e.message
+      error: e.message,
     });
   }
   next();

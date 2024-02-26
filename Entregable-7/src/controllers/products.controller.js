@@ -1,4 +1,4 @@
-import ProductServices from "../services/dbManager/products.services.js";
+import ProductServices from "../services/dbManager/dao/products.services.js";
 
 export const getProductsController = async (req, res) => {
   const { limit, page, sort, filter } = req.query;

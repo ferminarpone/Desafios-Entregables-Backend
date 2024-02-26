@@ -35,9 +35,11 @@ export const loginController = async (req, res) => {
     const acces_token = generateJWTToken(tokenUser);
     res.cookie("jwtCookieToken", acces_token, {
       maxAge: 360000,
-      httpOnly: true, 
+      httpOnly: true,
     });
-    res.status(200).json({ message: "Login exitoso", role: `${tokenUser.role}` });
+    res
+      .status(200)
+      .json({ message: "Login exitoso", role: `${tokenUser.role}` });
   } catch (error) {
     console.log(error);
     return res

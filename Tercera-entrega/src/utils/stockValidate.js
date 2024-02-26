@@ -7,9 +7,7 @@ export const stockValidate = async (req, res, next) =>{
       const cart = await cartService.getCartById(cid);
         console.log("productos")
         console.log(cart.products)
-
     /*  const stock = product.stock;
-    
          if (stock > 0) {
         const stock = product.stock - 1;
           await ProductServices.updateProduct(pid ,{ stock: stock });
@@ -21,5 +19,5 @@ export const stockValidate = async (req, res, next) =>{
         error: e.message,
       });
     }
-    next();
+    next(); 
 }

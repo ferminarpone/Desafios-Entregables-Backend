@@ -4,7 +4,7 @@ const program = new Command();
 
 program
   .option("-d", "Varaible para debug", false)
-  .option('-p <port>', "Puerto del servidor", 8080)
+  .option("-p <port>", "Puerto del servidor", 8080)
   .option("--mode <mode>", "Modo de trabajo", "develop")
 
   .requiredOption(

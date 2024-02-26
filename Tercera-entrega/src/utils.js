@@ -56,8 +56,8 @@ export const passportCall = (strategy) => {
 // Manejor de autorizacion
 export const authorization = (role) => {
   return async (req, res, next) => {
-    console.log("req")
-    console.log(req.user)
+    console.log("req");
+    console.log(req.user);
     if (!req.user)
       return res
         .status(401)

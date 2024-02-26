@@ -6,7 +6,7 @@ class ChatServices {
   }
 
   async saveMessage(message) {
-   return await chatModel.create(message);
+    return await chatModel.create(message);
   }
 }
 

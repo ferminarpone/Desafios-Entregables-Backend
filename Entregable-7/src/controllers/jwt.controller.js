@@ -1,4 +1,4 @@
-import UserServices from "../services/dbManager/user.services.js";
+import UserServices from "../services/dbManager/dao/user.services.js";
 import { generateJWTToken, isValidPassword } from "../utils.js";
 
 //Register

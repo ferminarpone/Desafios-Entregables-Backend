@@ -1,4 +1,4 @@
-import ProductServices from "../services/dbManager/products.services.js";
+import ProductServices from "../services/dbManager/dao/products.services.js";
 
 
 export const validateProduct = async(req, res, next) => {

@@ -1,4 +1,4 @@
-import CartDao from "../services/dbManager/carts.services.js";
+import CartDao from "../services/dbManager/dao/carts.services.js";
 
 export const validateCart = async (req, res, next) => {
   const { cid } = req.params;

@@ -1,7 +1,6 @@
 import cartsDao from "../services/dbManager/dao/carts.services.js";
 import ProductServices from "../services/dbManager/dao/products.services.js";
 
-
 export const validateProdDel = async (req, res, next) => {
   const { pid, cid } = req.params;
   if (!pid || pid == null || pid == " ") {
