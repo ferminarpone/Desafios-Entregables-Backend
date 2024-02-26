@@ -3,5 +3,6 @@ export default class UsersDto {
     this.name = `${user.first_name} ${user.last_name}`;
     this.email = user.email;
     this.amount = amount;
+    this.role = user.role
   }
 }

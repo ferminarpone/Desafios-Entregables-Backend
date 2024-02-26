@@ -14,4 +14,6 @@ export default {
   port: process.env.PORT,
   mongo_url: process.env.MONGO_URL,
   password: process.env.PASSWORD,
+  gmailAccount: process.env.GMAIL_ACCOUNT,
+  gmailAppPassword: process.env.GMAIL_APP_PASSWD
 };

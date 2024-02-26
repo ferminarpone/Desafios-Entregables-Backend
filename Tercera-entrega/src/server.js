@@ -8,6 +8,7 @@ import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import { initSocketServer } from "./socket/socket.js";
 import usersViewRouter from "./routes/user.views.router.js";
+import emailRouter from "./routes/email.router.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import cookieParser from "cookie-parser";
@@ -74,3 +75,6 @@ app.use("/api/jwt", jwtRouter);
 app.use("/", usersViewRouter);
 //Routes login gitHub
 app.use("/github", githubLoginViewRouter);
+
+//Routes de mailing
+app.use("/api/email", emailRouter)

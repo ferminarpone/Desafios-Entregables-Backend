@@ -1,3 +1,4 @@
+import { sendEmailController } from "../../../controllers/email.controller.js";
 import { cartModel } from "../models/carts.model.js";
 import { ticketModel } from "../models/ticket.model.js";
 import productsServices from "./products.services.js";
@@ -83,7 +84,7 @@ class CartServices {
       const newCart = await this.stockControl(cart);
       const cartId = cart._id;
       const user = await userServices.getUser({ cart: cartId });
-      await this.createTicket(newCart, user);
+      const ticket = await this.createTicket(newCart, user);
       s;
       const secondcart = await this.getCartById(cid, "products.productId");
       return secondcart;
@@ -126,7 +127,6 @@ class CartServices {
       purchaser: user.email,
       purchase_datetime: new Date(),
     };
-    console.log(ticket);
     return await ticketModel.create(ticket);
   }
 }

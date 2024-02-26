@@ -14,7 +14,7 @@ export const jwtFailRegisterController = async (req, res) => {
 };
 
 //Login
-export const loginController = async (req, res) => {
+export const  loginController = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await UserServices.getUser({ email: email });
