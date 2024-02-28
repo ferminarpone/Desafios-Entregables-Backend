@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
+import { faker } from "@faker-js/faker";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,6 +21,7 @@ export const PRIVATE_KEY = "EcommerceSecretKeyJWT";
 export const generateJWTToken = (user) => {
   return jwt.sign({ user }, PRIVATE_KEY, { expiresIn: "1h" });
 };
+
 //authToken
 export const authToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -68,6 +70,23 @@ export const authorization = (role) => {
         .send("Forbidden: El usuario no tiene permisos con este rol.");
     }
     next();
+  };
+};
+
+// Mocking
+/* faker.locale = 'es'; */
+
+export const generateProduct = () => {
+  return {
+    _id: faker.database.mongodbObjectId(),
+    title: faker.commerce.productName(),
+    description: faker.commerce.productDescription(),
+    code: faker.commerce.isbn(),
+    price:  parseFloat(faker.commerce.price()),
+    status: true,
+    stock: parseFloat(faker.string.numeric()),
+    category: faker.commerce.department(),
+    thumbnail: faker.image.url(),
   };
 };
 
