@@ -3,7 +3,9 @@ import { fileURLToPath } from "url";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/es";
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -74,8 +76,6 @@ export const authorization = (role) => {
 };
 
 // Mocking
-/* faker.locale = 'es'; */
-
 export const generateProduct = () => {
   return {
     _id: faker.database.mongodbObjectId(),
