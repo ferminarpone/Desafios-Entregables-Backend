@@ -1,3 +1,6 @@
+import CustomError from "../../errors/CustomError.js";
+import EErrors from "../../errors/errors-enum.js";
+import { generateCodeProductErrorInfo, generateFieldProductErrorInfo } from "../../errors/messages/product-creation-error.message.js";
 import { productModel } from "../models/products.model.js";
 
 class ProductServices {
@@ -57,16 +60,23 @@ class ProductServices {
 
   async createProduct(product) {
     const fieldsValidation = this.validateFields(product);
+    const { title, description, price, code, category, stock } = product;
     if (fieldsValidation) {
-      throw Error(
-        "Para ingresar un nuevo producto, es necesario completar los campos obligatorios."
-      );
+     const error = CustomError.createError({
+        name: "Product Create Error",
+        cause: generateFieldProductErrorInfo({ title, description, price, code, category, stock }),
+        message: "Error tratando de ingresar un producto, campos faltantes o invalidos",
+        code: EErrors.INVALID_TYPES_ERROR,
+      });
     }
     const codeValidation = await this.validateCode(product);
     if (codeValidation) {
-      throw Error(
-        `El 'code' del producto ingresado, ya existe en el gestionador de Productos.`
-      );
+      CustomError.createError({
+        name: "Product Create Error",
+        cause: generateCodeProductErrorInfo({code}),
+        message: "Error tratando de ingresar un producto, code ya existente",
+        code: EErrors.INVALID_TYPES_ERROR,
+      });
     }
     return await productModel.create(product);
   }
