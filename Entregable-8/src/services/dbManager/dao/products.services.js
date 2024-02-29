@@ -1,11 +1,16 @@
 import CustomError from "../../errors/CustomError.js";
 import EErrors from "../../errors/errors-enum.js";
-import { generateCodeProductErrorInfo, generateFieldProductErrorInfo } from "../../errors/messages/product-creation-error.message.js";
+import {
+  generateCodeProductErrorInfo,
+  generateFieldProductErrorInfo,
+} from "../../errors/messages/product-creation-error.message.js";
 import { productModel } from "../models/products.model.js";
 
 class ProductServices {
   async getAllProducts(limit, page, sort, filter) {
-    const query = {};
+  
+  /*   const query =  */
+/*     const query = {};
     if (filter !== undefined) {
       const [field, value] = filter.split(":");
       const validFields = [
@@ -26,7 +31,7 @@ class ProductServices {
       } else {
         throw new Error("El campo que desea filtrar no existe.");
       }
-    }
+    } */
     const orderedQuery = productModel
       .find(query)
       .sort({ price: sort === "desc" ? -1 : 1 });
@@ -60,24 +65,7 @@ class ProductServices {
 
   async createProduct(product) {
     const fieldsValidation = this.validateFields(product);
-    const { title, description, price, code, category, stock } = product;
-    if (fieldsValidation) {
-     const error = CustomError.createError({
-        name: "Product Create Error",
-        cause: generateFieldProductErrorInfo({ title, description, price, code, category, stock }),
-        message: "Error tratando de ingresar un producto, campos faltantes o invalidos",
-        code: EErrors.INVALID_TYPES_ERROR,
-      });
-    }
-    const codeValidation = await this.validateCode(product);
-    if (codeValidation) {
-      CustomError.createError({
-        name: "Product Create Error",
-        cause: generateCodeProductErrorInfo({code}),
-        message: "Error tratando de ingresar un producto, code ya existente",
-        code: EErrors.INVALID_TYPES_ERROR,
-      });
-    }
+    await this.validateCode(product.code);
     return await productModel.create(product);
   }
 
@@ -92,22 +80,33 @@ class ProductServices {
     ];
     const required =
       arrayProduct.includes(undefined) || arrayProduct.includes("");
-    return required;
+    if (required) {
+      const error = CustomError.createError({
+        name: "Product Create Error",
+        cause: generateFieldProductErrorInfo(arrayProduct),
+        message:
+          "Error tratando de ingresar un producto, campos faltantes o invalidos",
+        code: EErrors.INVALID_TYPES_ERROR,
+      });
+    }
   }
 
-  async validateCode(product) {
+  async validateCode(code) {
     const products = await productModel.find();
-    const validation = products.some((el) => el.code === product.code);
-    return validation;
+    const validation = products.some((el) => el.code === code);
+    if (validation) {
+      CustomError.createError({
+        name: "Product Create Error",
+        cause: generateCodeProductErrorInfo({ code }),
+        message:
+          "Error tratando de ingresar o actualizar un producto, code ya existente",
+        code: EErrors.INVALID_TYPES_ERROR,
+      });
+    }
   }
 
   async updateProduct(id, product) {
-    const codeValidation = await this.validateCode(product);
-    if (codeValidation) {
-      throw Error(
-        `El 'code' del producto ingresado, ya existe en el gestionador de Productos.`
-      );
-    }
+    const codeValidation = await this.validateCode(product.code);
     return await productModel.findByIdAndUpdate(id, product);
   }
 

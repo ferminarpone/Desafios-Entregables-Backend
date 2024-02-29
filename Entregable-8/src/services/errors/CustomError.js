@@ -4,7 +4,7 @@ export default class CustomError {
     (error.name = name),
     (error.code = code),
     (error.cause = cause ? new Error(cause) : null);
-    console.log("codigo de error: ")
+    console.log("Codigo de error: ")
     console.log(code)
     throw error;
   }

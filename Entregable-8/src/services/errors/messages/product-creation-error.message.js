@@ -2,19 +2,19 @@ export const generateFieldProductErrorInfo = (product) => {
     console.log( `Una o más propiedades fueron enviadas incompletas o no son válidas.
         Lista de propiedades requeridas:
 
-            -> title: type String, recibido: ${product.title}
-            -> description: type String, recibido: ${product.description}
-            -> price: type String, recibido: ${product.price}
-            -> code: type String, recibido: ${product.code}
-            -> category: type String, recibido: ${product.category}
-            -> stock: type String, recibido: ${product.stock}
+            -> title: type String, recibido: ${product[0]}
+            -> description: type String, recibido: ${product[1]}
+            -> price: type String, recibido: ${product[2]}
+            -> code: type String, recibido: ${product[3]}
+            -> category: type String, recibido: ${product[4]}
+            -> stock: type String, recibido: ${product[5]}
     `);
 };
 
 export const generateCodeProductErrorInfo = (code) => {
     console.log( `La propiedad code, ya existe dentro de la DB para otro producto.
-        Propiedades requerida:
+        Propied requerida:
 
-            -> code: type String, recibido: ${code.code}
+            -> code: type String, recibido: ${code.code} ya existente.
     `);
 };
