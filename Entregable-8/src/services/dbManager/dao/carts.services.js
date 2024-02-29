@@ -1,4 +1,3 @@
-import { sendEmailController } from "../../../controllers/email.controller.js";
 import { cartModel } from "../models/carts.model.js";
 import { ticketModel } from "../models/ticket.model.js";
 import productsServices from "./products.services.js";

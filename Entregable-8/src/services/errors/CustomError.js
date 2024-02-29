@@ -3,7 +3,7 @@ export default class CustomError {
     const error = new Error(message);
     (error.name = name),
     (error.code = code),
-    (error.cause = cause ? new Error(cause) : null);
+    (error.cause = cause? new Error(cause) : null);
     console.log("Codigo de error: ")
     console.log(code)
     throw error;

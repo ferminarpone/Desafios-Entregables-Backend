@@ -1,3 +1,6 @@
+import CustomError from "../services/errors/CustomError.js";
+import EErrors from "../services/errors/errors-enum.js";
+import { IdProductErrorInfo } from "../services/errors/messages/product-creation-error.message.js";
 import { productService } from "../services/service.js";
 
 export const getProductsController = async (req, res) => {
@@ -24,14 +27,18 @@ export const getProductByIdController = async (req, res) => {
   try {
     const productId = await productService.getProductById(pid);
     if (productId == null) {
-      return res.status(404).json({
-        error: `El producto con id ${pid} no existe`,
+      CustomError.createError({
+        name: "Product Id Error",
+        cause: IdProductErrorInfo(pid),
+        message:
+        `El producto con id ${pid} no existe`,
+        code: EErrors.INVALID_TYPES_ERROR,
       });
     }
     res.status(200).json(productId);
   } catch (e) {
     res.status(404).json({
-      error: e,
+      error: e.message,
     });
   }
 };
@@ -56,8 +63,12 @@ export const updateProductController = async (req, res) => {
   try {
     const response = await productService.updateProduct(pid, updatedProduct);
     if (response == null) {
-      return res.status(404).json({
-        error: `El producto con id ${pid} no existe`,
+      CustomError.createError({
+        name: "Product Id Error",
+        cause: IdProductErrorInfo(pid),
+        message:
+        `El producto con id ${pid} no existe`,
+        code: EErrors.INVALID_TYPES_ERROR,
       });
     }
     res.status(200).json({
@@ -73,7 +84,17 @@ export const updateProductController = async (req, res) => {
 export const deleteProductController = async (req, res) => {
   const { pid } = req.params;
   try {
-    await productService.deleteProduct(pid);
+    const response = await productService.deleteProduct(pid);
+    console.log(response)
+    if (response == null) {
+      CustomError.createError({
+        name: "Product Id Error",
+        cause: IdProductErrorInfo(pid),
+        message:
+        `El producto con id ${pid} no existe`,
+        code: EErrors.INVALID_TYPES_ERROR,
+      });
+    }
     res.status(200).json({
       mensaje: "Producto eliminado exitosamente",
     });

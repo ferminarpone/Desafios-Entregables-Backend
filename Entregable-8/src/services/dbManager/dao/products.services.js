@@ -1,6 +1,7 @@
 import CustomError from "../../errors/CustomError.js";
 import EErrors from "../../errors/errors-enum.js";
 import {
+  filterProductErrorInfo,
   generateCodeProductErrorInfo,
   generateFieldProductErrorInfo,
 } from "../../errors/messages/product-creation-error.message.js";
@@ -8,30 +9,7 @@ import { productModel } from "../models/products.model.js";
 
 class ProductServices {
   async getAllProducts(limit, page, sort, filter) {
-  
-  /*   const query =  */
-/*     const query = {};
-    if (filter !== undefined) {
-      const [field, value] = filter.split(":");
-      const validFields = [
-        "title",
-        "category",
-        "description",
-        "_id",
-        "price",
-        "code",
-        "status",
-      ];
-      if (validFields.includes(field)) {
-        if (["title", "category", "description"].includes(field)) {
-          query[field] = { $regex: new RegExp(value, "i") };
-        } else {
-          query[field] = value;
-        }
-      } else {
-        throw new Error("El campo que desea filtrar no existe.");
-      }
-    } */
+    const query = this.filtering(filter);
     const orderedQuery = productModel
       .find(query)
       .sort({ price: sort === "desc" ? -1 : 1 });
@@ -59,6 +37,38 @@ class ProductServices {
     }
   }
 
+  filtering(filter) {
+    const query = {};
+    if (filter !== undefined) {
+      const [field, value] = filter.split(":");
+      const validFields = [
+        "title",
+        "category",
+        "description",
+        "_id",
+        "price",
+        "code",
+        "status",
+      ];
+      if (validFields.includes(field)) {
+        if (["title", "category", "description"].includes(field)) {
+          query[field] = { $regex: new RegExp(value, "i") };
+        } else {
+          query[field] = value;
+        }
+      } else {
+        CustomError.createError({
+          name: "Product Filter Error",
+          cause: filterProductErrorInfo(field),
+          message:
+            "Error tratando de filtrar productos, el campo que desea filtrar no existe.",
+          code: EErrors.INVALID_TYPES_ERROR,
+        });
+      }
+    }
+    return query;
+  }
+
   async getProductById(id) {
     return await productModel.findById(id);
   }
@@ -81,7 +91,7 @@ class ProductServices {
     const required =
       arrayProduct.includes(undefined) || arrayProduct.includes("");
     if (required) {
-      const error = CustomError.createError({
+       CustomError.createError({
         name: "Product Create Error",
         cause: generateFieldProductErrorInfo(arrayProduct),
         message:
@@ -96,7 +106,7 @@ class ProductServices {
     const validation = products.some((el) => el.code === code);
     if (validation) {
       CustomError.createError({
-        name: "Product Create Error",
+        name: "Product Create or Updated Error",
         cause: generateCodeProductErrorInfo({ code }),
         message:
           "Error tratando de ingresar o actualizar un producto, code ya existente",
@@ -111,10 +121,6 @@ class ProductServices {
   }
 
   async deleteProduct(id) {
-    const product = await productModel.findById(id);
-    if (!product) {
-      throw Error(`El producto con id ${id} no existe.`);
-    }
     return await productModel.findByIdAndDelete(id);
   }
 }

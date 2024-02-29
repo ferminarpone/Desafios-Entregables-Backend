@@ -1,4 +1,7 @@
 import ProductServices from "../services/dbManager/dao/products.services.js";
+import CustomError from "../services/errors/CustomError.js";
+import EErrors from "../services/errors/errors-enum.js";
+import { IdProductErrorInfo } from "../services/errors/messages/product-creation-error.message.js";
 
 export const validateProduct = async (req, res, next) => {
   const { pid } = req.params;
@@ -10,8 +13,15 @@ export const validateProduct = async (req, res, next) => {
   try {
     const product = await ProductServices.getProductById(pid);
     if (!product) {
-      return res.json({
+/*       return res.json({
         error: `No existe el producto con id ${pid}`,
+      }); */
+      CustomError.createError({
+        name: "Product Id Error",
+        cause: IdProductErrorInfo(pid),
+        message:
+        `El producto con id ${pid} no existe`,
+        code: EErrors.INVALID_TYPES_ERROR,
       });
     }
     const stock = product.stock;
@@ -24,7 +34,7 @@ export const validateProduct = async (req, res, next) => {
       throw Error(`Stock insuficiente del producto con id ${pid}`);
     } */
   } catch (e) {
-    return res.json({
+    return res.status(400).json({
       error: e.message,
     });
   }

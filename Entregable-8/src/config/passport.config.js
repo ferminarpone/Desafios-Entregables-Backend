@@ -97,10 +97,7 @@ const initializePassport = () => {
         secretOrKey: PRIVATE_KEY,
       },
       async (jwt_payload, done) => {
-        console.log("Entrando a passport Strategy con JWT.");
         try {
-          console.log("JWT obtenido del Payload");
-          console.log(jwt_payload);
           return done(null, jwt_payload.user);
         } catch (error) {
           return done(error);
