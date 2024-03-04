@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { __dirname, authorization, passportCall } from "../utils.js";
-import { productsViewController } from "../controllers/views.controller.js";
+import { cartViewController, productsViewController } from "../controllers/views.controller.js";
 
 const router = Router();
 
@@ -24,5 +24,7 @@ router.get("/chat", passportCall("jwt"), authorization("User"), (req, res) => {
     fileCss: "styles.css",
   });
 });
+
+router.get("/cart",passportCall("jwt"), cartViewController)
 
 export default router;

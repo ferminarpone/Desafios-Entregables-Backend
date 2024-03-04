@@ -19,14 +19,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
           const pid = e.target.dataset.productId;
            fetch(`/api/carts/${cid}/product/${pid}`,{
            method: "POST",
-/*            body: JSON.stringify(obj), */
            headers: {
              "Content-Type": "application/json",
            },
           }).then((result) => {
             if (result.status === 200) {
-              console.log(result)
-              /* window.location.replace("/"); */
+               window.location.replace("/products/cart");
             }
           }); 
       });
