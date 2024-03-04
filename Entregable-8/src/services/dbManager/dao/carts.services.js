@@ -1,3 +1,4 @@
+import { ticketService } from "../../service.js";
 import { cartModel } from "../models/carts.model.js";
 import { ticketModel } from "../models/ticket.model.js";
 import productsServices from "./products.services.js";
@@ -87,7 +88,7 @@ class CartServices {
       const secondcart = await this.getCartById(cid, "products.productId");
       return secondcart;
     } catch (e) {
-      return res.json({
+      return res.status(400).json({
         error: e.message,
       });
     }
@@ -112,7 +113,6 @@ class CartServices {
         purchaseCart.push(purchaseProduct);
       }
     }
-
     return purchaseCart;
   };
 
@@ -124,8 +124,9 @@ class CartServices {
       amount: totalAmount,
       purchaser: user.email,
       purchase_datetime: new Date(),
+      products: cart
     };
-    return await ticketModel.create(ticket);
+    return await ticketService.createTicket(ticket);
   }
 }
 

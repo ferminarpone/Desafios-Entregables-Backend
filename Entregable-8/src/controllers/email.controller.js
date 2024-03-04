@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import config from "../config/config.js";
 import jwt from "jsonwebtoken";
+import { ticketService } from "../services/service.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -19,9 +20,8 @@ transporter.verify(function (error, success) {
   }
 });
 
-export const sendEmailController = (req, res) => {
+export const sendEmailController = async (req, res) => {
   const user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
-
   const mailOptions = {
     from: "Ecommerce - " + config.gmailAccount,
     to: user.user.email,

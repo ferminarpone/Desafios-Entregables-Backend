@@ -10,6 +10,7 @@ const ticketSchema = new Schema({
   purchase_datetime: { type: Number },
   amount: { type: Number },
   purchaser: { type: String },
+  products: []
 });
 
 const ticketModel = model("Tickets", ticketSchema);
