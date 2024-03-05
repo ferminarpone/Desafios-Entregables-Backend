@@ -22,11 +22,24 @@ transporter.verify(function (error, success) {
 
 export const sendEmailController = async (req, res) => {
   const user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
+  const ticket = await ticketService.getLastOneTicket(user.user.email);
+  const data = {
+    code: ticket[0].code,
+    purchase_datetime: new Date(ticket[0].purchase_datetime),
+    amount: ticket[0].amount,
+  };
   const mailOptions = {
     from: "Ecommerce - " + config.gmailAccount,
     to: user.user.email,
     subject: "Compra Exitosa!",
-    html: `<div><h1> Gracias por realizar su compra ${user.user.name} </h1></div>`,
+    html: `<div><h1> Gracias por realizar su compra ${user.user.name} </h1>
+    <h2>Detalle de tu compra</h2>
+    <ul>
+    <li>Fecha: ${data.purchase_datetime} </li>
+    <li>Codigo de compra: ${data.code} </li>
+    <li>Precio Final: $${data.amount} </li>
+    </ul>
+    </div>`,
     attachments: [],
   };
 

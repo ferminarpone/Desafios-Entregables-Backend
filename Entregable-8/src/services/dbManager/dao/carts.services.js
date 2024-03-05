@@ -86,7 +86,7 @@ class CartServices {
       const user = await userServices.getUser({ cart: cartId });
       const ticket = await this.createTicket(newCart, user);
       const secondcart = await this.getCartById(cid, "products.productId");
-      return secondcart;
+      return newCart;
     } catch (e) {
       return res.status(400).json({
         error: e.message,

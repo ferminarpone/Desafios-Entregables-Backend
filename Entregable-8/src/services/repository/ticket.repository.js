@@ -6,7 +6,7 @@ export default class TicketRepository {
       return this.dao.createTicket(ticket);
     };
 
-    getTicket = (email) => {
-        return this.dao.getTicket(email);
+    getLastOneTicket = (email) => {
+        return this.dao.getLastOneTicket(email);
       };
   }

@@ -5,8 +5,8 @@ class TicketServices {
     return await ticketModel.create(ticket);
   }
 
-  async getTicket(email) {
-    return await ticketModel.find({ purchaser: email });
+  async getLastOneTicket(email) {
+    return await ticketModel.find({purchaser: email}).sort({ purchase_datetime: -1 });
   }
 }
 

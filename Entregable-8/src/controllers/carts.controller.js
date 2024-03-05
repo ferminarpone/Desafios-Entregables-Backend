@@ -114,7 +114,7 @@ export const createPurchaseController = async (req, res) => {
     const response = await cartService.createPurchase(cid);
     res.json({
       mensaje: `Tu compra se ha generado con exito`,
-      insufficient_stock: response.products,
+      purchase: response,
     });
   } catch (e) {
     res.json({
