@@ -5,8 +5,6 @@ export const stockValidate = async (req, res, next) =>{
     const { cid } = req.params;
     try {
       const cart = await cartService.getCartById(cid);
-        console.log("productos")
-        console.log(cart.products)
     /*  const stock = product.stock;
          if (stock > 0) {
         const stock = product.stock - 1;

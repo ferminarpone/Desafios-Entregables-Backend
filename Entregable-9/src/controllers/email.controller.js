@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import config from "../config/config.js";
 import jwt from "jsonwebtoken";
 import { ticketService } from "../services/service.js";
+import { logger } from "../config/logger-custom.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -14,9 +15,9 @@ const transporter = nodemailer.createTransport({
 
 transporter.verify(function (error, success) {
   if (error) {
-    console.log(error);
+    logger.error(error)
   } else {
-    console.log("Server is ready to take our messages");
+    logger.info("Server is ready to take our messages");
   }
 });
 
@@ -46,14 +47,14 @@ export const sendEmailController = async (req, res) => {
   try {
     let result = transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error);
+        logger.error("Error al enviar el email " + error)
         res.status(400).send({ message: "Error", payload: error });
       }
-      console.log("Message sent: %s", info.messageId);
+      logger.info("Message sent: %s", info.messageId);
       res.send({ message: "Success", payload: info });
     });
   } catch (error) {
-    console.error(error);
+    logger.error("Error al enviar el email " + error)
     res.status(500).send({
       error: error,
       message: "No se pudo enviar el email desde:" + config.gmailAccount,

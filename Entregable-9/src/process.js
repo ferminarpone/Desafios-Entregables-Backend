@@ -1,4 +1,5 @@
 import { Command } from "commander";
+import { logger } from "./config/logger-custom.js";
 
 const program = new Command();
 
@@ -15,21 +16,20 @@ program
 program.parse();
 
 //Listeners
-
 process.on("exit", (code) => {
-  console.log("Este codigo se ejecuta antes de salir del proceso.");
-  console.log("Codigo de salida del proceso: " + code);
+  logger.warning("Este codigo se ejecuta antes de salir del proceso.");
+  logger.info("Codigo de salida del proceso: " + code);
 });
 
 process.on("uncaughtException", (exception) => {
-  console.log("Esta exception no fue capturada, o controlada.");
-  console.log(`Exception no capturada: ${exception}`);
+  logger.warning("Esta excepción no fue capturada, o controlada.");
+  logger.info(`Exception no capturada: ${exception}`);
 });
 
 process.on("message", (message) => {
-  console.log(
+  logger.info(
     "Este codigo se ejecutará cuando reciba un mensaje de otro proceso."
   );
-  console.log(`Mensaje recibido: ${message}`);
+  logger.info(`Mensaje recibido: ${message}`);
 });
 export default program;

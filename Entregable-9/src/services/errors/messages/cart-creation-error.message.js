@@ -1,5 +1,5 @@
-export const nullIdCartErrorInfo = (cid) => {
-    console.log(`
+export const nullIdCartErrorInfo = (req, cid) => {
+    req.logger.error(`
       El Id ingresado no corresponde a ningun carrito de la DB.
           Propied requerida:
   
@@ -7,8 +7,8 @@ export const nullIdCartErrorInfo = (cid) => {
       `);
   };
 
-  export const IdCartErrorInfo = (cid) => {
-    console.log(`
+  export const IdCartErrorInfo = (req, cid) => {
+    req.logger.error(`
       El Id ingresado no corresponde a ningun carrito de la DB.
           Propied requerida:
   

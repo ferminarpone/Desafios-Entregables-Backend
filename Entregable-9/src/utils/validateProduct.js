@@ -18,7 +18,7 @@ export const validateProduct = async (req, res, next) => {
       }); */
       CustomError.createError({
         name: "Product Id Error",
-        cause: IdProductErrorInfo(pid),
+        cause: IdProductErrorInfo(req, pid),
         message:
         `El producto con id ${pid} no existe`,
         code: EErrors.INVALID_TYPES_ERROR,

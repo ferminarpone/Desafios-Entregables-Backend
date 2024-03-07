@@ -1,4 +1,3 @@
-import { el } from "@faker-js/faker";
 import ProductServices from "../services/dbManager/dao/products.services.js";
 import { cartService } from "../services/service.js";
 
@@ -20,7 +19,7 @@ export const productsViewController = async (req, res) => {
       user: req.user,
     });
   } catch (e) {
-    console.log(e);
+    req.logger.error(e.message);
     res.render("home", {
       error: e.message,
     });
@@ -35,17 +34,16 @@ export const cartViewController = async (req, res) => {
     const totalAmount = newCart.reduce((acc, el) => {
       return acc + el.amount;
     }, 0);
-
     res.render("cart.hbs", {
       title: "Cart",
       fileCss: "styles.css",
       user: req.user,
       cart: newCart,
       totalAmount,
-      idCart: newCart.length !=0 ? newCart[0].idCart : null
+      idCart: newCart.length != 0 ? newCart[0].idCart : null,
     });
   } catch (e) {
-    console.log(e);
+    req.logger.error(e.message);
     res.render("cart", {
       error: e.message,
     });
@@ -53,7 +51,7 @@ export const cartViewController = async (req, res) => {
 };
 
 const renderCart = (cart) => {
-  let newCart = []
+  let newCart = [];
   cart.products.forEach((el) => {
     const product = {
       thumbnail: el.productId.thumbnail,
@@ -64,7 +62,7 @@ const renderCart = (cart) => {
       stock: el.productId.stock,
       quantity: el.quantity,
       amount: el.productId.price * el.quantity,
-      idCart: cart._id
+      idCart: cart._id,
     };
     newCart.push(product);
   });

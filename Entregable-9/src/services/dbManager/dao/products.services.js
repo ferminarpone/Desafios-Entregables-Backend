@@ -91,7 +91,7 @@ class ProductServices {
     const required =
       arrayProduct.includes(undefined) || arrayProduct.includes("");
     if (required) {
-       CustomError.createError({
+      CustomError.createError({
         name: "Product Create Error",
         cause: generateFieldProductErrorInfo(arrayProduct),
         message:

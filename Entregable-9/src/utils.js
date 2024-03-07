@@ -5,8 +5,6 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 import { faker } from "@faker-js/faker/locale/es";
 
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -60,8 +58,6 @@ export const passportCall = (strategy) => {
 // Manejor de autorizacion
 export const authorization = (role) => {
   return async (req, res, next) => {
-    console.log("req");
-    console.log(req.user);
     if (!req.user)
       return res
         .status(401)
@@ -82,7 +78,7 @@ export const generateProduct = () => {
     title: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     code: faker.commerce.isbn(),
-    price:  parseFloat(faker.commerce.price()),
+    price: parseFloat(faker.commerce.price()),
     status: true,
     stock: parseFloat(faker.string.numeric()),
     category: faker.commerce.department(),

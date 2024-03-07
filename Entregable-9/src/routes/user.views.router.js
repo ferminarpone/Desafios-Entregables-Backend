@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { authorization, passportCall } from "../utils.js";
 
 const router = Router();
 router.get("/", (req, res) => {

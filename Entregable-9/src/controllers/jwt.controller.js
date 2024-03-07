@@ -4,9 +4,20 @@ import { generateJWTToken, isValidPassword } from "../utils.js";
 
 //Register
 export const jwtRegisterController = async (req, res) => {
-  res
-    .status(201)
-    .send({ status: "success", message: "Usuario creado con exito." });
+  const { email } = req.body;
+  try{
+  const exist = await UserServices.getUser({ email: email });
+  if (exist){
+    req.logger.warning("El usuario que intentar loggear ya existe")
+    res.status(409).send({error: "User already exist"})
+  }else{
+    res
+      .status(201)
+      .send({ status: "success", message: "Usuario creado con exito." });
+  }
+  }catch(error){
+    res.status(401).send({ error: "Failed to process register!" });
+  }
 };
 
 export const jwtFailRegisterController = async (req, res) => {
@@ -14,19 +25,19 @@ export const jwtFailRegisterController = async (req, res) => {
 };
 
 //Login
-export const  loginController = async (req, res) => {
+export const loginController = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await UserServices.getUser({ email: email });
     if (!user) {
-      console.warn("No existe ningun usuario con email: " + email);
+      req.logger.warning("No existe ningun usuario con email: " + email);
       return res.status(404).send({
         error: "Not found",
         message: "No existe ningun usuario con email: " + email,
       });
     }
     if (!isValidPassword(user, password)) {
-      console.warn("Credenciales invalidas para el usuario:" + email);
+      req.logger.warning("Credenciales invalidas para el usuario:" + email);
       return res
         .status(401)
         .send({ status: "error", error: "Credenciales invalidas" });
@@ -41,7 +52,7 @@ export const  loginController = async (req, res) => {
       .status(200)
       .json({ message: "Login exitoso", role: `${tokenUser.role}` });
   } catch (error) {
-    console.log(error);
+    req.logger.error(error.message);
     return res
       .status(500)
       .send({ status: "error", error: "Error interno de la aplicación." });
@@ -53,15 +64,10 @@ export const loginGithubController = async (req, res) => {};
 
 export const loginGithubCallbackController = async (req, res) => {
   const user = req.user;
-  const tokenUser = {
-    name: `${user.first_name} ${user.last_name}`,
-    email: user.email,
-    age: user.age,
-    role: user.role,
-  };
+  const tokenUser = new UsersDto(user);
   const access_token = generateJWTToken(tokenUser);
-  console.log("Acces token: ");
-  console.log(access_token);
+  req.logger.info("Acces token: ");
+  req.logger.info(access_token);
   res.cookie("jwtCookieToken", access_token, {
     maxAge: 60000,
     httpOnly: true,

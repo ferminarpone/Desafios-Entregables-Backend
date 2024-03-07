@@ -5,6 +5,7 @@ import jwt from "passport-jwt";
 import UserServices from "../services/dbManager/dao/user.services.js";
 import { PRIVATE_KEY, createHash } from "../utils.js";
 import { cartService } from "../services/service.js";
+import { logger } from "./logger-custom.js";
 
 //Declaración de estrategia
 const localStrategy = passportLocal.Strategy;
@@ -22,8 +23,7 @@ const initializePassport = () => {
         try {
           const exist = await UserServices.getUser({ email: username });
           if (exist) {
-            console.log("El usuario ya existe");
-            return done(null, false);
+            return done(null, exist);
           }
           const user = {
             first_name,
@@ -43,6 +43,7 @@ const initializePassport = () => {
           const newUser = await UserServices.createUser(user);
           return done(null, newUser);
         } catch (error) {
+          req.logger.error("Error registrando al usuario " + error);
           return done("Error registrando al usuario " + error);
         }
       }
@@ -59,8 +60,8 @@ const initializePassport = () => {
         callbackUrl: "http://localhost:8080/api/jwt/githubcallback",
       },
       async (accesToken, refreshToken, profile, done) => {
-        console.log("Profile obtenido del usuario de GitHub");
-        console.log(profile._json);
+        logger.info("Profile obtenido del usuario de GitHub");
+        logger.info(profile._json);
         try {
           const email =
             profile._json.email === null
@@ -79,9 +80,12 @@ const initializePassport = () => {
             password: "",
             loggedBy: "GitHub",
           };
+          const cart = await cartService.createCart();
+          newUser.cart = cart._id;
           const result = await UserServices.createUser(newUser);
           return done(null, result);
         } catch (error) {
+          logger.error("Error al intentar loggearse mediante GitHub"+ error.message)
           return done(error);
         }
       }
@@ -100,6 +104,7 @@ const initializePassport = () => {
         try {
           return done(null, jwt_payload.user);
         } catch (error) {
+          logger.error("Error de login "+ error.message)
           return done(error);
         }
       }
@@ -116,7 +121,7 @@ const initializePassport = () => {
       let user = await UserServices.getUserById(id);
       done(null, user);
     } catch (error) {
-      console.error("Error deserializando el usuario: " + error);
+      logger.error("Error deserializando el usuario: " + error);
     }
   });
 };

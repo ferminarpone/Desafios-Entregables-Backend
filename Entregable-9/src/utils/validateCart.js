@@ -8,7 +8,7 @@ export const validateCart = async (req, res, next) => {
   if (!cid || cid == null || cid == " ") {
     CustomError.createError({
       name: "Cart Validate Error",
-      cause: nullIdCartErrorInfo(cid),
+      cause: nullIdCartErrorInfo(req, cid),
       message:
         "El Id del carrito es requerido para continuar.",
       code: EErrors.INVALID_TYPES_ERROR,
@@ -19,7 +19,7 @@ export const validateCart = async (req, res, next) => {
     if (!response) {
       CustomError.createError({
         name: "Cart Validate Error",
-        cause: IdCartErrorInfo(cid),
+        cause: IdCartErrorInfo(req, cid),
         message:
         `No existe el carrito con id ${cid}`,
         code: EErrors.INVALID_TYPES_ERROR,
