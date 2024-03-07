@@ -18,16 +18,19 @@ import jwtRouter from "./routes/jwt.router.js";
 import config from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
+import { addLogger, logger } from "./config/logger-custom.js";
+
 
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
-  console.log(`Server listening on port ${PORT}`)
+  logger.info(`Server listening on port ${PORT}`)
 );
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(addLogger)
 
 // Configuraciób web socket
 initSocketServer(httpServer);
@@ -37,7 +40,7 @@ const mongoInstance = async () => {
   try {
     await MongoSingleton.getInstance();
   } catch (error) {
-    console.log(error);
+    logger.error(error.message)
   }
 };
 mongoInstance();
@@ -82,3 +85,15 @@ app.use("/api/email", emailRouter);
 
 //Route Mocking
 app.use('/mockingproducts', mockingRouter);
+
+// Logger Test
+app.get('/loggerTest', (req, res)=> {
+  req.logger.fatal("Prueba de log level fatal --> en Endpoint"); 
+  req.logger.error("Prueba de log level error --> en Endpoint"); 
+  req.logger.warning("Prueba de log level warning --> en Endpoint"); 
+  req.logger.info("Prueba de log level info --> en Endpoint"); 
+  req.logger.http("Prueba de log level http --> en Endpoint"); 
+  req.logger.debug("Prueba de log level debug --> en Endpoint"); 
+
+  res.send("Prueba de logger!");
+})

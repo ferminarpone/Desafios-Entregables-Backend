@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import config from "./config.js";
+import { logger } from "./logger-custom.js";
 
 const MONGO_URL = config.mongo_url;
 export default class MongoSingleton {
@@ -10,7 +11,7 @@ export default class MongoSingleton {
   }
   static getInstance() {
     if (this.#instance) {
-      console.log("Ya se ha abierto una conexion a MongoDB.");
+      logger.info("Ya se ha abierto una conexion a MongoDB.");
     } else {
       this.#instance = new MongoSingleton();
     }
@@ -19,9 +20,9 @@ export default class MongoSingleton {
   #connectMongoDB = async () => {
     try {
       await mongoose.connect(MONGO_URL);
-      console.log("Data base connected");
+      logger.info("Data base connected");
     } catch (error) {
-      console.error("No se pudo conectar a la BD usando Moongose: " + error);
+      logger.error("No se pudo conectar a la BD usando Moongose: " + error);
       process.exit();
     }
   };
