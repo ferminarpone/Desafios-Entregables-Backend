@@ -50,7 +50,7 @@ export const sendEmailController = async (req, res) => {
         logger.error("Error al enviar el email " + error)
         res.status(400).send({ message: "Error", payload: error });
       }
-      logger.info("Message sent: %s", info.messageId);
+      logger.info("Message sent: "+ info.messageId);
       res.send({ message: "Success", payload: info });
     });
   } catch (error) {
