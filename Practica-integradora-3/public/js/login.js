@@ -19,7 +19,7 @@ form.addEventListener("submit", (e) => {
 /*         window.location.replace("/products"); */
          if(json.role === "User")
          window.location.replace("/products");
-         if(json.role === "Admin") 
+         if(json.role === "Admin" || json.role === "Premium") 
          window.location.replace("/products/realtimeproducts"); 
       });
     } else {

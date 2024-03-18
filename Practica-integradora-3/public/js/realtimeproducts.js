@@ -53,13 +53,13 @@ socketClient.on("products_list", (data) => {
       const deleteButton = document.querySelector(`#delete${prod._id}`);
       deleteButton.addEventListener("click", (e) => {
         e.preventDefault();
-        socketClient.emit("product_delete", prod._id);
+        socketClient.emit("product_delete", prod);
       });
     });
   } else {
     Swal.fire({
       icon: "error",
-      text: `${data}`,
+      text: `${data.error}`,
       width: 400,
     });
   }

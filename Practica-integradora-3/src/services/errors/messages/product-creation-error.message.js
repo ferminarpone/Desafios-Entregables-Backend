@@ -38,3 +38,8 @@ export const IdProductErrorInfo = (req, pid) => {
             -> Id recibido: ${pid}.
     `);
 };
+
+export const deleteProductErrorInfo = () => {
+  logger.error(`No es posible eliminar productos de otro owner. 
+    `);
+};
