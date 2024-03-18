@@ -1,8 +1,10 @@
 import nodemailer from "nodemailer";
 import config from "../config/config.js";
 import jwt from "jsonwebtoken";
-import { ticketService } from "../services/service.js";
+import { passwordService, ticketService } from "../services/service.js";
 import { logger } from "../config/logger-custom.js";
+import { v4 } from "uuid";
+import { createHash } from "../utils.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -15,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 transporter.verify(function (error, success) {
   if (error) {
-    logger.error(error)
+    logger.error(error);
   } else {
     logger.info("Server is ready to take our messages");
   }
@@ -30,7 +32,7 @@ export const sendEmailController = async (req, res) => {
     amount: ticket[0].amount,
   };
   const mailOptions = {
-    from: "Ecommerce - " + config.gmailAccount,
+    from: "Ecommerce Coderhouse" + config.gmailAccount,
     to: user.user.email,
     subject: "Compra Exitosa!",
     html: `<div><h1> Gracias por realizar su compra ${user.user.name} </h1>
@@ -47,14 +49,14 @@ export const sendEmailController = async (req, res) => {
   try {
     let result = transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        logger.error("Error al enviar el email " + error)
+        logger.error("Error al enviar el email " + error);
         res.status(400).send({ message: "Error", payload: error });
       }
-      logger.info("Message sent: "+ info.messageId);
+      logger.info("Message sent: " + info.messageId);
       res.send({ message: "Success", payload: info });
     });
   } catch (error) {
-    logger.error("Error al enviar el email " + error)
+    logger.error("Error al enviar el email " + error);
     res.status(500).send({
       error: error,
       message: "No se pudo enviar el email desde:" + config.gmailAccount,
@@ -64,12 +66,49 @@ export const sendEmailController = async (req, res) => {
 
 // Password Reset
 
-/* export const sendEmailToResetPassController = async (req, res) => {
+const mailResetPswOptions = {
+  from: "Ecommerce Coderhouse" + config.gmailAccount,
+  subject: "Resetear contraseña",
+};
 
+export const sendEmailToResetPassController = async (req, res) => {
   // CONDICIONAL, RESET AL OLVIDAR PSW (FORMULARIO), RESET AL CAMBIAR PSW (MAIL DESDE COOKIE)
 
   //FORMULARIO
 
+  try {
+    const { email, password } = req.body;
 
+    if (!email) {
+      return res.status(400).send("No se ingreso el email");
+    }
 
-} */
+    const token = v4();
+    const link = `http://localhost:8080/api/settings/reset-password/${token}`;
+    const pswInfo = {
+      token,
+      email,
+      expirationTime: new Date(Date.now() + 1 * 60 * 1000),
+    };
+    passwordService.createPswInfo(pswInfo);
+
+    mailResetPswOptions.to = email;
+    mailResetPswOptions.html = `Para resetear su contraseña haga click en el siguiente enlace: <a href="${link}> Reset password</a>`
+    transporter.sendMail(mailResetPswOptions, (error, info) => {
+      if (error) {
+        logger.error("Error al enviar el email " + error);
+        res.status(400).send({ message: "Error", payload: error });
+      }
+      logger.info("Message sent: " + info.messageId);
+      res.send({ message: "Success", payload: info });
+    });
+
+  } catch (error) {
+    logger.error("Error al enviar el email " + error);
+    res.status(500).send({
+      error: error,
+      message: "No se pudo enviar el email desde:" + config.gmailAccount,
+    });
+  }
+};
+

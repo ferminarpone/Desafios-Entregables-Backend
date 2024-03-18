@@ -15,6 +15,7 @@ import initializePassport from "./config/passport.config.js";
 import cookieParser from "cookie-parser";
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
 import jwtRouter from "./routes/jwt.router.js";
+import settingsRouter from "./routes/settings.router.js";
 import config from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
@@ -92,6 +93,9 @@ app.use("/api/email", emailRouter);
 
 //Route Mocking
 app.use('/mockingproducts', mockingRouter);
+
+//Route Settings
+app.use('/api/settings', settingsRouter)
 
 // Logger Test
 app.get('/loggerTest', (req, res)=> {
