@@ -1,14 +1,27 @@
 import { Server } from "socket.io";
 import ChatServices from "../services/dbManager/dao/chat.services.js";
 import ProductServices from "../services/dbManager/dao/products.services.js";
+import jwt from "jsonwebtoken";
+
 
 const initSocketServer = (server) => {
   const socketServer = new Server(server);
-
-  socketServer.on("connection", async (socketCliente) => {
-    // Socket Realtimeproducts
+  socketServer.on("connection", async (socketCliente) =>  {
     socketCliente.on("form_information", async (data) => {
+
+
+      const jwtCookieToken = socketCliente.request.headers.cookie.split("=")
+      let user = jwt.verify(jwtCookieToken[1], "EcommerceSecretKeyJWT");
+
+
       try {
+
+
+        if(user.role === "Premium"){
+          data.owner = user.user.email;
+        }
+
+
         await ProductServices.createProduct(data);
         const prod = await ProductServices.getAllProducts();
         socketCliente.emit("products_list", prod.payload);

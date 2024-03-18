@@ -21,12 +21,15 @@ import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
 import { addLogger, logger } from "./config/logger-custom.js";
 
+
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
   logger.info(`Server listening on port ${PORT}`)
-);
+); 
+
+
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

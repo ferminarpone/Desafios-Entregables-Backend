@@ -56,18 +56,19 @@ export const passportCall = (strategy) => {
 };
 
 // Manejor de autorizacion
-export const authorization = (role) => {
+export const authorization = (role1, role2) => {
   return async (req, res, next) => {
     if (!req.user)
       return res
         .status(401)
         .send("Usuario no autorizado: Usuario no encontrado en JWT");
-    if (req.user.role !== role) {
+    if (req.user.role === role1 || req.user.role === role2 ) {
+      next();
+    }else{
       return res
-        .status(403)
-        .send("Forbidden: El usuario no tiene permisos con este rol.");
+      .status(403)
+      .send("Forbidden: El usuario no tiene permisos con este rol.");
     }
-    next();
   };
 };
 

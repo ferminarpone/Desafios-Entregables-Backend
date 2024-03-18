@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { passwordService, ticketService } from "../services/service.js";
 import { logger } from "../config/logger-custom.js";
 import { v4 } from "uuid";
-import { createHash } from "../utils.js";
+
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
