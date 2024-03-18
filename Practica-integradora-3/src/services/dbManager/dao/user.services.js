@@ -12,6 +12,10 @@ class UserServices {
   async createUser(user) {
     return await userModel.create(user);
   }
+
+  async updateUser(id, user) {
+    return await userModel.findByIdAndUpdate(id, user)
+  }
 }
 
 export default new UserServices();

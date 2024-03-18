@@ -77,7 +77,7 @@ export const sendEmailToResetPassController = async (req, res) => {
   //FORMULARIO
 
   try {
-    const { email, password } = req.body;
+    const { email } = req.body;
 
     if (!email) {
       return res.status(400).send("No se ingreso el email");
@@ -93,7 +93,7 @@ export const sendEmailToResetPassController = async (req, res) => {
     passwordService.createPswInfo(pswInfo);
 
     mailResetPswOptions.to = email;
-    mailResetPswOptions.html = `Para resetear su contraseña haga click en el siguiente enlace: <a href="${link}> Reset password</a>`
+    mailResetPswOptions.html = `Para resetear su contraseña haga click en el siguiente enlace: <a href="${link}> Reset password</a>`;
     transporter.sendMail(mailResetPswOptions, (error, info) => {
       if (error) {
         logger.error("Error al enviar el email " + error);
@@ -102,7 +102,6 @@ export const sendEmailToResetPassController = async (req, res) => {
       logger.info("Message sent: " + info.messageId);
       res.send({ message: "Success", payload: info });
     });
-
   } catch (error) {
     logger.error("Error al enviar el email " + error);
     res.status(500).send({
@@ -111,4 +110,3 @@ export const sendEmailToResetPassController = async (req, res) => {
     });
   }
 };
-
