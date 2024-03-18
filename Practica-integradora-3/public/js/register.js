@@ -5,7 +5,6 @@ form.addEventListener("submit", (e) => {
   const data = new FormData(form);
   const obj = {};
   data.forEach((value, key) => (obj[key] = value));
-
   // Usamos Fetch
   fetch("/api/jwt/register", {
     method: "POST",

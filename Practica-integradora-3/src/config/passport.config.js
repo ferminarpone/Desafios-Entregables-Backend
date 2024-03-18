@@ -23,7 +23,7 @@ const initializePassport = () => {
         try {
           const exist = await UserServices.getUser({ email: username });
           if (exist) {
-            return done(null, exist);
+            return done(null, false, { message: 'El correo electrónico ya está en uso' } );
           }
           const user = {
             first_name,
@@ -124,6 +124,7 @@ const initializePassport = () => {
       logger.error("Error deserializando el usuario: " + error);
     }
   });
+
 };
 
 const cookieExtractor = (req) => {

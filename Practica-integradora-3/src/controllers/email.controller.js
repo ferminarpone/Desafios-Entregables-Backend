@@ -61,3 +61,15 @@ export const sendEmailController = async (req, res) => {
     });
   }
 };
+
+// Password Reset
+
+/* export const sendEmailToResetPassController = async (req, res) => {
+
+  // CONDICIONAL, RESET AL OLVIDAR PSW (FORMULARIO), RESET AL CAMBIAR PSW (MAIL DESDE COOKIE)
+
+  //FORMULARIO
+
+
+
+} */

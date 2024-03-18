@@ -9,14 +9,8 @@ const router = Router();
 router.post(
   "/register",
   validateUser,
-  passport.authenticate("register", {
-    session: false,
-    failureRedirect: "/api/jwt/failregister",
-  }),
   jwtController.jwtRegisterController
 );
-
-router.get("/failregister", jwtController.jwtFailRegisterController);
 
 //Login
 router.post("/login", jwtController.loginController);

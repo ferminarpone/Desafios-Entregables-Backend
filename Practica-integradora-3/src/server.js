@@ -20,7 +20,6 @@ import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
 import { addLogger, logger } from "./config/logger-custom.js";
 
-
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
 
 const app = express();
@@ -48,6 +47,14 @@ mongoInstance();
 //Configuración de passport
 initializePassport();
 app.use(passport.initialize());
+
+app.use((req, res, next) => {
+  req.authInfo = req.info || {};
+  if (req.authInfo instanceof Error) {
+    req.authInfo = { message: req.authInfo.message };
+  }
+  next();
+});
 
 //Cookies
 app.use(cookieParser("EcommerceS3cr3tC0d3"));

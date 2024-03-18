@@ -1,28 +1,24 @@
+import passport from "passport";
 import UserServices from "../services/dbManager/dao/user.services.js";
 import UsersDto from "../services/dto/users.dto.js";
 import { generateJWTToken, isValidPassword } from "../utils.js";
 
 //Register
-export const jwtRegisterController = async (req, res) => {
-  const { email } = req.body;
-  try{
-  const exist = await UserServices.getUser({ email: email });
-  if (exist){
-    req.logger.warning("El usuario que intentar loggear ya existe")
-    res.status(409).send({error: "User already exist"})
-  }else{
-    res
-      .status(201)
-      .send({ status: "success", message: "Usuario creado con exito." });
-  }
-  }catch(error){
-    res.status(401).send({ error: "Failed to process register!" });
-  }
-};
-
-export const jwtFailRegisterController = async (req, res) => {
-  res.status(401).send({ error: "Failed to process register!" });
-};
+export const jwtRegisterController = (req, res, next) => {
+  passport.authenticate("register", (err, user, info) => {
+    if (err) {
+      console.log("error")
+      console.log(err)
+      return res.status(500).json({ message: err });
+    }
+    if (!user) {
+      console.log("usuario existente" + info.message)
+      return res.status(409).json({ message: info.message });
+    }
+    res.status(201)
+    .send({ status: "success", message: "Usuario creado con exito." })
+  })(req, res, next);
+}
 
 //Login
 export const loginController = async (req, res) => {
