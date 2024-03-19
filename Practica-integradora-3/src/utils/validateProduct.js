@@ -26,7 +26,7 @@ export const validateProduct = async (req, res, next) => {
     }
     const stock = product.stock;
     if (stock == 0)
-      throw Error(`Stock insuficiente del producto con id ${pid}`);
+      throw Error(`Stock insuficiente`);
     /*     if (stock > 0) {
       const stock = product.stock - 1;
         await ProductServices.updateProduct(pid ,{ stock: stock });
@@ -34,7 +34,7 @@ export const validateProduct = async (req, res, next) => {
       throw Error(`Stock insuficiente del producto con id ${pid}`);
     } */
   } catch (e) {
-    return res.status(400).json({
+    return res.status(404).json({
       error: e.message,
     });
   }

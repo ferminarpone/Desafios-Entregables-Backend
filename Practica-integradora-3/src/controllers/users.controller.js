@@ -8,8 +8,6 @@ import jwt from "jsonwebtoken";
 export const jwtRegisterController = (req, res, next) => {
   passport.authenticate("register", (err, user, info) => {
     if (err) {
-      console.log("error");
-      console.log(err);
       return res.status(500).json({ message: err });
     }
     if (!user) {

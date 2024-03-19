@@ -95,15 +95,16 @@ class CartServices {
     try {
       const cart = await this.getCartById(cid, "products.productId");
       const newCart = await this.stockControl(cart);
+      if(newCart.length === 0){
+        throw Error("Stock insuficiente")
+      } 
       const cartId = cart._id;
       const user = await userServices.getUser({ cart: cartId });
       const ticket = await this.createTicket(newCart, user);
       const secondcart = await this.getCartById(cid, "products.productId");
       return newCart;
     } catch (e) {
-      return res.status(400).json({
-        error: e.message,
-      });
+      throw Error (e.message)
     }
   }
 

@@ -26,12 +26,23 @@ document.addEventListener('DOMContentLoaded', ()=> {
             if (result.status === 200) {
                window.location.replace("/products/cart");
             }
+
             if(result.status === 404){
-              Swal.fire({
-                icon: "error",
-                text: `No es posible agregar productos propios al carrito.`,
-                width: 400,
-              });
+              result.json().then((json) => {
+                if(json.error === "Stock insuficiente"){
+                  Swal.fire({
+                    icon: "error",
+                    text: `No es posible agregar productos sin stock al carrito.`,
+                    width: 400,
+                  });
+                }else{
+                  Swal.fire({
+                    icon: "error",
+                    text: `No es posible agregar productos propios al carrito.`,
+                    width: 400,
+                  });
+                }
+            })
             }
           }); 
       });

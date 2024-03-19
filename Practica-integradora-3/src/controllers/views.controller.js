@@ -54,6 +54,7 @@ const renderCart = (cart) => {
   let newCart = [];
   cart.products.forEach((el) => {
     const product = {
+      prodId: el.productId._id,
       thumbnail: el.productId.thumbnail,
       description: el.productId.description,
       category: el.productId.category,
@@ -62,7 +63,7 @@ const renderCart = (cart) => {
       stock: el.productId.stock,
       quantity: el.quantity,
       amount: el.productId.price * el.quantity,
-      idCart: cart._id,
+      id: cart._id,
     };
     newCart.push(product);
   });

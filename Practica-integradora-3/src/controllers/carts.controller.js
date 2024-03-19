@@ -119,8 +119,14 @@ export const createPurchaseController = async (req, res) => {
       purchase: response,
     });
   } catch (e) {
-    res.json({
-      error: e.message,
-    });
+    if(e.message != "Stock insuficiente"){
+      res.status(500).json({
+        error: e.message,
+      });
+    }else{
+      res.status(404).json({
+        error: e.message,
+      });
+    }
   }
 };
