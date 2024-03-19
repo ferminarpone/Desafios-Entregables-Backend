@@ -38,3 +38,29 @@ document.addEventListener('DOMContentLoaded', ()=> {
   });
 });
 
+//Boton cambiar rol
+const changeRole = document.querySelector("#changeRole");
+changeRole.addEventListener("click", (e)=>{
+  const uid = changeRole.dataset.userId;
+  fetch(`/api/users/premium/${uid}`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+   }) .then((result) => {
+     if (result.status === 200) {
+      Swal.fire({
+        icon: "success",
+        text: `El rol de usuario ha sido modificado exitosamente.`,
+        width: 400,
+      });
+     }
+     if(result.status === 404){
+       Swal.fire({
+         icon: "error",
+         text: `Error al intentar modificar el rol de usuario.`,
+         width: 400,
+       });
+     }
+   });  
+})

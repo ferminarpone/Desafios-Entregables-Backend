@@ -1,5 +1,4 @@
-import userServices from "../services/dbManager/dao/user.services.js";
-import { passwordService } from "../services/service.js";
+import { passwordService, userServices } from "../services/service.js";
 import { createHash, isValidPassword } from "../utils.js";
 
 export const resetPasswordController = async (req, res) => {

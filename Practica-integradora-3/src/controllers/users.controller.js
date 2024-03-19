@@ -1,30 +1,32 @@
 import passport from "passport";
-import UserServices from "../services/dbManager/dao/user.services.js";
 import UsersDto from "../services/dto/users.dto.js";
 import { generateJWTToken, isValidPassword } from "../utils.js";
+import { userServices } from "../services/service.js";
+import jwt from "jsonwebtoken";
 
 //Register
 export const jwtRegisterController = (req, res, next) => {
   passport.authenticate("register", (err, user, info) => {
     if (err) {
-      console.log("error")
-      console.log(err)
+      console.log("error");
+      console.log(err);
       return res.status(500).json({ message: err });
     }
     if (!user) {
-      console.log("usuario existente" + info.message)
+      console.log("usuario existente" + info.message);
       return res.status(409).json({ message: info.message });
     }
-    res.status(201)
-    .send({ status: "success", message: "Usuario creado con exito." })
+    res
+      .status(201)
+      .send({ status: "success", message: "Usuario creado con exito." });
   })(req, res, next);
-}
+};
 
 //Login
 export const loginController = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await UserServices.getUser({ email: email });
+    const user = await userServices.getUser({ email: email });
     if (!user) {
       req.logger.warning("No existe ningun usuario con email: " + email);
       return res.status(404).send({
@@ -73,4 +75,27 @@ export const loginGithubCallbackController = async (req, res) => {
 
 export const logoutController = async (req, res) => {
   res.clearCookie("jwtCookieToken").send("Session cerrada correctamente");
+};
+
+export const changeRoleController = async (req, res) => {
+  const uid = req.params.uid;
+  console.log(uid)
+  let user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
+  try {
+    if (user.user.role === "Premium") {
+      console.log("entro")
+      await userServices.updateUser(uid, { role: "User" });
+      return res
+        .status(200)
+        .send({ message: 'Rol modificado a "User" correctamente.' });
+    }
+    await userServices.updateUser(uid, { role: "Premium" });
+    return res
+      .status(200)
+      .send({ message: 'Rol modificado a "Premium" correctamente.' });
+  } catch (error) {
+    res.status(404).json({
+      error: error.message,
+    });
+  }
 };

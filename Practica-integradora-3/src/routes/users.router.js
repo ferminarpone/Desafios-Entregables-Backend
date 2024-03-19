@@ -33,4 +33,6 @@ router.get(
 
 router.get("/logout", jwtController.logoutController);
 
+router.post("/premium/:uid", jwtController.changeRoleController)
+
 export default router;

@@ -2,9 +2,8 @@ import passport from "passport";
 import passportLocal from "passport-local";
 import GitHubStrategy from "passport-github2";
 import jwt from "passport-jwt";
-import UserServices from "../services/dbManager/dao/user.services.js";
 import { PRIVATE_KEY, createHash } from "../utils.js";
-import { cartService } from "../services/service.js";
+import { cartService, userServices } from "../services/service.js";
 import { logger } from "./logger-custom.js";
 
 //Declaración de estrategia
@@ -21,7 +20,7 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         const { first_name, last_name, email, age } = req.body;
         try {
-          const exist = await UserServices.getUser({ email: username });
+          const exist = await userServices.getUser({ email: username })
           if (exist) {
             return done(null, false, { message: 'El correo electrónico ya está en uso' } );
           }
@@ -40,7 +39,7 @@ const initializePassport = () => {
             const cart = await cartService.createCart();
             user.cart = cart._id;
           }
-          const newUser = await UserServices.createUser(user);
+          const newUser = await userServices.createUser(user);
           return done(null, newUser);
         } catch (error) {
           req.logger.error("Error registrando al usuario " + error);
@@ -67,7 +66,7 @@ const initializePassport = () => {
             profile._json.email === null
               ? profile._json.html_url
               : profile._json.email;
-          const user = await UserServices.getUser({ email: email });
+          const user = await userServices.getUser({ email: email });
           if (user) return done(null, user);
           let newUser = {
             first_name: profile._json.name,
@@ -82,7 +81,7 @@ const initializePassport = () => {
           };
           const cart = await cartService.createCart();
           newUser.cart = cart._id;
-          const result = await UserServices.createUser(newUser);
+          const result = await userServices.createUser(newUser);
           return done(null, result);
         } catch (error) {
           logger.error("Error al intentar loggearse mediante GitHub"+ error.message)
@@ -118,7 +117,7 @@ const initializePassport = () => {
 
   passport.deserializeUser(async (id, done) => {
     try {
-      let user = await UserServices.getUserById(id);
+      let user = await userServices.getUserById(id);
       done(null, user);
     } catch (error) {
       logger.error("Error deserializando el usuario: " + error);

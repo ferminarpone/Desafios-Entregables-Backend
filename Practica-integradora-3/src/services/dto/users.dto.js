@@ -4,7 +4,8 @@ export default class UsersDto {
     this.email = user.email;
     this.age = user.age;
     this.amount = amount;
-    this.role = user.role
-    this.cart = user.cart
+    this.role = user.role;
+    this.cart = user.cart;
+    this.id = user._id;
   }
 }

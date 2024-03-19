@@ -10,7 +10,10 @@
       <p>Nombre: {{user.name}}</p>
       <p>Email: {{user.email}}</p>
       <p>Edad: {{user.age}}</p>
+      <div class="d-flex justify-content-center" >
       <p>Rol: {{user.role}}</p>
+      <button id="changeRole" data-user-id="{{user.id}}" class="btn btn-outline-secondary mx-3">Modificar Rol</button>
+      </div>
       <p> IdCart: {{user.cart}} </p>
       <button id="logout" class="btn btn-outline-secondary mb-3">
         Cerrar sesión</button>
