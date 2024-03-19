@@ -1,14 +1,4 @@
-//Boton logout 
-const logout = document.getElementById("logout");
 
-logout.addEventListener("click", (e) => {
-  e.preventDefault();
-  fetch("/api/users/logout").then((result) => {
-    if (result.status === 200) {
-      window.location.replace("/");
-    }
-  });
-}); 
 
 //Boton Agregar carrito
 document.addEventListener('DOMContentLoaded', ()=> {
@@ -49,29 +39,16 @@ document.addEventListener('DOMContentLoaded', ()=> {
   });
 });
 
-//Boton cambiar rol
-const changeRole = document.querySelector("#changeRole");
-changeRole.addEventListener("click", (e)=>{
-  const uid = changeRole.dataset.userId;
-  fetch(`/api/users/premium/${uid}`,{
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-   }) .then((result) => {
-     if (result.status === 200) {
-      Swal.fire({
-        icon: "success",
-        text: `El rol de usuario ha sido modificado exitosamente.`,
-        width: 400,
-      });
-     }
-     if(result.status === 404){
-       Swal.fire({
-         icon: "error",
-         text: `Error al intentar modificar el rol de usuario.`,
-         width: 400,
-       });
-     }
-   });  
+//Ir a perfil
+const profile = document.querySelector('#profile');
+profile.addEventListener("click", (e)=>{
+  e.preventDefault();
+  window.location.replace("/users");
+})
+
+//Ir a carrito
+const cart = document.querySelector('#idCart');
+cart.addEventListener("click", (e)=>{
+  e.preventDefault();
+  window.location.replace("/products/cart");
 })

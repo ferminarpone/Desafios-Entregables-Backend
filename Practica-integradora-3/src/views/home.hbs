@@ -1,22 +1,14 @@
 <div class="container-md">
   {{#if renderProducts}}
-    <h1 class="mt-4 mb-4 bg-opacity-8 border rounded text-center">Home</h1>
-    <div class="d-flex justify-content-end">
-      <button id="idCart" data-cart-id="{{user.cart}}">Cart</button>
-    </div>
-    <div class="mt-4 pt-3 mb-4 bg-opacity-8 border rounded text-center">
-      <h3>Bienvenido {{user.name}}</h3>
-      <h4 id=""> Perfil </h4>
-      <p>Nombre: {{user.name}}</p>
-      <p>Email: {{user.email}}</p>
-      <p>Edad: {{user.age}}</p>
-      <div class="d-flex justify-content-center" >
-      <p>Rol: {{user.role}}</p>
-      <button id="changeRole" data-user-id="{{user.id}}" class="btn btn-outline-secondary mx-3">Modificar Rol</button>
+    <h1 class="mt-4 mb-2 bg-opacity-8 border rounded text-center">Home</h1>
+    <div class="d-flex justify-content-between bg-opacity-8 border rounded pt-1 pb-1 mb-4">
+      <div class="d-flex justify-content-start">
+        <h3 class="mx-2">Usuario</h3>
       </div>
-      <p> IdCart: {{user.cart}} </p>
-      <button id="logout" class="btn btn-outline-secondary mb-3">
-        Cerrar sesión</button>
+      <div class="d-flex justify-content-end">
+      <button id="profile" class="btn btn-outline-secondary">Perfil</button>
+      <button id="idCart" data-cart-id="{{user.cart}}" class="btn btn-outline-secondary mx-2">Carrito</button>
+      </div>
     </div>
     <div class="container row d-flex justify-content-start text-center">
       {{#each renderProducts}}

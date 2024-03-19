@@ -1,7 +1,24 @@
-<div>
-    <h1>Perfil de {{user.name}}</h1>
-    <h2> Tus datos </h2>
-    <p>Nombre: {{user.name}}</p>
-    <p>Email: {{user.email}}</p>
-    <p>Edad: {{user.age}}</p>
+<div class="container-md">
+    <h1 class="mt-4 mb-4 bg-opacity-8 border rounded text-center">Perfil de Usuario</h1>
+
+    <div class="mt-4 pt-3 mb-4 bg-opacity-8 border rounded text-center">
+        <h3>Bienvenido {{user.name}}</h3>
+        <p>Nombre: {{user.name}}</p>
+        <p>Email: {{user.email}}</p>
+        <p>Edad: {{user.age}}</p>
+        <div class="d-flex justify-content-center">
+            <p>Rol: {{user.role}}</p>
+            <button
+            id="changeRole"
+            data-user-id="{{user.id}}"
+            data-user-rol="{{user.role}}"
+            class="btn btn-outline-secondary mx-3"
+            >Modificar Rol</button>
+        </div>
+        <p> IdCart: {{user.cart}} </p>
+        <button id="logout" class="btn btn-outline-secondary mb-3">
+            Cerrar sesión</button>
+    </div>
 </div>
+<script src="/js/profile.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
