@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { validateUser } from "../utils/validateUser.js";
-import * as jwtController from "../controllers/jwt.controller.js";
+import * as jwtController from "../controllers/users.controller.js";
 
 const router = Router();
 

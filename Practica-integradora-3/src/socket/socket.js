@@ -11,7 +11,6 @@ const initSocketServer = (server) => {
   socketServer.on("connection", async (socketCliente) => {
     socketCliente.on("form_information", async (data) => {
 
-      //RECICLAR CODIGO
       const jwtCookieToken = socketCliente.request.headers.cookie.split("=");
       let user = jwt.verify(jwtCookieToken[1], "EcommerceSecretKeyJWT");
 

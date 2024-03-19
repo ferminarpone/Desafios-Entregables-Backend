@@ -14,12 +14,13 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import cookieParser from "cookie-parser";
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
-import jwtRouter from "./routes/jwt.router.js";
+import jwtRouter from "./routes/users.router.js";
 import settingsRouter from "./routes/settings.router.js";
 import config from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
 import { addLogger, logger } from "./config/logger-custom.js";
+import router from "./routes/users.router.js";
 
 
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
@@ -86,7 +87,7 @@ app.use("/products", viewsRouter);
 
 //Routes de usuarios
 //JWT
-app.use("/api/jwt", jwtRouter);
+app.use("/api/users", jwtRouter);
 app.use("/", usersViewRouter);
 //Routes login gitHub
 app.use("/github", githubLoginViewRouter);
