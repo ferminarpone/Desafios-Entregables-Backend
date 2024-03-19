@@ -4,15 +4,16 @@
     <div class="d-flex justify-content-end">
       <button id="idCart" data-cart-id="{{user.cart}}">Cart</button>
     </div>
-    <div class="mt-4 pt-3 mb-4 bg-opacity-8 border rounded text-center"> 
+    <div class="mt-4 pt-3 mb-4 bg-opacity-8 border rounded text-center">
       <h3>Bienvenido {{user.name}}</h3>
       <h4 id=""> Perfil </h4>
       <p>Nombre: {{user.name}}</p>
       <p>Email: {{user.email}}</p>
-      <p>Edad: {{user.age}}</p> 
+      <p>Edad: {{user.age}}</p>
       <p>Rol: {{user.role}}</p>
       <p> IdCart: {{user.cart}} </p>
-      <button id="logout" class="btn btn-outline-secondary mb-3"> Cerrar sesión</button>
+      <button id="logout" class="btn btn-outline-secondary mb-3">
+        Cerrar sesión</button>
     </div>
     <div class="container row d-flex justify-content-start text-center">
       {{#each renderProducts}}
@@ -29,7 +30,10 @@
               <p class="card-text"><strong>Precio:</strong> {{this.price}}</p>
               <p class="card-text"><strong>Code:</strong> {{this.code}}</p>
               <p class="card-text"><strong>Id:</strong> {{this.id}}</p>
-              <button class="btn btn-outline-primary addCartBtn" data-product-id="{{this.id}}">
+              <button
+                class="btn btn-outline-primary addCartBtn"
+                data-product-id="{{this.id}}"
+              >
                 Agregar a carrito
               </button>
             </div>
@@ -44,7 +48,7 @@
               <li class="page-item me-2 text-body-secondary"><a
                   class="page-link text-reset"
                   href={{products.prevLink}}
-                ><<</a></li>
+                ></a></li>
             {{/if}}
             <p class="btn border">
               Página
@@ -70,3 +74,4 @@
   {{/if}}
 </div>
 <script src="/js/home.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

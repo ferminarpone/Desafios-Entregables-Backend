@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { cartService } from "../services/service.js";
 
 export const createCartController = async (req, res) => {
@@ -37,8 +38,9 @@ export const getCartByIdController = async (req, res) => {
 
 export const addProductInCartController = async (req, res) => {
   const { cid, pid } = req.params;
+  let user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
   try {
-    const response = await cartService.addProductInCart(cid, pid);
+    const response = await cartService.addProductInCart(cid, pid, user.user);
     res.status(200).json({
       mensaje: `El producto con id ${pid} fue agregado exitosamente al carrito con id ${cid}`,
     });

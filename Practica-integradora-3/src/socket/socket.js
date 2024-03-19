@@ -40,19 +40,15 @@ const initSocketServer = (server) => {
       let user = jwt.verify(jwtCookieToken[1], "EcommerceSecretKeyJWT");
 
       try {
-        if (user.user.role === "Premium") {
-          if(data.owner != user.user.email){
-            CustomError.createError({
-              name: "Delete product error",
-              cause: deleteProductErrorInfo(),
-              message: `Solo puedes eliminar productos propios.`,
-              code: EErrors.INVALID_TYPES_ERROR,
-            });
-          }
-            await ProductServices.deleteProduct(data._id);
-        } else {
-         await ProductServices.deleteProduct(data._id);
+        if (user.user.role === "Premium" && data.owner !== user.user.email) {
+          CustomError.createError({
+            name: "Delete product error",
+            cause: deleteProductErrorInfo(),
+            message: "Solo puedes eliminar productos propios.",
+            code: EErrors.INVALID_TYPES_ERROR,
+          });
         }
+        await ProductServices.deleteProduct(data._id);
         const prod = await ProductServices.getAllProducts();
         socketCliente.emit("products_list", prod.payload);
       } catch (e) {

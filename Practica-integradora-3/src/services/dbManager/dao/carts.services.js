@@ -1,4 +1,7 @@
-import { ticketService } from "../../service.js";
+import CustomError from "../../errors/CustomError.js";
+import EErrors from "../../errors/errors-enum.js";
+import { addProductErrorInfo } from "../../errors/messages/cart-creation-error.message.js";
+import { productService, ticketService } from "../../service.js";
 import { cartModel } from "../models/carts.model.js";
 import productsServices from "./products.services.js";
 import userServices from "./user.services.js";
@@ -16,8 +19,19 @@ class CartServices {
     return await cartModel.create(cart);
   }
 
-  async addProductInCart(cid, pid) {
+  async addProductInCart(cid, pid, user) {
     const cart = await cartModel.findById(cid);
+    const product = await productService.getProductById(pid);
+
+    if (user.role === "Premium" && user.email === product.owner) {
+      CustomError.createError({
+        name: "Add product in cart error",
+        cause: addProductErrorInfo(pid),
+        message: `No es posible agregar productos propios al carrito.`,
+        code: EErrors.INVALID_TYPES_ERROR,
+      });
+    }
+
     const searchProduct = cart.products.find((prod) => prod.productId == pid);
     if (!searchProduct) {
       cart.products = [...cart.products, { productId: pid, quantity: 1 }];
@@ -123,7 +137,7 @@ class CartServices {
       amount: totalAmount,
       purchaser: user.email,
       purchase_datetime: new Date(),
-      products: cart
+      products: cart,
     };
     return await ticketService.createTicket(ticket);
   }
