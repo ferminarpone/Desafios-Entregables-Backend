@@ -95,6 +95,7 @@ class CartServices {
     try {
       const cart = await this.getCartById(cid, "products.productId");
       const newCart = await this.stockControl(cart);
+      console.log(newCart)
       if(newCart.length === 0){
         throw Error("Stock insuficiente")
       } 
@@ -104,6 +105,7 @@ class CartServices {
       const secondcart = await this.getCartById(cid, "products.productId");
       return newCart;
     } catch (e) {
+      console.log(e)
       throw Error (e.message)
     }
   }

@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import config from "../config/config.js";
 import jwt from "jsonwebtoken";
-import { passwordService, ticketService } from "../services/service.js";
+import { passwordService, ticketService, userServices } from "../services/service.js";
 import { logger } from "../config/logger-custom.js";
 import { v4 } from "uuid";
 
@@ -82,7 +82,10 @@ export const sendEmailToResetPassController = async (req, res) => {
     if (!email) {
       return res.status(400).send("No se ingreso el email");
     }
-
+    const user = await userServices.getUser({email});
+   if(!user){
+    return res.status(404).send("No user");
+   }
     const token = v4();
     const link = `http://localhost:8080/api/settings/reset-password/${token}`;
     const pswInfo = {

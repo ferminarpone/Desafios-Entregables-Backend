@@ -21,7 +21,7 @@ form.addEventListener("submit", (e) => {
         }else {
       Swal.fire({
         icon: "error",
-        text: `Credenciales incorrectas`,
+        text: `El usuario ingresado, no existe.`,
         width: 400,
       });
     }
