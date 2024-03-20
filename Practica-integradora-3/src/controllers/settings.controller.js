@@ -6,13 +6,13 @@ export const resetPasswordController = async (req, res) => {
   const { password1, password2 } = req.body;
   try {
     const pswInfo = await passwordService.getPswInfoByToken({ token });
-
     const now = new Date();
     if (now > pswInfo.expirationTime) {
       req.logger.warning("Expiro el link para modificar la contraseña");
       passwordService.deletePswInfo(pswInfo._id);
       //LINK A MODIFICAR CONTRASEÑA
-      // return res.redirect('/api/email/sendEmailToResetPass')
+      //LANZAR ERROR y capturar en front y redireccionar luego de un alert
+      return res.redirect('/password-reset')
     }
     const email = pswInfo.email;
     const user = await userServices.getUser({ email });

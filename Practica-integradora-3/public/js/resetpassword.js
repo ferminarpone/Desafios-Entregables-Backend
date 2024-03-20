@@ -15,7 +15,7 @@ resetForm.addEventListener("submit", (e) => {
     },
   }).then((result) => {
     if (result.status === 200) {
-      window.location.replace("/products");
+      window.location.replace("/");
         }else {
       Swal.fire({
         icon: "error",
