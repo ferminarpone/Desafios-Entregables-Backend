@@ -20,3 +20,10 @@ img{
 .titleSARol{
     font-size: 22px;
 }
+
+label{
+    width: 100px;
+}
+.repetirPsw{
+    width: 150px;
+}

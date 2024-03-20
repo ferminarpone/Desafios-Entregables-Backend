@@ -47,3 +47,10 @@ changeRole.addEventListener("click", (e)=>{
      }
    });  
 })
+
+//Home
+const home = document.querySelector('#home');
+home.addEventListener("click", (e)=>{
+  e.preventDefault();
+  window.location.replace("/products");
+})
