@@ -1,0 +1,27 @@
+paths:
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un productos de la App, filtrando por su pid.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que desea visualizar.
+          schema:
+            $type: String  
+      responses:
+        "200":
+          description: Respuesta exitosa! Retorna un objeto con el detalle del producto.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "404":
+          description: Error. No se han encontrado el producto. Se envío un dato no valido.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.   
+

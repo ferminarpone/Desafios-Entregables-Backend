@@ -20,7 +20,9 @@ import config from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
 import { addLogger, logger } from "./config/logger-custom.js";
-import router from "./routes/users.router.js";
+import { dirname } from "path";
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUIExpress from 'swagger-ui-express'
 
 
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
@@ -101,7 +103,7 @@ app.use('/mockingproducts', mockingRouter);
 //Route Settings
 app.use('/api/settings', settingsRouter)
 
-// Logger Test
+//Route Logger Test
 app.get('/loggerTest', (req, res)=> {
   req.logger.fatal("Prueba de log level fatal --> en Endpoint"); 
   req.logger.error("Prueba de log level error --> en Endpoint"); 
@@ -112,3 +114,18 @@ app.get('/loggerTest', (req, res)=> {
 
   res.send("Prueba de logger!");
 })
+
+
+//Documentación Swagger
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentación API Ecommerce",
+      description: "Documentación de aplicación Ecommerce, trabajo CoderHouse."
+    }
+  },
+  apis: [`./src/docs/**/*.yaml`]
+}
+const specs = swaggerJsDoc(swaggerOptions)
+app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))

@@ -43,8 +43,6 @@ export const getProductByIdController = async (req, res) => {
 };
 
 export const createProductController = async (req, res) => {
-  console.log("user")
-  console.log(req.user)
   try {
     const newProduct = req.body;
     await productService.createProduct(newProduct);
