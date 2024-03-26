@@ -2,6 +2,7 @@ import cartsDao from "../services/dbManager/dao/carts.services.js";
 import ProductServices from "../services/dbManager/dao/products.services.js";
 import CustomError from "../services/errors/CustomError.js";
 import EErrors from "../services/errors/errors-enum.js";
+import { IdProductErrorInfo } from "../services/errors/messages/product-creation-error.message.js";
 
 export const validateProdDel = async (req, res, next) => {
   const { pid, cid } = req.params;

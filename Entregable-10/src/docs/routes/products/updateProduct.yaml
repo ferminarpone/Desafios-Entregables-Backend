@@ -21,10 +21,11 @@ paths:
         "200":
           description: Producto actualizado con exito!
           content:
-            application/json:
+           text/plain:
               schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Products"
+                type: object
+              example: {
+                mensaje: "El producto se actualizo exitosamente."
+              }
         "404":
           description: Error. No se ha podido actualizar el producto.

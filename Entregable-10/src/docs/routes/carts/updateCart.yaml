@@ -16,19 +16,18 @@ paths:
         content:
           application/json:
             schema:
-            type: array
-            items:
-
-            
-              $ref: "#/components/requestBodies/UpdatedCart"  
+              type: array
+              items:
+                $ref: "#/components/requestBodies/UpdatedCart"  
       responses:
         "200":
           description: Carrito actualizado con exito!
           content:
-            application/json:
+           text/plain:
               schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Carts"
+                type: object
+              example: {
+                mensaje: "El carrito con id 66021450e5c6410df9524c8a fue actualizado exitosamente"
+              }
         "404":
           description: Error. No se ha podido actualizar el carrito.

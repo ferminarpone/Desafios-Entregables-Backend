@@ -8,10 +8,11 @@ paths:
         "200":
           description: Carrito creado con exito!
           content:
-            application/json:
+           text/plain:
               schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Carts"
+                type: object
+              example: {
+                mensaje: "El carrito fue agregado exitosamente."
+              }
         "404":
-          description: Error. No se ha podido crear el carrito.
+          description: Error. No se ha podido crear el carrito. 

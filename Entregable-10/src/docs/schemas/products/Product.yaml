@@ -34,13 +34,22 @@ components:
           type: String
           description: Creador del producto
       example:
-        _id: ObjectId("65aeae876b453f347edf2125")
-        title: Apple Watch
-        description: Smart watch
-        code: Apple4
-        price: 300
-        status: true
-        stock: 19
-        category: Electronica
-        thumbnail: data:image/jpeg;base64,/9j/
-        owner: admin
+        products:
+          {
+            status: succes,
+            payload:
+              [
+                {
+                  _id: "65aeae876b453f347edf2125",
+                  title: Apple Watch,
+                  description: Smart watch,
+                  code: Apple4,
+                  price: 300,
+                  status: true,
+                  stock: 19,
+                  category: Electronica,
+                  thumbnail: data:image/jpeg;base64,
+                  owner: admin,
+                },
+              ],
+          }
