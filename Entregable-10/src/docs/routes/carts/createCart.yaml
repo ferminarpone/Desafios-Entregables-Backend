@@ -1,0 +1,17 @@
+paths:
+  /api/carts:
+    post:
+      summary: Crear un nuevo carrito en la App. 
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carrito creado con exito!
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "404":
+          description: Error. No se ha podido crear el carrito.
