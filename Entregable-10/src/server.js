@@ -20,7 +20,6 @@ import config from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
 import { addLogger, logger } from "./config/logger-custom.js";
-import { dirname } from "path";
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUIExpress from 'swagger-ui-express'
 
@@ -125,7 +124,8 @@ const swaggerOptions = {
       description: "Documentación de aplicación Ecommerce, trabajo CoderHouse."
     }
   },
-  apis: [`./src/docs/**/*.yaml`]
+  apis: [`${__dirname}/docs/**/*.yaml`]
 }
 const specs = swaggerJsDoc(swaggerOptions)
 app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
+
