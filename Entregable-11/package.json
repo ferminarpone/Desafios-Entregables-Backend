@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "-": "^0.0.1",
     "@faker-js/faker": "^8.4.1",
     "@handlebars/allow-prototype-access": "^1.0.5",
     "bcrypt": "^5.1.1",
@@ -42,5 +43,9 @@
     "ignore": [
       "data/*.json"
     ]
+  },
+  "devDependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.4.0"
   }
 }
