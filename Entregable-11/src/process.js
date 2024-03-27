@@ -7,6 +7,7 @@ program
   .option("-d", "Varaible para debug", false)
   .option("-p <port>", "Puerto del servidor", 8080)
   .option("--mode <mode>", "Modo de trabajo", "develop")
+  .option("--test", "Variable para correr los test", false)
 
   .requiredOption(
     "-u <user>",

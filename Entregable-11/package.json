@@ -5,9 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nodemon src/server.js --test",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"
+
   },
   "keywords": [],
   "author": "",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "chai": "^5.1.0",
-    "mocha": "^10.4.0"
+    "mocha": "^10.4.0",
+    "supertest": "^6.3.4"
   }
 }
