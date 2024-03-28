@@ -3,6 +3,10 @@ export default class UsersRepository {
     this.dao = dao;
   }
   
+  getUsers = () => {
+    return this.dao.getUsers();
+  };
+
   getUser = (condition) => {
     return this.dao.getUser(condition);
   };

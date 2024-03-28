@@ -3,7 +3,7 @@ import EErrors from "../../errors/errors-enum.js";
 import { addProductErrorInfo } from "../../errors/messages/cart-creation-error.message.js";
 import { productService, ticketService, userServices } from "../../service.js";
 import { cartModel } from "../models/carts.model.js";
-import productsServices from "./products.services.js";
+import productsServices from "./Products.services.js";
 
 
 class CartServices {

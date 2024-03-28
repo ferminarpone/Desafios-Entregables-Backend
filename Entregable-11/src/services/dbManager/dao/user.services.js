@@ -1,6 +1,11 @@
 import { userModel } from "../models/user.model.js";
 
 class UserServices {
+
+  async getUsers() {
+    return await userModel.find();
+  }
+
   async getUser(condition) {
     return await userModel.findOne(condition);
   }
