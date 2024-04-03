@@ -45,12 +45,13 @@ export const getProductByIdController = async (req, res) => {
 export const createProductController = async (req, res) => {
   try {
     const newProduct = req.body;
-    await productService.createProduct(newProduct);
+    const response = await productService.createProduct(newProduct);
     res.status(200).json({
       mensaje: "El producto fue agregado con exito",
+      response
     });
   } catch (e) {
-    res.status(404).json({
+    res.status(400).json({
       error: e.message,
     });
   }

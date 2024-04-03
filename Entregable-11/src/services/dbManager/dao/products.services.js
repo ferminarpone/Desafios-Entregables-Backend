@@ -123,6 +123,10 @@ class ProductServices {
   async deleteProduct(id) {
     return await productModel.findByIdAndDelete(id);
   }
+
+  async deleteAllProducts() {
+    return await productModel.deleteMany()
+  }
 }
 
 export default new ProductServices();
