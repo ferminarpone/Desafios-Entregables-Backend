@@ -5,11 +5,7 @@ const requester = supertest("http://localhost:9090");
 
 describe("Testing Ecommerce App", () => {
   describe("Testing Products Api", () => {
-
-    before(function () {
-        this.uid;
-      });
-
+    let uid;
     it("Crear prducto: El API POST /api/products debe crear un producto correctamente", async () => {
       //Given
       const product = {
@@ -26,8 +22,8 @@ describe("Testing Ecommerce App", () => {
         .post("/api/products")
         .send(product);
 
-      this.uid = _body.response._id
-        //Assert
+      uid = _body.response._id;
+      //Assert
       expect(_body.response._id).to.be.ok;
       expect(statusCode).is.eqls(200);
     });
@@ -53,11 +49,10 @@ describe("Testing Ecommerce App", () => {
       expect(ok).is.eql(false);
     });
 
-     after(async function () {
-      const result = await requester.delete(`/api/products/${this.uid}`);
-    }); 
+    after(async function () {
+      const result = await requester.delete(`/api/products/${uid}`);
+    });
   });
-
 
   describe("Testing login y session con Cookies", () => {
     before(function () {
