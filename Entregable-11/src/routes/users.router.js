@@ -35,4 +35,6 @@ router.get("/logout", jwtController.logoutController);
 
 router.post("/premium/:uid", jwtController.changeRoleController)
 
+router.delete("/delete/:uid", jwtController.deleteController)
+
 export default router;

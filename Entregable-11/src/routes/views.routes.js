@@ -22,8 +22,9 @@ router.get(
 );
 
 router.get("/chat", passportCall("jwt"), authorization("User"), (req, res) => {
+
   res.render("chat.hbs", {
-    title: "Chat",
+    title: "Chat",  
     fileCss: "styles.css",
   });
 });

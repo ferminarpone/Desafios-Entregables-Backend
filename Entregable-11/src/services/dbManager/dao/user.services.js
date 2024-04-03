@@ -21,6 +21,10 @@ class UserServices {
   async updateUser(id, user) {
     return await userModel.findByIdAndUpdate(id, user)
   }
+
+  async deleteUser(id){
+    return await userModel.deleteOne(id)
+  }
 }
 
 export default new UserServices();

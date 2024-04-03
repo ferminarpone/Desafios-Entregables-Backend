@@ -16,7 +16,7 @@ export const jwtRegisterController = (req, res, next) => {
     }
     res
       .status(201)
-      .send({ status: "success", message: "Usuario creado con exito." });
+      .send({ status: "success", message: "Usuario creado con exito.", user });
   })(req, res, next);
 };
 
@@ -97,3 +97,17 @@ export const changeRoleController = async (req, res) => {
     });
   }
 };
+
+export const deleteController = async(req, res)=>{
+  const { uid } = req.params;
+  try {
+    const response = await userServices.deleteUser({_id: uid} )
+    res.status(200).json({
+      mensaje: "Usuario eliminado exitosamente",
+    });
+  } catch (e) {
+    res.status(400).json({
+      error: e.message,
+    });
+  }
+}

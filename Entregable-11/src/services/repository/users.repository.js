@@ -1,3 +1,5 @@
+import { id_ID } from "@faker-js/faker";
+
 export default class UsersRepository {
   constructor(dao) {
     this.dao = dao;
@@ -22,4 +24,8 @@ export default class UsersRepository {
   updateUser = (id, user) => {
     return this.dao.updateUser(id, user);
   };
+
+  deleteUser = (id) => {
+    return this.dao.deleteUser(id)
+  }
 }
