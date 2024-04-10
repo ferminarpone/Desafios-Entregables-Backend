@@ -4,9 +4,11 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import { faker } from "@faker-js/faker/locale/es";
+import multer from "multer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+export { __dirname };
 
 //Generación del Hash
 export const createHash = (password) =>
@@ -62,12 +64,12 @@ export const authorization = (role1, role2) => {
       return res
         .status(401)
         .send("Usuario no autorizado: Usuario no encontrado en JWT");
-    if (req.user.role === role1 || req.user.role === role2 ) {
+    if (req.user.role === role1 || req.user.role === role2) {
       next();
-    }else{
+    } else {
       return res
-      .status(403)
-      .send("Forbidden: El usuario no tiene permisos con este rol.");
+        .status(403)
+        .send("Forbidden: El usuario no tiene permisos con este rol.");
     }
   };
 };
@@ -87,4 +89,13 @@ export const generateProduct = () => {
   };
 };
 
-export { __dirname };
+//Multer config
+
+export const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, `${__dirname}/public/img`);
+  },
+  filename: function(req, file, cb){
+    cb(null, `${Date.now()}-${file.originalname}`)
+  }
+});

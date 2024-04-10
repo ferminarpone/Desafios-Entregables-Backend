@@ -1,25 +1,21 @@
 import { Router } from "express";
 import passport from "passport";
 import { validateUser } from "../utils/validateUser.js";
-import * as jwtController from "../controllers/users.controller.js";
+import * as userController from "../controllers/users.controller.js";
 
 const router = Router();
 
 //Register
-router.post(
-  "/register",
-  validateUser,
-  jwtController.jwtRegisterController
-);
+router.post("/register", validateUser, userController.jwtRegisterController);
 
 //Login
-router.post("/login", jwtController.loginController);
+router.post("/login", userController.loginController);
 
 //Login Github con Jwt
 router.get(
   "/github",
   passport.authenticate("github", { scope: ["user:email"] }),
-  jwtController.loginGithubController
+  userController.loginGithubController
 );
 
 router.get(
@@ -28,13 +24,19 @@ router.get(
     session: false,
     failureRedirect: "github/error",
   }),
-  jwtController.loginGithubCallbackController
+  userController.loginGithubCallbackController
 );
 
-router.get("/logout", jwtController.logoutController);
+//Logout
+router.get("/logout", userController.logoutController);
 
-router.post("/premium/:uid", jwtController.changeRoleController)
+// Cambio de Roles
+router.post("/premium/:uid", userController.changeRoleController);
 
-router.delete("/delete/:uid", jwtController.deleteController)
+//Eliminar usuario
+router.delete("/delete/:uid", userController.deleteController);
+
+//Subir archivos
+router.post('/:uid/documents', userController.documentsController)
 
 export default router;

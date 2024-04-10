@@ -118,3 +118,7 @@ export const deleteController = async(req, res)=>{
     });
   }
 }
+
+export const documentsController = async(req, res)=>{
+  const { uid } = req.params;
+}
