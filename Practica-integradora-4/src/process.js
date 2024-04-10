@@ -33,4 +33,5 @@ process.on("message", (message) => {
   );
   logger.info(`Mensaje recibido: ${message}`);
 });
+
 export default program;

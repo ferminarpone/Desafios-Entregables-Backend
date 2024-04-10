@@ -72,16 +72,23 @@ export const loginGithubCallbackController = async (req, res) => {
 };
 
 export const logoutController = async (req, res) => {
-  res.clearCookie("jwtCookieToken").send("Session cerrada correctamente");
+  const time = `${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}`
+  const user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
+  try {
+    const resp = await userServices.updateUser(user.user.id, {last_connection: time})
+    res.clearCookie("jwtCookieToken").send("Session cerrada correctamente");
+  } catch (error) {
+    res.status(404).json({
+      error: error.message,
+    });
+  } 
 };
 
 export const changeRoleController = async (req, res) => {
   const uid = req.params.uid;
-  console.log(uid)
   let user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
   try {
     if (user.user.role === "Premium") {
-      console.log("entro")
       await userServices.updateUser(uid, { role: "User" });
       return res
         .status(200)
