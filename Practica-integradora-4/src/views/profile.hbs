@@ -10,7 +10,7 @@
     <h3>Bienvenido {{user.name}}</h3>
     <p><strong>Nombre: </strong>{{user.name}}</p>
     <p><strong>Email: </strong> {{user.email}}</p>
-    <p><strong>Edad: </strong>: </strong>{{user.age}}</p>
+    <p><strong>Edad: </strong>{{user.age}}</p>
     <div class="d-flex justify-content-center">
       <p class="my-auto"><strong>Rol: </strong>{{user.role}}</p>
       <button
@@ -20,10 +20,50 @@
         class="btn btn-outline-secondary mx-3"
       >Modificar Rol</button>
     </div>
-    <p> <strong>IdCart: </strong> {{user.cart}} </p>
+    <p> <strong>IdCart:</strong> {{user.cart}} </p>
     <button id="logout" class="btn btn-outline-secondary mb-3">
       Cerrar sesión</button>
   </div>
+
+  <h3 class="mt-4 pt-2 pb-2 bg-opacity-8 border rounded text-center">Completar o
+    Actualizar documentación</h3>
+
+  <form
+    id="formDocuments"
+    class="mt-2 mb-4 p-3 bg-opacity-8 border rounded text-center"
+    enctype="multipart/form-data"
+    data-form="{{user.id}}"
+  >
+    <label class="mt-2 doc-label" for="identificacion">Identificación: </label>
+    <input type="file" id="identificacion" name="identificacion" />
+    <input class="mx-4 btn btn-primary" type="submit" />
+  </form>
+
+  <form
+    id="formDocuments"
+    class="mt-2 mb-4 p-3 bg-opacity-8 border rounded text-center"
+    enctype="multipart/form-data"
+    data-form="{{user.id}}"
+  >
+    <label class="mt-2 doc-label" for="domicilio">Comprobante de domicilio:
+    </label>
+    <input type="file" id="domicilio" name="domicilio" />
+    <input class="mx-4 btn btn-primary" type="submit" />
+  </form>
+
+  <form
+    id="formDocuments"
+    class="mt-2 mb-4 p-3 bg-opacity-8 border rounded text-center"
+    enctype="multipart/form-data"
+    data-form="{{user.id}}"
+  >
+    <label class="mt-2 doc-label" for="cuenta">Comprobante de estado de cuenta:
+    </label>
+    <input type="file" id="cuenta" name="cuenta" />
+    <input class="mx-4 btn btn-primary" type="submit" />
+  </form>
+
+
 </div>
 <script src="/js/profile.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

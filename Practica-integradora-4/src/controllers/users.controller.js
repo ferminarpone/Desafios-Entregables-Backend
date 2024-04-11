@@ -98,11 +98,30 @@ export const changeRoleController = async (req, res) => {
         .status(200)
         .send({ message: 'Rol modificado a "User" correctamente.' });
     }
-    await userServices.updateUser(uid, { role: "Premium" });
-    return res
-      .status(200)
-      .send({ message: 'Rol modificado a "Premium" correctamente.' });
+
+    const userInfo = await userServices.getUser({
+      _id: uid,
+      documents: {
+        $all: [
+          { $elemMatch: { name: "Imagen historia.png" } },
+          { $elemMatch: { name: "IMG_1800.jpg" } },
+        ],
+      },
+    });
+
+    if (userInfo) {
+      await userServices.updateUser(uid, { role: "Premium" });
+      return res
+        .status(200)
+        .send({ message: 'Rol modificado a "Premium" correctamente.' });
+    } else {
+      return res.status(400).json({
+        error:
+          "Para ser usuario Premium es necesario completar toda la documentación",
+      });
+    }
   } catch (error) {
+    console.log(error.message);
     res.status(404).json({
       error: error.message,
     });
@@ -126,27 +145,31 @@ export const deleteController = async (req, res) => {
 export const documentsController = async (req, res) => {
   const { uid } = req.params;
   const files = req.files;
+  console.log(files);
+  const documento = req.body
+  console.log(documento)
+/* 
   if (files) {
     try {
       const documents = [];
       for (const element of files) {
         const file = dataUri(element).content;
         const result = await v2.uploader.upload(file, {
-          folder: "Ecommerce/Users",
+          folder: "Ecommerce/Documents",
         });
         const image = result.url;
         const newDocument = {
-          name: element.originalname,
+          name: documento,
           reference: image,
         };
         documents.push(newDocument);
       }
       await userServices.updateUser(uid, { documents: documents });
       return res.status(200).json({
-        messge: "Your images has been uploded successfully to cloudinary",
+        messge: "Your documents has been uploded successfully to cloudinary",
       });
     } catch (error) {
-      res.status(400).json({
+      res.status(500).json({
         messge: "someting went wrong while processing your request",
         data: {
           error,
@@ -157,5 +180,5 @@ export const documentsController = async (req, res) => {
     return res.status(400).json({
       message: "No files were provided in the request",
     });
-  }
+  } */
 };

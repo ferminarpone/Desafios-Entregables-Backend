@@ -84,7 +84,7 @@ app.use(express.static(`${__dirname}/../public`));
 
 // Multer - Cloudinary
 app.use('*', cloudinaryConfig)
-app.get('/*', (req, res) => res.sendFile(resolve(__dirname, '../public/index.html')));
+//app.get('/*', (req, res) => res.sendFile(resolve(__dirname, '../public/index.html')));
 
 // Routes de productos y carritos
 app.use("/api/products", productsRouter);
