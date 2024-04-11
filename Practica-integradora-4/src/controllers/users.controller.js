@@ -3,6 +3,9 @@ import UsersDto from "../services/dto/users.dto.js";
 import { generateJWTToken, isValidPassword } from "../utils.js";
 import { userServices } from "../services/service.js";
 import jwt from "jsonwebtoken";
+import { v2 } from "../config/config.js";
+import { dataUri } from "../utils.js";
+
 
 //Register
 export const jwtRegisterController = (req, res, next) => {
@@ -119,10 +122,46 @@ export const deleteController = async(req, res)=>{
   }
 }
 
-/* export const documentsController = async(req, res)=>{
+export const documentsController = async(req, res)=> {
   const { uid } = req.params;
-  console.log(req.file)
+  if (req.file) {
+    const file = dataUri(req).content;
+    return v2.uploader
+      .upload(file, {folder: "Ecommerce/Users"})
+      .then( async(result) => {
+        const image = result.url;
+        try {
+          const newDocument = {
+            name: req.file.originalname,
+            reference: image
+          }
+          const resp = await userServices.updateUser(uid, {documents: [newDocument]} )
+        } catch (error) {
+          res.status(400).json({
+            messge: "someting went wrong while processing your request",
+            data: {
+              error,
+            },
+          })
+        }
+
+        return res.status(200).json({
+          messge: "Your image has been uploded successfully to cloudinary",
+          data: {
+            image,
+          },
+        });
+      })
+      .catch((err) =>
+        res.status(400).json({
+          messge: "someting went wrong while processing your request",
+          data: {
+            err,
+          },
+        })
+      );
+  }
 }
- */
+ 
 
 
