@@ -16,12 +16,13 @@ import cookieParser from "cookie-parser";
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
 import jwtRouter from "./routes/users.router.js";
 import settingsRouter from "./routes/settings.router.js";
-import config from "./config/config.js";
+import config, { cloudinaryConfig } from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
 import { addLogger, logger } from "./config/logger-custom.js";
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUIExpress from 'swagger-ui-express'
+import { resolve } from  'path';
 
 
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
@@ -80,6 +81,10 @@ app.set("views", `${__dirname}/views`);
 
 // Public
 app.use(express.static(`${__dirname}/../public`));
+
+// Multer - Cloudinary
+app.use('*', cloudinaryConfig)
+app.get('/*', (req, res) => res.sendFile(resolve(__dirname, '../public/index.html')));
 
 // Routes de productos y carritos
 app.use("/api/products", productsRouter);

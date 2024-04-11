@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 import { faker } from "@faker-js/faker/locale/es";
 import multer from "multer";
+import Datauri from 'datauri/parser.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -89,13 +90,21 @@ export const generateProduct = () => {
   };
 };
 
-//Multer config
+//Multer and Cloudinary config
 
-export const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, `${__dirname}/public/img`);
-  },
-  filename: function(req, file, cb){
-    cb(null, `${Date.now()}-${file.originalname}`)
+const storage = multer.memoryStorage();
+
+const multerUploads = multer({
+  storage,
+  // si se genera algun error, lo capturamos
+  onError: function (err, next) {
+      console.log(err);
+      next();
   }
 });
+const dUri = new Datauri();
+const dataUri = req => {
+  return dUri.format(path.extname(req.file.originalname).toString(), req.file.buffer);
+};
+
+export { multerUploads, dataUri };
