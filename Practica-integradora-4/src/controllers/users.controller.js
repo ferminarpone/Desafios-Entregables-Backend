@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 import { v2 } from "../config/config.js";
 import { dataUri } from "../utils.js";
 
-
 //Register
 export const jwtRegisterController = (req, res, next) => {
   passport.authenticate("register", (err, user, info) => {
@@ -75,16 +74,18 @@ export const loginGithubCallbackController = async (req, res) => {
 };
 
 export const logoutController = async (req, res) => {
-  const time = `${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}`
+  const time = `${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}`;
   const user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
   try {
-    const resp = await userServices.updateUser(user.user.id, {last_connection: time})
+    const resp = await userServices.updateUser(user.user.id, {
+      last_connection: time,
+    });
     res.clearCookie("jwtCookieToken").send("Session cerrada correctamente");
   } catch (error) {
     res.status(404).json({
       error: error.message,
     });
-  } 
+  }
 };
 
 export const changeRoleController = async (req, res) => {
@@ -108,10 +109,10 @@ export const changeRoleController = async (req, res) => {
   }
 };
 
-export const deleteController = async(req, res)=>{
+export const deleteController = async (req, res) => {
   const { uid } = req.params;
   try {
-    const response = await userServices.deleteUser({_id: uid} )
+    const response = await userServices.deleteUser({ _id: uid });
     res.status(200).json({
       mensaje: "Usuario eliminado exitosamente",
     });
@@ -120,48 +121,41 @@ export const deleteController = async(req, res)=>{
       error: e.message,
     });
   }
-}
+};
 
-export const documentsController = async(req, res)=> {
+export const documentsController = async (req, res) => {
   const { uid } = req.params;
-  if (req.file) {
-    const file = dataUri(req).content;
-    return v2.uploader
-      .upload(file, {folder: "Ecommerce/Users"})
-      .then( async(result) => {
-        const image = result.url;
-        try {
-          const newDocument = {
-            name: req.file.originalname,
-            reference: image
-          }
-          const resp = await userServices.updateUser(uid, {documents: [newDocument]} )
-        } catch (error) {
-          res.status(400).json({
-            messge: "someting went wrong while processing your request",
-            data: {
-              error,
-            },
-          })
-        }
-
-        return res.status(200).json({
-          messge: "Your image has been uploded successfully to cloudinary",
-          data: {
-            image,
-          },
+  const files = req.files;
+  if (files) {
+    try {
+      const documents = [];
+      for (const element of files) {
+        const file = dataUri(element).content;
+        const result = await v2.uploader.upload(file, {
+          folder: "Ecommerce/Users",
         });
-      })
-      .catch((err) =>
-        res.status(400).json({
-          messge: "someting went wrong while processing your request",
-          data: {
-            err,
-          },
-        })
-      );
+        const image = result.url;
+        const newDocument = {
+          name: element.originalname,
+          reference: image,
+        };
+        documents.push(newDocument);
+      }
+      await userServices.updateUser(uid, { documents: documents });
+      return res.status(200).json({
+        messge: "Your images has been uploded successfully to cloudinary",
+      });
+    } catch (error) {
+      res.status(400).json({
+        messge: "someting went wrong while processing your request",
+        data: {
+          error,
+        },
+      });
+    }
+  } else {
+    return res.status(400).json({
+      message: "No files were provided in the request",
+    });
   }
-}
- 
-
-
+};

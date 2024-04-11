@@ -40,8 +40,9 @@ router.delete("/delete/:uid", userController.deleteController);
 //Subir archivos
 router.post(
   "/:uid/documents",
-  multerUploads.single("file"),
+  multerUploads.array("file"),
   userController.documentsController
-); 
+);  
+
 
 export default router;
