@@ -63,28 +63,41 @@ logout.addEventListener("click", (e) => {
 });
 
 //Form de Documentación
-const form = document.getElementById("formDocuments");
-
-form.addEventListener("submit", async (e) => {
+const formIdentificacion = document.getElementById("formIdentificacion");
+formIdentificacion.addEventListener("submit", async (e) => {
   e.preventDefault();
   const uid = e.target.dataset.form;
   const identificacion = document.getElementById("identificacion").files[0];
-  console.log(identificacion);
-
-  const domicilio = document.getElementById("domicilio").files[0];
-  const cuenta = document.getElementById("cuenta").files[0];
-console.log(cuenta)
   const formData = new FormData();
   formData.append("file", identificacion);
-  formData.set("identificacion", "identificacion");
+  formData.set("doc", "identificacion");
+  fetching(uid, formData);
+});
 
+const formDomicilio = document.getElementById("formDomicilio");
+
+formDomicilio.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const uid = e.target.dataset.form;
+  const domicilio = document.getElementById("domicilio").files[0];
+  const formData = new FormData();
   formData.append("file", domicilio);
-  formData.set("domicilio", "domicilio");
+  formData.set("doc", "domicilio");
+  fetching(uid, formData);
+});
 
+const formCuenta = document.getElementById("formCuenta");
+formCuenta.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const uid = e.target.dataset.form;
+  const cuenta = document.getElementById("cuenta").files[0];
+  const formData = new FormData();
   formData.append("file", cuenta);
-  formData.set("cuenta", "cuenta");
+  formData.set("doc", "cuenta");
+  fetching(uid, formData);
+});
 
-
+const fetching = async (uid, formData) => {
   await fetch(`/api/users/${uid}/documents`, {
     method: "POST",
     body: formData,
@@ -92,7 +105,7 @@ console.log(cuenta)
     if (result.status === 400) {
       Swal.fire({
         icon: "error",
-        text: `Debes adjuntar los documentos.`,
+        text: `Debes adjuntar el documento.`,
         width: 400,
       });
     }
@@ -111,4 +124,4 @@ console.log(cuenta)
       });
     }
   });
-});
+};

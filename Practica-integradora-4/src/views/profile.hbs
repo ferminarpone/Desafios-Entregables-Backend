@@ -29,40 +29,46 @@
     Actualizar documentación</h3>
 
   <form
-    id="formDocuments"
+    id="formIdentificacion"
     class="mt-2 mb-4 p-3 bg-opacity-8 border rounded text-center"
     enctype="multipart/form-data"
     data-form="{{user.id}}"
   >
-    <label class="mt-2 doc-label" for="identificacion">Identificación: </label>
+    <label class="mt-2 doc-label" for="identificacion"><strong>
+        Identificación:
+      </strong>
+    </label>
     <input type="file" id="identificacion" name="identificacion" />
     <input class="mx-4 btn btn-primary" type="submit" />
   </form>
 
   <form
-    id="formDocuments"
+    id="formDomicilio"
     class="mt-2 mb-4 p-3 bg-opacity-8 border rounded text-center"
     enctype="multipart/form-data"
     data-form="{{user.id}}"
   >
-    <label class="mt-2 doc-label" for="domicilio">Comprobante de domicilio:
+    <label class="mt-2 doc-label" for="domicilio"><strong>
+        Comprobante de domicilio:
+      </strong>
     </label>
     <input type="file" id="domicilio" name="domicilio" />
     <input class="mx-4 btn btn-primary" type="submit" />
   </form>
 
   <form
-    id="formDocuments"
+    id="formCuenta"
     class="mt-2 mb-4 p-3 bg-opacity-8 border rounded text-center"
     enctype="multipart/form-data"
     data-form="{{user.id}}"
   >
-    <label class="mt-2 doc-label" for="cuenta">Comprobante de estado de cuenta:
+    <label class="mt-2 doc-label" for="cuenta"><strong>
+        Comprobante de estado de cuenta:
+      </strong>
     </label>
     <input type="file" id="cuenta" name="cuenta" />
     <input class="mx-4 btn btn-primary" type="submit" />
   </form>
-
 
 </div>
 <script src="/js/profile.js"></script>

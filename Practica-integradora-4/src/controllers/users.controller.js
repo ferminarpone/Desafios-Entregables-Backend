@@ -145,10 +145,7 @@ export const deleteController = async (req, res) => {
 export const documentsController = async (req, res) => {
   const { uid } = req.params;
   const files = req.files;
-  console.log(files);
-  const documento = req.body
-  console.log(documento)
-/* 
+  const documento = req.body.doc
   if (files) {
     try {
       const documents = [];
@@ -180,5 +177,5 @@ export const documentsController = async (req, res) => {
     return res.status(400).json({
       message: "No files were provided in the request",
     });
-  } */
+  } 
 };
