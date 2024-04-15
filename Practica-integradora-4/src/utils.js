@@ -103,8 +103,8 @@ const multerUploads = multer({
   }
 });
 const dUri = new Datauri();
-const dataUri = element => {
-  return dUri.format(path.extname(element.originalname).toString(), element.buffer);
+const dataUri = files => {
+  return dUri.format(path.extname(files.originalname).toString(), files.buffer);
 };
 
 export { multerUploads, dataUri };

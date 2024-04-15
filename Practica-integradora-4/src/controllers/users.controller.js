@@ -144,28 +144,34 @@ export const deleteController = async (req, res) => {
 
 export const documentsController = async (req, res) => {
   const { uid } = req.params;
-  const files = req.files;
-  const documento = req.body.doc
+  const files = req.files[0];
+  const documento = req.body.doc;
   if (files) {
     try {
-      const documents = [];
-      for (const element of files) {
-        const file = dataUri(element).content;
-        const result = await v2.uploader.upload(file, {
-          folder: "Ecommerce/Documents",
-        });
-        const image = result.url;
-        const newDocument = {
-          name: documento,
-          reference: image,
-        };
-        documents.push(newDocument);
+      const file = dataUri(files).content;
+      const result = await v2.uploader.upload(file, {
+        folder: "Ecommerce/Documents",
+      });
+      const image = result.url;
+      const newDocument = {
+        name: documento,
+        reference: image,
+      };
+      const user = await userServices.getUser({ _id: uid });
+      let userDocuments = user.documents;
+      const findDoc = userDocuments.find((doc) => doc.name === documento);
+      if (!findDoc) {
+        userDocuments = [...userDocuments, newDocument];
+      } else {
+        const index = userDocuments.findIndex((doc) => doc.name === documento);
+        userDocuments[index] = newDocument;
       }
-      await userServices.updateUser(uid, { documents: documents });
+      await userServices.updateUser(uid, { documents: userDocuments });
       return res.status(200).json({
         messge: "Your documents has been uploded successfully to cloudinary",
       });
     } catch (error) {
+      console.log(error);
       res.status(500).json({
         messge: "someting went wrong while processing your request",
         data: {
@@ -177,5 +183,6 @@ export const documentsController = async (req, res) => {
     return res.status(400).json({
       message: "No files were provided in the request",
     });
-  } 
+  }
 };
+
