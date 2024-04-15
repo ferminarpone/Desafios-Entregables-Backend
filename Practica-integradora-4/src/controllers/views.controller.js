@@ -10,13 +10,17 @@ export const productsViewController = async (req, res) => {
       sort,
       filter
     );
-    const renderProducts = products.payload;
+    const renderProducts =  products.payload;
+
+    const documents = req.user.documents.length>0? req.user.documents : null 
+    console.log(documents)
     res.render("home", {
       title: "Productos",
       renderProducts,
       products,
       fileCss: "styles.css",
       user: req.user,
+      documents,
     });
   } catch (e) {
     req.logger.error(e.message);

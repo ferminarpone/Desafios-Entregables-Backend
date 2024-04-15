@@ -103,8 +103,9 @@ export const changeRoleController = async (req, res) => {
       _id: uid,
       documents: {
         $all: [
-          { $elemMatch: { name: "Imagen historia.png" } },
-          { $elemMatch: { name: "IMG_1800.jpg" } },
+          { $elemMatch: { name: "Identificación" } },
+          { $elemMatch: { name: "Domicilio" } },
+          { $elemMatch: { name: "Cuenta" } },
         ],
       },
     });
@@ -185,4 +186,3 @@ export const documentsController = async (req, res) => {
     });
   }
 };
-

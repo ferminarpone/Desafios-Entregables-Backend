@@ -70,8 +70,11 @@ formIdentificacion.addEventListener("submit", async (e) => {
   const identificacion = document.getElementById("identificacion").files[0];
   const formData = new FormData();
   formData.append("file", identificacion);
-  formData.set("doc", "identificacion");
-  fetching(uid, formData);
+  formData.set("doc", "Identificación");
+
+  spinner("spinner")
+
+  fetching(uid, formData, "spinner");
 });
 
 const formDomicilio = document.getElementById("formDomicilio");
@@ -82,8 +85,11 @@ formDomicilio.addEventListener("submit", async (e) => {
   const domicilio = document.getElementById("domicilio").files[0];
   const formData = new FormData();
   formData.append("file", domicilio);
-  formData.set("doc", "domicilio");
-  fetching(uid, formData);
+  formData.set("doc", "Domicilio");
+
+  spinner("spinnerD")
+
+  fetching(uid, formData, "spinnerD");
 });
 
 const formCuenta = document.getElementById("formCuenta");
@@ -93,15 +99,23 @@ formCuenta.addEventListener("submit", async (e) => {
   const cuenta = document.getElementById("cuenta").files[0];
   const formData = new FormData();
   formData.append("file", cuenta);
-  formData.set("doc", "cuenta");
-  fetching(uid, formData);
+  formData.set("doc", "Cuenta");
+
+  spinner("spinnerC")
+
+  fetching(uid, formData, "spinnerC");
 });
 
-const fetching = async (uid, formData) => {
+const fetching = async (uid, formData, clase) => {
   await fetch(`/api/users/${uid}/documents`, {
     method: "POST",
     body: formData,
   }).then((result) => {
+
+    const spinner = document.querySelector(`.${clase}`);
+    spinner.style.display = 'none'; 
+
+
     if (result.status === 400) {
       Swal.fire({
         icon: "error",
@@ -121,7 +135,14 @@ const fetching = async (uid, formData) => {
         icon: "success",
         text: `Se subió la documentacion exitosamente.`,
         width: 400,
+      }).then((result) => {
+        window.location.reload();
       });
     }
   });
+};
+
+const spinner = (clase) => {
+  const spinner = document.querySelector(`.${clase}`);
+spinner.style.display = "inline-block"; 
 };

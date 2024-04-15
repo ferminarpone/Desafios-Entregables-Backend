@@ -31,3 +31,8 @@ label{
 .doc-label{
     width: 260px;
 }
+
+.spinner, .spinnerC, .spinnerD{
+    margin-bottom: -8px;
+    display: none;
+}
