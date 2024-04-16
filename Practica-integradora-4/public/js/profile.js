@@ -47,6 +47,14 @@ changeRole.addEventListener("click", (e) => {
         width: 400,
       });
     }
+    if (result.status === 401) {
+      Swal.fire({
+        icon: "error",
+        title:"Usuario Administrador.",
+        text: `No es posible modificar el rol.`,
+        width: 400,
+      });
+    }
   });
 });
 

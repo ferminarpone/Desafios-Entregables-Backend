@@ -1,19 +1,18 @@
-import ProductServices from "../services/dbManager/dao/products.services.js";
-import { cartService } from "../services/service.js";
+import { cartService, productService } from "../services/service.js";
 
 export const productsViewController = async (req, res) => {
   const { limit, page, sort, filter } = req.query;
   try {
-    const products = await ProductServices.getAllProducts(
+    const products = await productService.getAllProducts(
       limit,
       page,
       sort,
       filter
     );
-    const renderProducts =  products.payload;
+    const renderProducts = products.payload;
 
-    const documents = req.user.documents.length>0? req.user.documents : null 
-    console.log(documents)
+    const documents = req.user.documents.length > 0 ? req.user.documents : null;
+
     res.render("home", {
       title: "Productos",
       renderProducts,

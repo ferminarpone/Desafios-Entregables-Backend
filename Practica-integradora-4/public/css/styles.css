@@ -36,3 +36,14 @@ label{
     margin-bottom: -8px;
     display: none;
 }
+
+.comprobante{
+    width: 250px;
+}
+.comprobante ul {
+    list-style-type:disc;
+    padding-left: 0; 
+}
+.comprobante li {
+text-align: left;
+}

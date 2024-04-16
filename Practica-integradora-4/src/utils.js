@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 import { faker } from "@faker-js/faker/locale/es";
 import multer from "multer";
-import Datauri from 'datauri/parser.js';
+import Datauri from "datauri/parser.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,9 +48,9 @@ export const passportCall = (strategy) => {
     passport.authenticate(strategy, function (err, user, info) {
       if (err) return next(err);
       if (!user) {
-        return res
-          .status(401)
-          .send({ error: info.messages ? info.messages : info.toString() });
+        return res.render("expired.hbs");
+        /*.status(401)
+          .send({ error: info.messages ? info.messages : info.toString() }); */
       }
       req.user = user;
       next();
@@ -98,12 +98,12 @@ const multerUploads = multer({
   storage,
   // si se genera algun error, lo capturamos
   onError: function (err, next) {
-      console.log(err);
-      next();
-  }
+    console.log(err);
+    next();
+  },
 });
 const dUri = new Datauri();
-const dataUri = files => {
+const dataUri = (files) => {
   return dUri.format(path.extname(files.originalname).toString(), files.buffer);
 };
 

@@ -5,6 +5,7 @@ import { userServices } from "../services/service.js";
 import jwt from "jsonwebtoken";
 import { v2 } from "../config/config.js";
 import { dataUri } from "../utils.js";
+import { set } from "mongoose";
 
 //Register
 export const jwtRegisterController = (req, res, next) => {
@@ -45,10 +46,17 @@ export const loginController = async (req, res) => {
     res.cookie("jwtCookieToken", acces_token, {
       maxAge: 360000,
       httpOnly: true,
-    });
+    }); 
+    // Setear Last connection si caduca la cookie.
+     setTimeout(async()=>{
+      const time = `${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}`;
+      const resp = await userServices.updateUser(user._id, {
+          last_connection: time })
+    }, 360000) 
     res
       .status(200)
-      .json({ message: "Login exitoso", role: `${tokenUser.role}` });
+      .json({ message: "Login exitoso", role: `${tokenUser.role}` })
+
   } catch (error) {
     req.logger.error(error.message);
     return res
@@ -80,7 +88,7 @@ export const logoutController = async (req, res) => {
     const resp = await userServices.updateUser(user.user.id, {
       last_connection: time,
     });
-    res.clearCookie("jwtCookieToken").send("Session cerrada correctamente");
+    res.clearCookie("jwtCookieToken").send("Session cerrada correctamente"); 
   } catch (error) {
     res.status(404).json({
       error: error.message,
@@ -91,6 +99,12 @@ export const logoutController = async (req, res) => {
 export const changeRoleController = async (req, res) => {
   const uid = req.params.uid;
   let user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
+  if(user.user.role === "Admin"){
+    return res.status(401).json({
+      error:
+        "Usted es Usuario administrador.",
+    });
+  }
   try {
     if (user.user.role === "Premium") {
       await userServices.updateUser(uid, { role: "User" });
@@ -172,7 +186,6 @@ export const documentsController = async (req, res) => {
         messge: "Your documents has been uploded successfully to cloudinary",
       });
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         messge: "someting went wrong while processing your request",
         data: {

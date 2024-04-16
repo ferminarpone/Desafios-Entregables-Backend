@@ -36,7 +36,7 @@ socketClient.on("products_list", (data) => {
         <img src=${product.thumbnail} class="mx-auto mt-2" alt="..." />
         <div class="card-body">
           <h5 class="card-title">${product.title}</h5>
-          <p class="card-text"><strong>Descripcion:</strong> ${product.description}</p>
+          <p class="card-text"><strong>Descripción:</strong> ${product.description}</p>
           <p class="card-text"><strong>Categoria:</strong> ${product.category}</p>
           <p class="card-text"><strong>Stock:</strong> ${product.stock}</p>
           <p class="card-text"><strong>Precio:</strong> ${product.price}</p>
