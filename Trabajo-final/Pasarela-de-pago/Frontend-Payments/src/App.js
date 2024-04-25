@@ -9,8 +9,9 @@ function App() {
   return (
     <Suspense fallback="loading">
       <Routes>
-        <Route path='' element={<Home />} />
-        <Route path='/stripe' element={<Stripe />} />
+        {/* <Route path='' element={<Home />} /> */}
+       {/*  <Route path='/stripe' element={<Stripe />} /> */}
+        <Route path='' element={<Stripe />} />
       </Routes>
     </Suspense>
   );
