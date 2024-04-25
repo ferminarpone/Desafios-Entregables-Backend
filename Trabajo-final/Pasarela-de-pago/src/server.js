@@ -3,40 +3,39 @@ import handlebars from "express-handlebars";
 import { __dirname } from "./utils.js";
 import Handlebars from "handlebars";
 import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
-import viewsRouter from "./routes/views.routes.js";
-import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
 import { initSocketServer } from "./socket/socket.js";
 import usersViewRouter from "./routes/user.views.router.js";
 import emailRouter from "./routes/email.router.js";
+import paymentRouter from "./routes/payments.router.js";
 import mockingRouter from "./routes/mocking.router.js";
+import viewsRouter from "./routes/views.routes.js";
+import productsRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
+import settingsRouter from "./routes/settings.router.js";
+import jwtRouter from "./routes/users.router.js";
+import githubLoginViewRouter from "./routes/github-login.views.router.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import cookieParser from "cookie-parser";
-import githubLoginViewRouter from "./routes/github-login.views.router.js";
-import jwtRouter from "./routes/users.router.js";
-import settingsRouter from "./routes/settings.router.js";
 import config, { cloudinaryConfig } from "./config/config.js";
 import program from "./process.js";
 import MongoSingleton from "./config/mongoDb-singleton.js";
 import { addLogger, logger } from "./config/logger-custom.js";
-import swaggerJsDoc from 'swagger-jsdoc';
-import swaggerUIExpress from 'swagger-ui-express'
-import { resolve } from  'path';
-
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUIExpress from "swagger-ui-express";
 
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
 
 const app = express();
 const httpServer = app.listen(PORT, () =>
   logger.info(`Server listening on port ${PORT}`)
-); 
-
+);
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(addLogger)
+app.use(addLogger);
+app.use(cors());
 
 // Configuraciób web socket
 initSocketServer(httpServer);
@@ -46,7 +45,7 @@ const mongoInstance = async () => {
   try {
     await MongoSingleton.getInstance();
   } catch (error) {
-    logger.error(error.message)
+    logger.error(error.message);
   }
 };
 mongoInstance();
@@ -83,8 +82,7 @@ app.set("views", `${__dirname}/views`);
 app.use(express.static(`${__dirname}/../public`));
 
 // Multer - Cloudinary
-app.use('*', cloudinaryConfig)
-//app.get('/*', (req, res) => res.sendFile(resolve(__dirname, '../public/index.html')));
+app.use("*", cloudinaryConfig);
 
 // Routes de productos y carritos
 app.use("/api/products", productsRouter);
@@ -102,23 +100,25 @@ app.use("/github", githubLoginViewRouter);
 app.use("/api/email", emailRouter);
 
 //Route Mocking
-app.use('/mockingproducts', mockingRouter);
+app.use("/mockingproducts", mockingRouter);
 
 //Route Settings
-app.use('/api/settings', settingsRouter)
+app.use("/api/settings", settingsRouter);
+
+//Route Stripe - pasarel de pago
+app.use("/api/payments", paymentRouter);
 
 //Route Logger Test
-app.get('/loggerTest', (req, res)=> {
-  req.logger.fatal("Prueba de log level fatal --> en Endpoint"); 
-  req.logger.error("Prueba de log level error --> en Endpoint"); 
-  req.logger.warning("Prueba de log level warning --> en Endpoint"); 
-  req.logger.info("Prueba de log level info --> en Endpoint"); 
-  req.logger.http("Prueba de log level http --> en Endpoint"); 
-  req.logger.debug("Prueba de log level debug --> en Endpoint"); 
+app.get("/loggerTest", (req, res) => {
+  req.logger.fatal("Prueba de log level fatal --> en Endpoint");
+  req.logger.error("Prueba de log level error --> en Endpoint");
+  req.logger.warning("Prueba de log level warning --> en Endpoint");
+  req.logger.info("Prueba de log level info --> en Endpoint");
+  req.logger.http("Prueba de log level http --> en Endpoint");
+  req.logger.debug("Prueba de log level debug --> en Endpoint");
 
   res.send("Prueba de logger!");
-})
-
+});
 
 //Documentación Swagger
 const swaggerOptions = {
@@ -126,11 +126,10 @@ const swaggerOptions = {
     openapi: "3.0.1",
     info: {
       title: "Documentación API Ecommerce",
-      description: "Documentación de aplicación Ecommerce, trabajo CoderHouse."
-    }
+      description: "Documentación de aplicación Ecommerce, trabajo CoderHouse.",
+    },
   },
-  apis: [`${__dirname}/docs/**/*.yaml`]
-}
-const specs = swaggerJsDoc(swaggerOptions)
-app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
-
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+const specs = swaggerJsDoc(swaggerOptions);
+app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
