@@ -1,4 +1,4 @@
-import PaymentService from "../services/payments/paymentsService";
+import PaymentService from "../services/payments/paymentsService.js";
 
 //ELIMINAR
 const products = [

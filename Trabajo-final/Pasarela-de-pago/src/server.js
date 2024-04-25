@@ -23,6 +23,7 @@ import MongoSingleton from "./config/mongoDb-singleton.js";
 import { addLogger, logger } from "./config/logger-custom.js";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUIExpress from "swagger-ui-express";
+import cors from 'cors';
 
 const PORT = program.opts().p === 8080 ? config.port : program.opts().p;
 
