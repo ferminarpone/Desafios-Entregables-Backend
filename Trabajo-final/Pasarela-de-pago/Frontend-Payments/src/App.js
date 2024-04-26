@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import React, { Suspense } from 'react';
-import './App.css';
 
 const Stripe = React.lazy(() => import('./pages/Stripe'));
 

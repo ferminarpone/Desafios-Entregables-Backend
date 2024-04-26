@@ -21,6 +21,7 @@ const Stripe = () => {
   useEffect(() => {
     fetch(`http://localhost:8080/api/carts/ticket/${tid}`).then((result) => {
       result.json().then((json) => {
+        console.log(json)
         console.log(json.ticket.products);
         setCurrentProduct(json.ticket.products);
       });
@@ -49,13 +50,18 @@ const Stripe = () => {
   }; */
 
   return (
-    <>
-      <div className={styles.container}>
-        <h1 className={styles.title}>Stripe</h1>
+    <div className="container-md">
+      <h1 className="mt-4 mb-4 bg-opacity-8 border rounded text-center">
+        DETALLES DE COMPRA
+      </h1>
+      <div class="d-flex justify-content-start bg-opacity-8 border rounded pt-1 pb-1 mb-4">
+        <button id="home" class="btn btn-outline-secondary mx-2" onClick={()=> window.location.replace(`http://localhost:8080/products`)} >
+          Home
+        </button>
       </div>
       <div className={classnames([styles.container, styles.highlighted])}>
         <Wrapper hidden={!currentProduct} /* agregar hidden de boton compra */>
-          <div className={styles.productsContainer}>
+          <div className="row d-flex justify-content-between text-center">
             {currentProduct.map((product) => (
               <ProductCard
                 key={product.updatedProduct._id}
@@ -74,7 +80,7 @@ const Stripe = () => {
           </Elements>
         </Wrapper> */}
       </div>
-    </>
+    </div>
   );
 };
 
