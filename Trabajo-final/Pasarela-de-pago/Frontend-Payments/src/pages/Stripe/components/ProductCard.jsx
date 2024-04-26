@@ -2,9 +2,9 @@
 import styles from '../Stripe.module.scss'
 const ProductCard = ({ product, setCurrentProduct}) => {
     return (<>
-        <div className={styles.productCard} onClick={()=>setCurrentProduct(product.id)}>
-            <p>{product.name}</p>
-            <p>{product.price}</p>
+        <div className={styles.productCard} /* onClick={()=>setCurrentProduct(product.id)} */>
+            <p>{product.updatedProduct.title}</p>
+            <p>{product.updatedProduct.price}</p>
         </div>
     </>)
 }
