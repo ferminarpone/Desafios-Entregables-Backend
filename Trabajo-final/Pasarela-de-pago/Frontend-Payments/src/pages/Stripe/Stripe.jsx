@@ -21,7 +21,7 @@ const Stripe = () => {
   useEffect(() => {
     fetch(`http://localhost:8080/api/carts/ticket/${tid}`).then((result) => {
       result.json().then((json) => {
-        console.log(json)
+        console.log(json);
         console.log(json.ticket.products);
         setCurrentProduct(json.ticket.products);
       });
@@ -55,20 +55,29 @@ const Stripe = () => {
         DETALLES DE COMPRA
       </h1>
       <div class="d-flex justify-content-start bg-opacity-8 border rounded pt-1 pb-1 mb-4">
-        <button id="home" class="btn btn-outline-secondary mx-2" onClick={()=> window.location.replace(`http://localhost:8080/products`)} >
+        <button
+          id="home"
+          class="btn btn-outline-secondary mx-2"
+          onClick={() =>
+            window.location.replace(`http://localhost:8080/products`)
+          }
+        >
           Home
         </button>
       </div>
-      <div className={classnames([styles.container, styles.highlighted])}>
+      <div className="container-md">
         <Wrapper hidden={!currentProduct} /* agregar hidden de boton compra */>
-          <div className="row d-flex justify-content-between text-center">
-            {currentProduct.map((product) => (
-              <ProductCard
-                key={product.updatedProduct._id}
-                product={product}
-                setCurrentProduct={setCurrentProduct}
-              />
-            ))}
+          <div className="container row d-flex justify-content-start text-center ">
+              {currentProduct.map((product) => (
+                <ProductCard
+                  key={product.updatedProduct._id}
+                  product={product}
+                  setCurrentProduct={setCurrentProduct}
+                />
+              ))}
+          </div>
+          <div className="text-center mb-4">
+            <button className="btn btn-primary w-25">Ir a pagar</button>
           </div>
         </Wrapper>
         {/*        <Wrapper hidden={!clientSecret || !stripePromise}>
