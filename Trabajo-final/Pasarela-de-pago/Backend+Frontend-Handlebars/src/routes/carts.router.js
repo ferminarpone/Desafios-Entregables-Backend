@@ -44,4 +44,6 @@ router.delete(
 //
 router.post("/:cid/purchase", CartsController.createPurchaseController);
 
+router.get('/ticket/:tid', CartsController.getTicketController)
+
 export default router;

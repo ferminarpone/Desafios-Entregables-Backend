@@ -9,4 +9,8 @@ export default class TicketRepository {
   getLastOneTicket = (email) => {
     return this.dao.getLastOneTicket(email);
   };
+
+  getTicketById = (id) => {
+    return this.dao.getTicketById(id)
+  };
 }

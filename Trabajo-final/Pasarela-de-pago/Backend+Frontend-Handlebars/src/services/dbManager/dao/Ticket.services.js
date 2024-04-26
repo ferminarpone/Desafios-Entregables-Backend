@@ -10,6 +10,10 @@ class TicketServices {
       .find({ purchaser: email })
       .sort({ purchase_datetime: -1 });
   }
+
+  async getTicketById(id) {
+    return await ticketModel.findOne({_id:id})
+  }
 }
 
 export default new TicketServices();

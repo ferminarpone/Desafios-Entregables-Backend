@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { cartService } from "../services/service.js";
+import { cartService, ticketService } from "../services/service.js";
 
 export const createCartController = async (req, res) => {
   const { cart } = req.body;
@@ -130,3 +130,17 @@ export const createPurchaseController = async (req, res) => {
     }
   }
 };
+
+export const getTicketController = async (req, res) => {
+  const { tid } = req.params;
+  try {
+    const ticket = await ticketService.getTicketById(tid)
+    res.json({
+      ticket: ticket,
+    });
+  } catch (error) {
+    res.status(404).json({
+      error: e.message,
+    });
+  }
+}

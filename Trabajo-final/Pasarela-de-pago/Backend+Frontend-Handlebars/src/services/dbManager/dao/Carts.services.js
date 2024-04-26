@@ -102,7 +102,8 @@ class CartServices {
       const user = await userServices.getUser({ cart: cartId });
       const ticket = await this.createTicket(newCart, user);
       const secondcart = await this.getCartById(cid, "products.productId");
-      return newCart;
+      console.log(ticket)
+      return ticket;
     } catch (e) {
       console.log(e)
       throw Error (e.message)
@@ -112,7 +113,8 @@ class CartServices {
   stockControl = async (cart) => {
     let purchaseCart = [];
     for await (const el of cart.products) {
-      const newStock = el.productId.stock - el.quantity;
+      const quantity = el.quantity;
+      const newStock = el.productId.stock - quantity;
       if (newStock >= 0) {
         const pid = el.productId._id;
         const cartNew = await this.deleteProductInCart(cart._id, pid);
@@ -124,7 +126,7 @@ class CartServices {
             stock: newStock,
           }
         );
-        const purchaseProduct = { updatedProduct, amount };
+        const purchaseProduct = { updatedProduct, amount, quantity };
         purchaseCart.push(purchaseProduct);
       }
     }
@@ -142,6 +144,7 @@ class CartServices {
       products: cart,
     };
     return await ticketService.createTicket(ticket);
+    //return ticket
   }
 }
 

@@ -9,16 +9,21 @@ if (purchase) {
         "Content-Type": "application/json",
       },
     }).then((result) => {
-      console.log(result.status)
-      if(result.status === 404){
+      console.log(result.status);
+      if (result.status === 404) {
         Swal.fire({
           title: "Error de compra.",
           text: "No hay suficiente stock para los productos seleccionados.",
-          icon: "error"
-        })
+          icon: "error",
+        });
       }
       if (result.status === 200) {
-        fetch("/api/email");
+        result.json().then((json) => {
+          console.log(json.purchase._id);
+          const tid = json.purchase._id
+          window.location.replace(`http://localhost:3000/${tid}`)
+        });
+        /*  fetch("/api/email");
         Swal.fire({
           title: "Compra exitosa!",
           text: "Revisa el detalle en tu correo electronico!",
@@ -28,43 +33,43 @@ if (purchase) {
         `,
         }).then((result) => {
           window.location.replace("/products/cart");
-        });
+        }); */
       }
     });
   });
 }
 
 //Remover producto de carrito
-document.addEventListener('DOMContentLoaded', ()=> {
+document.addEventListener("DOMContentLoaded", () => {
   const cid = document.querySelector("#idCart").dataset.cartId;
-  const removeProdButtons = document.querySelectorAll('.removeProdBtn');
+  const removeProdButtons = document.querySelectorAll(".removeProdBtn");
   removeProdButtons.forEach((btn) => {
-      btn.addEventListener('click', (e)=> {
-          const pid = e.target.dataset.productId;
-           fetch(`/api/carts/${cid}/product/${pid}`,{
-           method: "DELETE",
-           headers: {
-             "Content-Type": "application/json",
-           },
-          }).then((result) => {
-            if (result.status === 200) {
-                window.location.replace("/products/cart");
-            }
-            if(result.status === 404){
-              Swal.fire({
-                icon: "error",
-                text: `Error al remover producto del carrito`,
-                width: 400,
-              });
-            }
-          }); 
+    btn.addEventListener("click", (e) => {
+      const pid = e.target.dataset.productId;
+      fetch(`/api/carts/${cid}/product/${pid}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((result) => {
+        if (result.status === 200) {
+          window.location.replace("/products/cart");
+        }
+        if (result.status === 404) {
+          Swal.fire({
+            icon: "error",
+            text: `Error al remover producto del carrito`,
+            width: 400,
+          });
+        }
       });
+    });
   });
 });
 
 //Home
-const home = document.querySelector('#home');
-home.addEventListener("click", (e)=>{
+const home = document.querySelector("#home");
+home.addEventListener("click", (e) => {
   e.preventDefault();
   window.location.replace("/products");
-})
+});

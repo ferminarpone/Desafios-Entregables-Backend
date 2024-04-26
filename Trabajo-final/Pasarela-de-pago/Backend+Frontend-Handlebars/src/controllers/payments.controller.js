@@ -14,7 +14,7 @@ const products = [
 export const paymentsController = async (req, res) => {
     console.log(`Intentando realizar un pago con product id: ${req.query.id}`);
     try {
-        const productRequested = products.find(product => product.id === parseInt(req.query.id))
+        const productRequested = products.find(product => product.id === 1/* parseInt(req.query.id) */)
         if (!productRequested) return res.status(404).send({ status: "error", error: "Product not found." });
 
         // Creamos un obj de pago
