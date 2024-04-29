@@ -1,93 +1,98 @@
 import React, { useEffect, useState } from "react";
-import classnames from "classnames";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import PaymentForm from "./components/PaymentForm";
 import { useParams } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
-import styles from "./Stripe.module.scss";
 import ProductCard from "./components/ProductCard";
-/* import PaymentService from "../../services/paymentService"; */
+import PaymentService from "../../services/paymentService";
+import CountdownTimer from "./components/CountdownTimer";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 const Stripe = () => {
-  const [currentProduct, setCurrentProduct] = useState([]);
+  const [currentProducts, setCurrentProducts] = useState([]);
   const [clientSecret, setClientSecret] = useState(null);
+  const [payment, setPayment] = useState(null);
 
   const { tid } = useParams();
-  console.log(tid);
-
   useEffect(() => {
     fetch(`http://localhost:8080/api/carts/ticket/${tid}`).then((result) => {
       result.json().then((json) => {
-        console.log(json);
-        console.log(json.ticket.products);
-        setCurrentProduct(json.ticket.products);
+        setCurrentProducts(json.ticket.products);
       });
     });
   }, [tid]);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     const getClientSecret = async () => {
-      console.log(currentProduct);
+      console.log(currentProducts);
       const service = new PaymentService();
       service.createPaymentIntent({
-        productId: currentProduct,
+        ticketId: tid,
         callbackSuccess: callbackSuccessPaymentIntent,
         callbackError: callbackErrorPaymentIntent,
       });
     };
-    currentProduct && getClientSecret();
-  }, [currentProduct]); */
+    payment && getClientSecret();
+  }, [payment]);
 
-  /*   const callbackSuccessPaymentIntent = (res) => {
+  const callbackSuccessPaymentIntent = (res) => {
     setClientSecret(res.data.payload.client_secret);
   };
 
   const callbackErrorPaymentIntent = (err) => {
     console.log(err);
-  }; */
+  };
 
   return (
     <div className="container-md">
+      <Wrapper hidden={payment}>
       <h1 className="mt-4 mb-4 bg-opacity-8 border rounded text-center">
         DETALLES DE COMPRA
       </h1>
-      <div class="d-flex justify-content-start bg-opacity-8 border rounded pt-1 pb-1 mb-4">
+      </Wrapper>
+      <Wrapper hidden={!payment}>
+      <h1 className="mt-4 mb-4 bg-opacity-8 border rounded text-center">
+        MEDIOS DE PAGO
+      </h1>
+      </Wrapper>
+      <div className="d-flex justify-content-between bg-opacity-8 border rounded pt-1 pb-1 mb-4">
         <button
           id="home"
-          class="btn btn-outline-secondary mx-2"
+          className="btn btn-outline-secondary mx-2"
           onClick={() =>
             window.location.replace(`http://localhost:8080/products`)
           }
         >
           Home
         </button>
+         <CountdownTimer/> 
       </div>
       <div className="container-md">
-        <Wrapper hidden={!currentProduct} /* agregar hidden de boton compra */>
+        <Wrapper hidden={payment} /* agregar hidden de boton compra */>
           <div className="container row d-flex justify-content-start text-center ">
-              {currentProduct.map((product) => (
-                <ProductCard
-                  key={product.updatedProduct._id}
-                  product={product}
-                  setCurrentProduct={setCurrentProduct}
-                />
-              ))}
+            {currentProducts.map((product) => (
+              <ProductCard key={product.updatedProduct._id} product={product} />
+            ))}
           </div>
           <div className="text-center mb-4">
-            <button className="btn btn-primary w-25">Ir a pagar</button>
+            <button
+              className="btn btn-primary w-25"
+              onClick={() => setPayment(tid)}
+            >
+              Ir a pagar
+            </button>
           </div>
         </Wrapper>
-        {/*        <Wrapper hidden={!clientSecret || !stripePromise}>
+        <Wrapper hidden={!clientSecret || !stripePromise}>
           <Elements
             stripe={stripePromise}
             options={{ clientSecret: clientSecret }}
           >
-            <PaymentForm />
+            <PaymentForm tid={tid} />
           </Elements>
-        </Wrapper> */}
+        </Wrapper>
       </div>
     </div>
   );

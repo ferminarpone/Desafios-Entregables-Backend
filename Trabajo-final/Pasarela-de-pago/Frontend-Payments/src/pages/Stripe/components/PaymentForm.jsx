@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { createAlert, createAlertWithCallback } from '../../../utils/alerts';
 
 import styles from '../Stripe.module.scss';
-const PaymentForm = () => {
+const PaymentForm = ({tid}) => {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -14,7 +14,12 @@ const PaymentForm = () => {
             redirect: 'if_required'
         })
         if (!error) {
-            createAlertWithCallback('success','¡Pago completado!',"El pago ha sido procesado con éxito",()=>window.location.replace('/'))
+            createAlertWithCallback('success','¡Pago completado!',`<p>El pago ha sido procesado con éxito.</p>
+            <br/>
+            Revisá el detalle en tu correo electronico.`,()=>{
+                fetch(`http://localhost:8080/api/email?tid=${tid}`);
+                window.location.replace('http://localhost:8080/products');
+            })
         } else {
             console.log(error);
            createAlert('error','Error al procesar el pago',error.message)

@@ -11,9 +11,8 @@ export const createAlert = (type,title,message) => Swal.fire({
 export const createAlertWithCallback = (type,title,message,callback) => Swal.fire({
     icon:type,
     title,
-    text:message,
-    timer:3000,
-    showConfirmButton:false
+    html:message,
+    showConfirmButton:true
 }).then(result=>{
     callback()
 })
