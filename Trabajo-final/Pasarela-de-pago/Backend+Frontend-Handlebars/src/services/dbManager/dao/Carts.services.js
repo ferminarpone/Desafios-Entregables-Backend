@@ -4,7 +4,7 @@ import { addProductErrorInfo } from "../../errors/messages/cart-creation-error.m
 import { productService, ticketService, userServices } from "../../service.js";
 import { cartModel } from "../models/carts.model.js";
 import productsServices from "./Products.services.js";
-
+import { v4 as uuidv4 } from "uuid";
 
 class CartServices {
   async getAllCarts() {
@@ -102,7 +102,6 @@ class CartServices {
       const user = await userServices.getUser({ cart: cartId });
       const ticket = await this.createTicket(newCart, user);
       const secondcart = await this.getCartById(cid, "products.productId");
-      console.log(ticket)
       return ticket;
     } catch (e) {
       console.log(e)
@@ -138,6 +137,7 @@ class CartServices {
       return acumulador + objeto.amount;
     }, 0);
     const ticket = {
+      code: autoGenerateCode(),
       amount: totalAmount,
       purchaser: user.email,
       purchase_datetime: new Date(),
@@ -148,4 +148,7 @@ class CartServices {
   }
 }
 
+const autoGenerateCode = () => {
+  return uuidv4() + Math.random();
+};
 export default new CartServices();

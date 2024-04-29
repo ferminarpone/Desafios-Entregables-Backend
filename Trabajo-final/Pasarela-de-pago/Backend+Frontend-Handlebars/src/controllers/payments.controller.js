@@ -1,40 +1,33 @@
 import PaymentService from "../services/payments/paymentsService.js";
-
-//ELIMINAR
-const products = [
-    { id: 1, name: "papas", price: 1000 },
-    { id: 2, name: "queso", price: 500 },
-    { id: 3, name: "hamburguesa", price: 1500 },
-    { id: 4, name: "soda", price: 1000 },
-    { id: 5, name: "golosinas", price: 800 }
-]
-
+import { ticketService } from "../services/service.js";
 
 
 export const paymentsController = async (req, res) => {
-    console.log(`Intentando realizar un pago con product id: ${req.query.id}`);
-    try {
-        const productRequested = products.find(product => product.id === 1/* parseInt(req.query.id) */)
-        if (!productRequested) return res.status(404).send({ status: "error", error: "Product not found." });
+  console.log(`Ticket id: ${req.query.tid}`);
+  try {
+    const ticket = await ticketService.getTicketById({ _id: req.query.tid });
 
-        // Creamos un obj de pago
-        const paymentIntentInfo = {
-            amount: productRequested.price,
-            currency: 'usd',
-            metadata: {
-                userId: "test user",
-                product: JSON.stringify(productRequested)
-            }
-        }
+    // Creamos un obj de pago
+    const paymentIntentInfo = {
+      amount: ticket.amount,
+      currency: "usd",
+      metadata: {
+        ticketId: ticket._id,
+        products: JSON.stringify(ticket.products),
+      },
+    };
 
-        // instanciamos el service para el pago
-        const service = new PaymentService()
-        let result = await service.createPaymentIntent(paymentIntentInfo)
-        console.log("Resultado del intento de pago:");
-        console.log(result);
-        res.send({ status: "success", payload: result });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).send({ status: "error", error: "Ocurrio un erro con el proveedor externo." });
-    }
-  };
+    // instanciamos el service para el pago
+    const service = new PaymentService();
+    let result = await service.createPaymentIntent(paymentIntentInfo);
+    res.send({ status: "success", payload: result });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .send({
+        status: "error",
+        error: "Ocurrio un erro con el proveedor externo.",
+      });
+  }
+};

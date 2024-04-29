@@ -24,7 +24,10 @@ transporter.verify(function (error, success) {
 });
 
 export const sendEmailController = async (req, res) => {
-  const user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
+  const { tid } = req.query;
+  console.log(tid)
+
+  /*   const user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
   const ticket = await ticketService.getLastOneTicket(user.user.email);
   const data = {
     code: ticket[0].code,
@@ -61,7 +64,7 @@ export const sendEmailController = async (req, res) => {
       error: error,
       message: "No se pudo enviar el email desde:" + config.gmailAccount,
     });
-  }
+  } */
 };
 
 // Password Reset
