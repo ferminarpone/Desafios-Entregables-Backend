@@ -139,8 +139,22 @@ formCuenta.addEventListener("submit", async (e) => {
   fetching(uid, formData, "spinnerC");
 });
 
+//Form foto de perfil
+const formProfilePhoto = document.getElementById("formProfilePhoto");
+formProfilePhoto.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const uid = e.target.dataset.form;
+  const profilePhoto = document.getElementById("profilePhoto").files[0];
+  const formData = new FormData();
+  formData.append("file", profilePhoto);
+
+  spinner("spinnerP");
+
+  fetching(uid, formData, "spinnerP");
+});
+
 const fetching = async (uid, formData, clase) => {
-  await fetch(`/api/users/${uid}/documents`, {
+  await fetch(`/api/users/${uid}/profile-photo`, {
     method: "POST",
     body: formData,
   }).then((result) => {

@@ -7,6 +7,7 @@ export default class UsersDto {
     this.role = user.role;
     this.cart = user.cart;
     this.id = user._id;
-    this.documents = user.documents
+    this.documents = user.documents;
+    this.profile_photo = user.profile_photo;
   }
 }

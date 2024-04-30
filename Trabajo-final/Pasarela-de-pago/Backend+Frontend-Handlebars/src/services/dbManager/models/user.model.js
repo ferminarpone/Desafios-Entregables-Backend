@@ -21,7 +21,8 @@ const userSchema = new Schema({
       reference: { type: String }
     }
   ],
-  last_connection: { type: Number }
+  last_connection: { type: Number },
+  profile_photo: { type: String, default:"https://res.cloudinary.com/dxptijmov/image/upload/v1713302871/Ecommerce/Profiles/y1hdkxycjxpky9czhdok.webp"}
 });
 
 userSchema.pre("find", function () {

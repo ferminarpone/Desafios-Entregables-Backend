@@ -9,6 +9,7 @@
   </div>
   <div class="mt-4 pt-3 mb-4 bg-opacity-8 border rounded text-center">
     <h3>Bienvenido {{user.name}} ! </h3>
+    <img src="{{user.profile_photo}}" alt="Profile photo" class="profileImg"/>
     <p class="bg-opacity-8 border rounded w-50 mx-auto"><strong>Nombre:
       </strong>{{user.name}}</p>
     <p class="bg-opacity-8 border rounded w-50 mx-auto"><strong>Email: </strong>
@@ -44,6 +45,26 @@
       <strong>IdCart:</strong>
       {{user.cart}}
     </p>
+
+  <form
+    id="formProfilePhoto"
+    class="p-1 mb-4 bg-opacity-8 border rounded text-center w-50 mx-auto"
+    enctype="multipart/form-data"
+    data-form="{{user.id}}"
+  >
+    <label class="mt-1 mb-2 doc-label" for="profilePhoto"><strong>
+        Actualizar foto de perfil:
+      </strong>
+    </label>
+    <input type="file" id="profilePhoto" name="profilePhoto" />
+    <input class="mx-4 btn btn-primary" type="submit" />
+
+    <div class="spinner-border text-primary spinnerP" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+
+  </form>
+
     <button id="logout" class="btn btn-outline-secondary mb-3">
       Cerrar sesión</button>
   </div>
@@ -63,11 +84,9 @@
     </label>
     <input type="file" id="identificacion" name="identificacion" />
     <input class="mx-4 btn btn-primary" type="submit" />
-
     <div class="spinner-border text-primary spinner" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-
   </form>
 
   <form

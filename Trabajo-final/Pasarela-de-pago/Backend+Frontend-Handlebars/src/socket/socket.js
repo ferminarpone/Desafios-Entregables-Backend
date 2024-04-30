@@ -15,8 +15,8 @@ const initSocketServer = (server) => {
     const cookies = socketCliente.request.headers.cookie.split(";");
     const jwtCookie = cookies.find(cookie => cookie.includes('jwtCookieToken='));
     const jwtCookieToken = jwtCookie.split('=')
-    let user = jwt.verify(jwtCookieToken[1], "EcommerceSecretKeyJWT");
-      try {
+    let user = jwt.verify(jwtCookieToken[1], "EcommerceSecretKeyJWT");    
+     try {
         if (user.user.role === "Premium") {
           data.owner = user.user.email;
         }
@@ -32,7 +32,7 @@ const initSocketServer = (server) => {
           );
         }
         socketCliente.emit("products_list", e.message);
-      }
+      } 
     });
 
     socketCliente.on("product_delete", async (data) => {

@@ -44,6 +44,13 @@ router.post(
   userController.documentsController
 );  
 
+//Foto de perfil
+router.post(
+  "/:uid/profile-photo",
+  multerUploads.single("file"),
+  userController.profilePhotoController
+);  
+
 router.get("/allUsers", userController.getAllUsersController)
 
 router.delete("/delete-expiration-counts", userController.deleteExpiredCountsController)

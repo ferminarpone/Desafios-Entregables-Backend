@@ -32,7 +32,7 @@ label{
     width: 260px;
 }
 
-.spinner, .spinnerC, .spinnerD{
+.spinner, .spinnerC, .spinnerD, .spinnerP{
     margin-bottom: -8px;
     display: none;
 }
@@ -46,4 +46,12 @@ label{
 }
 .comprobante li {
 text-align: left;
+}
+
+.profileImg{
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-bottom: 30px;
 }

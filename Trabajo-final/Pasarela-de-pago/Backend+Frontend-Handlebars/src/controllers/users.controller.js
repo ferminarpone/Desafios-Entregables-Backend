@@ -213,6 +213,35 @@ export const documentsController = async (req, res) => {
   }
 };
 
+export const profilePhotoController = async (req, res) => {
+  const { uid } = req.params;
+  const files = req.file;
+  if (files) {
+    try {
+      const file = dataUri(files).content;
+      const result = await v2.uploader.upload(file, {
+        folder: "Ecommerce/Profiles",
+      });
+      const image = result.url;
+      await userServices.updateUser(uid, { profile_photo: image }); 
+      return res.status(200).json({
+        messge: "Your documents has been uploded successfully to cloudinary",
+      });
+    } catch (error) {
+      res.status(500).json({
+        messge: "someting went wrong while processing your request",
+        data: {
+          error,
+        },
+      });
+    }
+  } else {
+    return res.status(400).json({
+      message: "No files were provided in the request",
+    });
+  }
+};
+
 export const getAllUsersController = async (req, res) => {
   try {
     const result = await userServices.getUsers();
@@ -237,8 +266,7 @@ export const deleteExpiredCountsController = async (req, res) => {
     const users = await userServices.getUsers();
     const expiredUser = [];
     for (const user of users) {
-      const expirationTime =
-        user.last_connection +  48 * 60 * 60 * 1000;
+      const expirationTime = user.last_connection + 48 * 60 * 60 * 1000;
       const timeNumber = Date.now();
       if (
         (expirationTime < timeNumber ||
