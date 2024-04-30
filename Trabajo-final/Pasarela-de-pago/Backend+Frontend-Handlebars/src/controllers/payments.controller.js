@@ -6,14 +6,12 @@ export const paymentsController = async (req, res) => {
   console.log(`Ticket id: ${req.query.tid}`);
   try {
     const ticket = await ticketService.getTicketById({ _id: req.query.tid });
-
     // Creamos un obj de pago
     const paymentIntentInfo = {
       amount: ticket.amount,
       currency: "usd",
       metadata: {
         ticketId: ticket._id,
-        products: JSON.stringify(ticket.products),
       },
     };
 

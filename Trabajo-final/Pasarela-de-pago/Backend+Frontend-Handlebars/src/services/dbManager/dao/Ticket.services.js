@@ -14,6 +14,10 @@ class TicketServices {
   async getTicketById(id) {
     return await ticketModel.findOne({_id:id})
   }
+
+  async deleteTicketById(id) {
+    return await ticketModel.findByIdAndDelete(id)
+  }
 }
 
 export default new TicketServices();

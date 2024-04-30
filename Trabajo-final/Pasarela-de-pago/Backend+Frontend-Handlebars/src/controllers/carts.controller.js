@@ -1,5 +1,10 @@
 import jwt from "jsonwebtoken";
-import { cartService, ticketService } from "../services/service.js";
+import {
+  cartService,
+  productService,
+  ticketService,
+} from "../services/service.js";
+import ProductsServices from "../services/dbManager/dao/Products.services.js";
 
 export const createCartController = async (req, res) => {
   const { cart } = req.body;
@@ -119,11 +124,11 @@ export const createPurchaseController = async (req, res) => {
       purchase: response,
     });
   } catch (e) {
-    if(e.message != "Stock insuficiente"){
+    if (e.message != "Stock insuficiente") {
       res.status(500).json({
         error: e.message,
       });
-    }else{
+    } else {
       res.status(404).json({
         error: e.message,
       });
@@ -134,13 +139,43 @@ export const createPurchaseController = async (req, res) => {
 export const getTicketController = async (req, res) => {
   const { tid } = req.params;
   try {
-    const ticket = await ticketService.getTicketById(tid)
+    const ticket = await ticketService.getTicketById(tid);
     res.json({
       ticket: ticket,
     });
   } catch (error) {
     res.status(404).json({
-      error: e.message,
+      error: error.message,
     });
   }
-}
+};
+
+export const deleteTicketController = async (req, res) => {
+  const { tid } = req.params;
+  try {
+    const ticket = await ticketService.getTicketById({ _id: tid });
+    console.log(ticket);
+    if (!ticket) {
+      return res.status(404).json({ message: "Ticket not found" });
+    }
+    const deleteTicket = await ticketService.deleteTicketById({ _id: tid });
+    if (
+      deleteTicket &&
+      deleteTicket.products &&
+      Array.isArray(deleteTicket.products)
+    ) {
+      for (const product of deleteTicket.products) {
+        const update = await ProductsServices.updateProduct(
+          product.updatedProduct._id,
+          { stock: product.updatedProduct.stock }
+        );
+      }
+    }
+    res.send({ ticketDeleted: deleteTicket });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};

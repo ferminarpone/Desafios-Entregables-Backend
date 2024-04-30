@@ -1,10 +1,13 @@
 import nodemailer from "nodemailer";
 import config from "../config/config.js";
 import jwt from "jsonwebtoken";
-import { passwordService, ticketService, userServices } from "../services/service.js";
+import {
+  passwordService,
+  ticketService,
+  userServices,
+} from "../services/service.js";
 import { logger } from "../config/logger-custom.js";
 import { v4 } from "uuid";
-
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -25,31 +28,37 @@ transporter.verify(function (error, success) {
 
 export const sendEmailController = async (req, res) => {
   const { tid } = req.query;
-  console.log(tid)
-
-  /*   const user = jwt.verify(req.cookies.jwtCookieToken, "EcommerceSecretKeyJWT");
-  const ticket = await ticketService.getLastOneTicket(user.user.email);
-  const data = {
-    code: ticket[0].code,
-    purchase_datetime: new Date(ticket[0].purchase_datetime),
-    amount: ticket[0].amount,
-  };
-  const mailOptions = {
-    from: "Ecommerce Coderhouse" + config.gmailAccount,
-    to: user.user.email,
-    subject: "Compra Exitosa!",
-    html: `<div><h1> Gracias por realizar su compra ${user.user.name} </h1>
+  try {
+    const ticket = await ticketService.getTicketById({ _id: tid });
+    const user = await userServices.getUser({ email: ticket.purchaser });
+    const data = {
+      code: ticket.code,
+      purchase_datetime: new Date(ticket.purchase_datetime),
+      amount: ticket.amount,
+      productList: ticket.products
+        .map((product) => {
+          return `<li> ${product.updatedProduct.title} - $${product.updatedProduct.price}</li>`;
+        })
+        .join(""),
+    };
+    const mailOptions = {
+      from: "Ecommerce Coderhouse" + config.gmailAccount,
+      to: user.email,
+      subject: "Compra Exitosa!",
+      html: `<div><h1> Gracias por realizar su compra ${user.first_name} </h1>
     <h2>Detalle de tu compra</h2>
+    <h3>Productos: </h3>
+    <ul>${data.productList}</ul>
+    <h3>Información adicional: </h3>
     <ul>
     <li>Fecha: ${data.purchase_datetime} </li>
     <li>Codigo de compra: ${data.code} </li>
     <li>Precio Final: $${data.amount} </li>
     </ul>
     </div>`,
-    attachments: [],
-  };
+      attachments: [],
+    };
 
-  try {
     let result = transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         logger.error("Error al enviar el email " + error);
@@ -64,7 +73,7 @@ export const sendEmailController = async (req, res) => {
       error: error,
       message: "No se pudo enviar el email desde:" + config.gmailAccount,
     });
-  } */
+  }
 };
 
 // Password Reset
@@ -85,10 +94,10 @@ export const sendEmailToResetPassController = async (req, res) => {
     if (!email) {
       return res.status(400).send("No se ingreso el email");
     }
-    const user = await userServices.getUser({email});
-   if(!user){
-    return res.status(404).send("No user");
-   }
+    const user = await userServices.getUser({ email });
+    if (!user) {
+      return res.status(404).send("No user");
+    }
     const token = v4();
     const link = `http://localhost:8080/api/settings/reset-password/${token}`;
     const pswInfo = {
