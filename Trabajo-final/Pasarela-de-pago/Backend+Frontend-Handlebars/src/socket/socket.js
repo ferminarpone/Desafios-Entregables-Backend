@@ -12,9 +12,10 @@ const initSocketServer = (server) => {
   const socketServer = new Server(server);
   socketServer.on("connection", async (socketCliente) => {
     socketCliente.on("form_information", async (data) => {
-      const jwtCookieToken = socketCliente.request.headers.cookie.split("=");
-      let user = jwt.verify(jwtCookieToken[1], "EcommerceSecretKeyJWT");
-
+    const cookies = socketCliente.request.headers.cookie.split(";");
+    const jwtCookie = cookies.find(cookie => cookie.includes('jwtCookieToken='));
+    const jwtCookieToken = jwtCookie.split('=')
+    let user = jwt.verify(jwtCookieToken[1], "EcommerceSecretKeyJWT");
       try {
         if (user.user.role === "Premium") {
           data.owner = user.user.email;
@@ -35,7 +36,9 @@ const initSocketServer = (server) => {
     });
 
     socketCliente.on("product_delete", async (data) => {
-      const jwtCookieToken = socketCliente.request.headers.cookie.split("=");
+      const cookies = socketCliente.request.headers.cookie.split(";");
+      const jwtCookie = cookies.find(cookie => cookie.includes('jwtCookieToken='));
+      const jwtCookieToken = jwtCookie.split('=')
       let user = jwt.verify(jwtCookieToken[1], "EcommerceSecretKeyJWT");
       const productOwner = await userServices.getUser({ email: data.owner });
       try {

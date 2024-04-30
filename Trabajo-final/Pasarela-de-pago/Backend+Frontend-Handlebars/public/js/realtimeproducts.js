@@ -57,6 +57,13 @@ socketClient.on("products_list", (data) => {
       });
     });
   } else {
+    if(typeof(data) === "string"){
+      return Swal.fire({
+        icon: "error",
+        text: `${data}`,
+        width: 400,
+      });
+    }
     Swal.fire({
       icon: "error",
       text: `${data.error}`,
