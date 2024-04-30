@@ -26,10 +26,10 @@ const PaymentForm = ({tid}) => {
         }
     }
     return <>
-        <form>
+        <form className='bg-opacity-8 border rounded mt-5 p-4'>
             <PaymentElement />
             <div className={styles.buttonPanel}>
-                <button className={styles.genericButton} onClick={handleSubmit}>Pagar</button>
+                <button className='btn btn-primary mt-3 w-25' onClick={handleSubmit}>Pagar</button>
             </div>
         </form>
     </>

@@ -26,7 +26,6 @@ const Stripe = () => {
 
   useEffect(() => {
     const getClientSecret = async () => {
-      console.log(currentProducts);
       const service = new PaymentService();
       service.createPaymentIntent({
         ticketId: tid,
@@ -48,14 +47,14 @@ const Stripe = () => {
   return (
     <div className="container-md">
       <Wrapper hidden={payment}>
-      <h1 className="mt-4 mb-4 bg-opacity-8 border rounded text-center">
-        DETALLES DE COMPRA
-      </h1>
+        <h1 className="mt-4 mb-4 bg-opacity-8 border rounded text-center">
+          DETALLES DE COMPRA
+        </h1>
       </Wrapper>
       <Wrapper hidden={!payment}>
-      <h1 className="mt-4 mb-4 bg-opacity-8 border rounded text-center">
-        MEDIOS DE PAGO
-      </h1>
+        <h1 className="mt-4 mb-4 bg-opacity-8 border rounded text-center">
+          MEDIOS DE PAGO
+        </h1>
       </Wrapper>
       <div className="d-flex justify-content-between bg-opacity-8 border rounded pt-1 pb-1 mb-4">
         <button
@@ -67,33 +66,31 @@ const Stripe = () => {
         >
           Home
         </button>
-         <CountdownTimer/> 
+        <CountdownTimer tid={tid}/>
       </div>
-      <div className="container-md">
-        <Wrapper hidden={payment} /* agregar hidden de boton compra */>
-          <div className="container row d-flex justify-content-start text-center ">
-            {currentProducts.map((product) => (
-              <ProductCard key={product.updatedProduct._id} product={product} />
-            ))}
-          </div>
-          <div className="text-center mb-4">
-            <button
-              className="btn btn-primary w-25"
-              onClick={() => setPayment(tid)}
-            >
-              Ir a pagar
-            </button>
-          </div>
-        </Wrapper>
-        <Wrapper hidden={!clientSecret || !stripePromise}>
-          <Elements
-            stripe={stripePromise}
-            options={{ clientSecret: clientSecret }}
+      <Wrapper hidden={payment}>
+        <div className="container row d-flex justify-content-start text-center ">
+          {currentProducts.map((product) => (
+            <ProductCard key={product.updatedProduct._id} product={product} />
+          ))}
+        </div>
+        <div className="text-center mb-4">
+          <button
+            className="btn btn-primary w-25"
+            onClick={() => setPayment(tid)}
           >
-            <PaymentForm tid={tid} />
-          </Elements>
-        </Wrapper>
-      </div>
+            Ir a pagar
+          </button>
+        </div>
+      </Wrapper>
+      <Wrapper hidden={!clientSecret || !stripePromise}>
+        <Elements
+          stripe={stripePromise}
+          options={{ clientSecret: clientSecret }}
+        >
+          <PaymentForm tid={tid} />
+        </Elements>
+      </Wrapper>
     </div>
   );
 };
