@@ -23,8 +23,8 @@ const PaymentForm = ({ tid }) => {
             <br/>
             Revisá el detalle en tu correo electrónico.`,
         () => {
-          fetch(`http://localhost:8080/api/email?tid=${tid}`);
-          window.location.replace("http://localhost:8080/products");
+          fetch(`https://trabajo-final-backend-production.up.railway.app/api/email?tid=${tid}`);
+          window.location.replace("https://trabajo-final-backend-production.up.railway.app/products");
         }
       );
     } else {

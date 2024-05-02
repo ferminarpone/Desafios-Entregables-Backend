@@ -22,7 +22,7 @@ const CountdownTimer = ({ tid }) => {
               "error",
               "Tiempo expirado",
               "Se ha acabado el tiempo para realizar su compra.",
-              () => window.location.replace(`http://localhost:8080/products`)
+              () => window.location.replace(`https://trabajo-final-backend-production.up.railway.app/products`)
             );
           } else {
             updatedMinutes -= 1;
@@ -40,7 +40,7 @@ const CountdownTimer = ({ tid }) => {
 
   const handleTimerEnd = async () => {
     try {
-      await fetch(`http://localhost:8080/api/carts/delete-ticket/${tid}`, {
+      await fetch(`https://trabajo-final-backend-production.up.railway.app/api/carts/delete-ticket/${tid}`, {
         method: "DELETE",
       });
     } catch (error) {

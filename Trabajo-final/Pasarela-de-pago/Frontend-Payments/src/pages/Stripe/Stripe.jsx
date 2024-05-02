@@ -17,7 +17,7 @@ const Stripe = () => {
 
   const { tid } = useParams();
   useEffect(() => {
-    fetch(`http://localhost:8080/api/carts/ticket/${tid}`).then((result) => {
+    fetch(`https://trabajo-final-backend-production.up.railway.app/api/carts/ticket/${tid}`).then((result) => {
       result.json().then((json) => {
         setCurrentProducts(json.ticket.products);
       });
@@ -61,7 +61,7 @@ const Stripe = () => {
           id="home"
           className="btn btn-outline-secondary mx-2"
           onClick={() =>
-            window.location.replace(`http://localhost:8080/products`)
+            window.location.replace(`https://trabajo-final-backend-production.up.railway.app/products`)
           }
         >
           Home
