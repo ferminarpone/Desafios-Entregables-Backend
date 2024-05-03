@@ -37,7 +37,6 @@ const Stripe = () => {
   }, [payment]);
 
   const callbackSuccessPaymentIntent = (res) => {
-    console.log(res.data.payload.client_secre)
     setClientSecret(res.data.payload.client_secret);
   };
 
